@@ -1,0 +1,498 @@
+<!doctype html>
+<!--[if lt IE 7 ]><html itemscope itemtype="http://schema.org/Organization" id="ie6" class="ie ie-old" lang="en-US"><![endif]-->
+<!--[if IE 7 ]>   <html itemscope itemtype="http://schema.org/Organization" id="ie7" class="ie ie-old" lang="en-US"><![endif]-->
+<!--[if IE 8 ]>   <html itemscope itemtype="http://schema.org/Organization" id="ie8" class="ie ie-old" lang="en-US"><![endif]-->
+<!--[if IE 9 ]>   <html itemscope itemtype="http://schema.org/Organization" id="ie9" class="ie" lang="en-US"><![endif]-->
+<!--[if gt IE 9]><!--><html itemscope itemtype="http://schema.org/Organization" lang="en-US"><!--<![endif]-->
+<head>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <title>Harmonize from Java - Data Hub Framework</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" sizes="16x16 24x24 32x32 48x48 64x64 96x96" href="/marklogic-data-hub/favicon.ico">
+    <meta name="application-name" content="Data Hub Framework - A data hub framework for MarkLogic">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-6638631-15', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1879746318909687'); // Insert your pixel ID here.
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1879746318909687&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <link type="text/css" rel="stylesheet" href="/marklogic-data-hub/assets/bundle.css">
+</head>
+<body class="">
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/marklogic-data-hub">
+                  <span class="logo">
+                    <img src="/marklogic-data-hub/images/logo-marklogic.svg" width="150px" height="36px" alt="MarkLogic" title="MarkLogic" scale="0">
+                  </span>
+                  Data Hub Framework
+                </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    
+                        <li  >
+                            
+                            <a href="/marklogic-data-hub/">Getting Started</a>
+                            
+                        </li>
+                    
+                        <li  >
+                            
+                            <a href="/marklogic-data-hub/tutorial/">Tutorial</a>
+                            
+                        </li>
+                    
+                        <li  >
+                            
+                            <a href="https://github.com/marklogic-community/marklogic-data-hub">DHF on GitHub</a>
+                            
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+  <div class="bannered-image">
+  <picture>
+    <source srcset="/marklogic-data-hub/images/Solution-enterprise-data-hub-xs.jpg" media="(max-width: 400px)">
+    <source srcset="/marklogic-data-hub/images/Solution-enterprise-data-hub-sm.jpg" media="(max-width: 800px)">
+    <source srcset="/marklogic-data-hub/images/Solution-enterprise-data-hub-lg.jpg" media="(min-width: 801px)">
+    <img srcset="/marklogic-data-hub/images/Solution-enterprise-data-hub-lg.jpg" alt="Operational Data Hub" scale="0">
+  </picture>
+  <div class="banner banner-light banner-center text-center">
+    <div class="center-container">
+      <div class="centered-text">
+        <div class="col-sm-12 text-right text-center">
+          <img alt="dhf icon" src="/marklogic-data-hub/images/odh.svg" scale="0" class="icon-left">
+          <h3>
+          
+            Harmonize from Java
+          
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="side-nav col-md-2 hide-small">
+          <div class="panel panel-default">
+  <div class="panel-heading">Navigation</div>
+  <ul class="list-group">
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/">Getting Started</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/understanding/">Understanding DHF</a>
+    
+    
+      <ul class="list-group">
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/understanding/concepts/">Concepts</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/understanding/architecture/">Architecture</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/understanding/how-it-works/">How It Works</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/understanding/flowtracing/">Flow Tracing</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/understanding/project-structure/">Project Structure</a>
+    
+    
+  </li>
+  
+</ul>
+
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/tutorial/">Tutorial</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/using/">Using the DHF</a>
+    
+    
+      <ul class="list-group">
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/project/">Create a Project</a>
+    
+    
+      <ul class="list-group">
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/project/quickstart/">QuickStart</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/project/gradle/">Gradle Plugin</a>
+    
+    
+  </li>
+  
+</ul>
+
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/ingest/">Ingest</a>
+    
+    
+      <ul class="list-group">
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/ingest/quickstart/">QuickStart</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/ingest/mlcp/">MLCP</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/ingest/marklogic-client-api/">MarkLogic Client API</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/ingest/rest/">REST API</a>
+    
+    
+  </li>
+  
+</ul>
+
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/harmonize/">Harmonize</a>
+    
+    
+      <ul class="list-group">
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/harmonize/quickstart/">Quickstart</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/harmonize/gradle/">Gradle</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item active"  >
+    
+    <a href="/marklogic-data-hub/harmonize/java/">Java Library</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/harmonize/rest/">REST</a>
+    
+    
+  </li>
+  
+</ul>
+
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/serve/">Serve</a>
+    
+    
+      <ul class="list-group">
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/serve/rest/">REST</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/serve/odbc/">ODBC</a>
+    
+    
+  </li>
+  
+</ul>
+
+    
+  </li>
+  
+</ul>
+
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/docs/">Docs</a>
+    
+    
+      <ul class="list-group">
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/docs/gradle-tasks/">Gradle Tasks</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/docs/server-side/">Server Side (xqy, sjs)</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/javadocs/">Javadocs</a>
+    
+    
+  </li>
+  
+</ul>
+
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="/marklogic-data-hub/faqs/">FAQs</a>
+    
+    
+  </li>
+  
+  <li  class="list-group-item"  >
+    
+    <a href="https://github.com/marklogic-community/marklogic-data-hub">DHF on GitHub</a>
+    
+    
+  </li>
+  
+</ul>
+
+</div>
+
+        </div>
+        <div class="col-md-10">
+          <h3 id="using-the-dhf-from-java">Using the DHF from Java</h3>
+
+<p>The core of the Data Hub Framework ships as a library Jar file. Calling the DHF Library directly from your custom Java code is the <strong>most powerful</strong> way to use the DHF. Before you embark down this path, consider if you can get by with using the <a href="/marklogic-data-hub/harmonize/gradle/">ml-data-hub Gradle Plugin</a> instead.</p>
+
+<p>Still here? The DHF Library is distributed via bintray so that you can include it easily with your favorite Java build tool. Here’s how to include it.</p>
+
+<p><strong>Gradle</strong></p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">compile</span><span class="o">(</span><span class="s1">'com.marklogic:marklogic-data-hub:2.0.3'</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p><strong>Maven</strong></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>com.marklogic<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>marklogic-data-hub<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>2.0.3<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;type&gt;</span>pom<span class="nt">&lt;/type&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p><strong>Ivy</strong></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">'com.marklogic'</span> <span class="na">name=</span><span class="s">'marklogic-data-hub'</span> <span class="na">rev=</span><span class="s">'2.0.3'</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;artifact</span> <span class="na">name=</span><span class="s">'$AID'</span> <span class="na">ext=</span><span class="s">'pom'</span><span class="nt">&gt;&lt;/artifact&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<h3 id="running-a-harmonize-flow-from-java">Running a Harmonize Flow from Java</h3>
+
+<p>By running a Harmonize Flow from Java you get finer control over the process.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kn">import</span> <span class="nn">com.marklogic.hub.flow.FlowRunner</span><span class="o">;</span>
+    <span class="kn">import</span> <span class="nn">com.marklogic.hub.HubConfig</span><span class="o">;</span>
+    <span class="kn">import</span> <span class="nn">com.marklogic.hub.HubConfigBuilder</span><span class="o">;</span>
+    <span class="kn">import</span> <span class="nn">com.marklogic.hub.FlowRunner</span><span class="o">;</span>
+    <span class="kn">import</span> <span class="nn">com.marklogic.hub.Flow</span><span class="o">;</span>
+    <span class="kn">import</span> <span class="nn">com.marklogic.hub.FlowType</span><span class="o">;</span>
+    <span class="kn">import</span> <span class="nn">com.marklogic.client.datamovement.JobTicket</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyApp</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// get a hub config</span>
+            <span class="n">HubConfig</span> <span class="n">dataHubConfig</span> <span class="o">=</span> <span class="n">HubConfigBuilder</span><span class="o">.</span><span class="na">newHubConfigBuilder</span><span class="o">(</span><span class="s">"/path/to/your/project"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withPropertiesFromEnvironment</span><span class="o">(</span><span class="s">"local"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+            <span class="c1">// get a flow manager</span>
+            <span class="n">FlowManager</span> <span class="n">flowManager</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FlowManager</span><span class="o">(</span><span class="n">dataHubConfig</span><span class="o">);</span>
+
+            <span class="c1">// retrieve the flow you wish to run</span>
+            <span class="n">Flow</span> <span class="n">harmonizeFlow</span> <span class="o">=</span> <span class="n">flowManager</span><span class="o">.</span><span class="na">getFlow</span><span class="o">(</span><span class="s">"my entity name"</span><span class="o">,</span> <span class="s">"my flow name"</span><span class="o">,</span> <span class="n">FlowType</span><span class="o">.</span><span class="na">HARMONIZE</span><span class="o">);</span>
+
+            <span class="c1">// build the flow runner</span>
+            <span class="n">FlowRunner</span> <span class="n">flowRunner</span> <span class="o">=</span> <span class="n">flowManager</span><span class="o">.</span><span class="na">newFlowRunner</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">withFlow</span><span class="o">(</span><span class="n">harmonizeFlow</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withBatchSize</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withThreadCount</span><span class="o">(</span><span class="mi">4</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withOptions</span><span class="o">(</span><span class="n">options</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withSourceClient</span><span class="o">(</span><span class="n">srcClient</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withDestinationDatabase</span><span class="o">(</span><span class="n">destDb</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">onItemComplete</span><span class="o">((</span><span class="n">String</span> <span class="n">jobId</span><span class="o">,</span> <span class="n">String</span> <span class="n">itemId</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                  <span class="c1">// do something with this completed item</span>
+                <span class="o">})</span>
+                <span class="o">.</span><span class="na">onItemFailed</span><span class="o">((</span><span class="n">String</span> <span class="n">jobId</span><span class="o">,</span> <span class="n">String</span> <span class="n">itemId</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                  <span class="c1">// do something with this failed item</span>
+                <span class="o">});</span>
+
+            <span class="c1">// run the flow</span>
+            <span class="n">JobTicket</span> <span class="n">jobTicket</span> <span class="o">=</span> <span class="n">flowRunner</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+
+            <span class="c1">// optionally wait for the flow to finish running</span>
+            <span class="n">flowRunner</span><span class="o">.</span><span class="na">awaitCompletion</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+        </div>
+      </div>
+    </div>
+  </article>
+
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                    Copyright © 2016-2018 MarkLogic Corporation. All Rights Reserved. MARKLOGIC® is a registered trademark of MarkLogic Corporation.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!--[if lt IE 9]>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="/marklogic-data-hub/js/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="/marklogic-data-hub/assets/bundle.js" id="1"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-79716597-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>
+
