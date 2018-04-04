@@ -1,20 +1,3 @@
-/*
- * Copyright 2012-2018 MarkLogic Corporation
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- */
-
 package com.marklogic.quickstart.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -75,7 +58,7 @@ public class FlowManagerServiceTest extends HubTestBase {
         FileUtils.deleteDirectory(projectDir.toFile());
         installHub();
 
-        Scaffolding scaffolding = Scaffolding.create(projectDir.toString(), stagingClient);
+        Scaffolding scaffolding = new Scaffolding(projectDir.toString(), stagingClient);
         scaffolding.createEntity(ENTITY);
         scaffolding.createFlow(ENTITY, "sjs-json-input-flow", FlowType.INPUT,
             CodeFormat.JAVASCRIPT, DataFormat.JSON);
@@ -152,7 +135,7 @@ public class FlowManagerServiceTest extends HubTestBase {
 
         String flowName = "sjs-json-input-flow";
 
-        FlowManager flowManager = FlowManager.create(getHubConfig());
+        FlowManager flowManager = new FlowManager(getHubConfig());
         Flow flow = flowManager.getFlow(ENTITY, flowName, FlowType.INPUT);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -166,7 +149,7 @@ public class FlowManagerServiceTest extends HubTestBase {
                 "\"output_permissions\":\"\\\"rest-reader,read,rest-writer,update\\\"\"," +
                 "\"output_uri_replace\":\"\\\"" + basePath.replace("\\", "/").replaceAll("^([A-Za-z]):", "/$1:") + ",''\\\"\"," +
                 "\"document_type\":\"\\\"json\\\"\"," +
-                "\"transform_module\":\"\\\"/MarkLogic/data-hub-framework/transforms/mlcp-flow-transform.xqy\\\"\"," +
+                "\"transform_module\":\"\\\"/com.marklogic.hub/mlcp-flow-transform.xqy\\\"\"," +
                 "\"transform_namespace\":\"\\\"http://marklogic.com/data-hub/mlcp-flow-transform\\\"\"," +
                 "\"transform_param\":\"\\\"entity-name=" + ENTITY + ",flow-name=" + flowName + "\\\"\"" +
                 "}");
@@ -200,7 +183,7 @@ public class FlowManagerServiceTest extends HubTestBase {
         setEnvConfig(envConfig);
 
         String flowName = "sjs-json-harmonization-flow";
-        FlowManager flowManager = FlowManager.create(getHubConfig());
+        FlowManager flowManager = new FlowManager(getHubConfig());
         Flow flow = flowManager.getFlow(ENTITY, flowName, FlowType.HARMONIZE);
 
         HubConfig hubConfig = getHubConfig();
@@ -243,7 +226,7 @@ public class FlowManagerServiceTest extends HubTestBase {
         setEnvConfig(envConfig);
 
         String flowName = "sjs-json-harmonization-flow";
-        FlowManager flowManager = FlowManager.create(getHubConfig());
+        FlowManager flowManager = new FlowManager(getHubConfig());
         Flow flow = flowManager.getFlow(ENTITY, flowName, FlowType.HARMONIZE);
 
         HubConfig hubConfig = getHubConfig();

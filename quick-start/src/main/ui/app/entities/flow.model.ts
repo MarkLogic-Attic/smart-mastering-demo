@@ -11,14 +11,6 @@ export class Flow {
 
   constructor() {}
 
-  transformModulePath(){
-    if(this.codeFormat.toLowerCase() === 'javascript') {
-      return '/MarkLogic/data-hub-framework/transforms/mlcp-flow-transform.sjs'
-    } else {
-      return '/MarkLogic/data-hub-framework/transforms/mlcp-flow-transform.xqy';
-    }
-  }
-
   fromJSON(json) {
     this.entityName = json.entityName;
     this.flowName = json.flowName;

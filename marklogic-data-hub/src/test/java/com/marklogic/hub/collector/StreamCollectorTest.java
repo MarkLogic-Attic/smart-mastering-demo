@@ -65,12 +65,12 @@ public class StreamCollectorTest extends HubTestBase {
         disableDebugging();
         disableTracing();
 
-        Scaffolding scaffolding = Scaffolding.create(projectDir.toString(), stagingClient);
+        Scaffolding scaffolding = new Scaffolding(projectDir.toString(), stagingClient);
         scaffolding.createEntity(ENTITY);
         scaffolding.createFlow(ENTITY, "testharmonize", FlowType.HARMONIZE,
             CodeFormat.XQUERY, DataFormat.XML);
 
-        DataHub dh = DataHub.create(getHubConfig());
+        DataHub dh = new DataHub(getHubConfig());
         dh.clearUserModules();
         installUserModules(getHubConfig(), false);
         clearDatabases(HubConfig.DEFAULT_STAGING_NAME, HubConfig.DEFAULT_FINAL_NAME, HubConfig.DEFAULT_TRACE_NAME, HubConfig.DEFAULT_JOB_NAME);
@@ -116,7 +116,6 @@ public class StreamCollectorTest extends HubTestBase {
     @AfterClass
     public static void teardown() {
         uninstallHub();
-        deleteProjectDir();
     }
 
     @Test
@@ -127,7 +126,7 @@ public class StreamCollectorTest extends HubTestBase {
         // having to wait for the entire harmonize flow to finish.
         assertEquals(DOC_COUNT, getStagingDocCount());
         assertEquals(0, getFinalDocCount());
-        FlowManager fm = FlowManager.create(getHubConfig());
+        FlowManager fm = new FlowManager(getHubConfig());
         Flow harmonizeFlow = fm.getFlow(ENTITY, "testharmonize",
             FlowType.HARMONIZE);
         HashMap<String, Object> options = new HashMap<>();

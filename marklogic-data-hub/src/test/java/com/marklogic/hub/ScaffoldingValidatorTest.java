@@ -1,19 +1,3 @@
-/*
- * Copyright 2012-2018 MarkLogic Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.marklogic.hub;
 
 import com.marklogic.hub.error.ScaffoldingValidationException;
@@ -21,7 +5,6 @@ import com.marklogic.hub.flow.CodeFormat;
 import com.marklogic.hub.flow.FlowType;
 import com.marklogic.hub.scaffold.Scaffolding;
 import com.marklogic.hub.scaffold.ScaffoldingValidator;
-import com.marklogic.hub.scaffold.impl.ScaffoldingImpl;
 import com.marklogic.hub.util.FileUtil;
 import org.apache.commons.io.FileUtils;
 import org.custommonkey.xmlunit.XMLUnit;
@@ -30,6 +13,7 @@ import org.junit.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -42,7 +26,7 @@ public class ScaffoldingValidatorTest extends HubTestBase {
 
    private static final String projectPath = "./test-project";
    private static final String TEST_ENTITY_NAME = "test-entity";
-   private Scaffolding scaffolding = Scaffolding.create(projectPath, stagingClient);
+   private Scaffolding scaffolding = new Scaffolding(projectPath, stagingClient);
    private ScaffoldingValidator validator = new ScaffoldingValidator(projectPath);
 
    @BeforeClass
@@ -65,8 +49,8 @@ public class ScaffoldingValidatorTest extends HubTestBase {
    private void createPlugins(String entityName, FlowType flowType, CodeFormat codeFormat) throws IOException {
 
        String flowName = entityName + flowType + "-flow";
-       String flowTypePath = ScaffoldingImpl.getAbsolutePath(projectPath, "entities", entityName, flowType.toString());
-       String flowPath = ScaffoldingImpl.getAbsolutePath(flowTypePath, flowName);
+       String flowTypePath = Scaffolding.getAbsolutePath(projectPath, "entities", entityName, flowType.toString());
+       String flowPath = Scaffolding.getAbsolutePath(flowTypePath, flowName);
 
        List<Plugin> plugins = new ArrayList<>();
        if (flowType.equals(FlowType.HARMONIZE)) {
@@ -82,7 +66,7 @@ public class ScaffoldingValidatorTest extends HubTestBase {
    }
 
    private Plugin createPluginObj(String flowPath, String pluginType, FlowType flowType, CodeFormat codeFormat) {
-       String parentDirectory = ScaffoldingImpl.getAbsolutePath(flowPath, pluginType);
+       String parentDirectory = Scaffolding.getAbsolutePath(flowPath, pluginType);
        String filename = pluginType + "." + codeFormat;
        String templateFilePath = "scaffolding/" + flowType + "/" + codeFormat + "/" + pluginType + "." + codeFormat;
        return new Plugin(parentDirectory, filename, templateFilePath);

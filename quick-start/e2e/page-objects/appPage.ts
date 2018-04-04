@@ -19,10 +19,6 @@ export class AppPage extends Page {
     }, (err) => null)
   }
 
-  get dashboardTab() {
-    return element(by.css('#database-tab'));
-  }
-
   get entitiesTab() {
     return element(by.css('#entities-tab'));
   }
@@ -31,16 +27,8 @@ export class AppPage extends Page {
     return element(by.css('#jobs-tab'));
   }
 
-  get tracesTab() {
-    return element(by.css('#traces-tab'));
-  }
-
   get flowsTab() {
     return element(by.css('#flows-tab'));
-  }
-
-  get browseDataTab() {
-    return element(by.css('#browser-tab'));
   }
 
   get settingsTab() {
@@ -53,7 +41,6 @@ export class AppPage extends Page {
 
   logout() {
     this.menuButton.click();
-    browser.wait(EC.elementToBeClickable(element(by.css('#login-button'))));
     element(by.css('#login-button')).click();
   }
 

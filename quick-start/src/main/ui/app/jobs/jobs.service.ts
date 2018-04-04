@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, RequestOptions, Response, ResponseContentType} from '@angular/http';
+import { Http, Response } from '@angular/http';
 
 @Injectable()
 export class JobService {
@@ -25,21 +25,6 @@ export class JobService {
 
   deleteJobs(jobIds: string[]) {
     return this.http.post('/api/jobs/delete', jobIds.join(","));
-  }
-
-  exportJobs(jobIds: string[]) {
-    let options: RequestOptions = new RequestOptions();
-    options.responseType = ResponseContentType.Blob;
-
-    return this.http.post(
-      '/api/jobs/export',
-      JSON.stringify(
-        {
-          "jobIds": jobIds.length ===0 ? null : jobIds
-        }
-      ),
-      options
-    );
   }
 
   private extractData = (res: Response) => {

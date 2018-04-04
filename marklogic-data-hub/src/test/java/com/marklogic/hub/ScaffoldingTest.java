@@ -1,19 +1,3 @@
-/*
- * Copyright 2012-2018 MarkLogic Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.marklogic.hub;
 
 import com.marklogic.hub.error.ScaffoldingValidationException;
@@ -21,7 +5,6 @@ import com.marklogic.hub.flow.CodeFormat;
 import com.marklogic.hub.flow.DataFormat;
 import com.marklogic.hub.flow.FlowType;
 import com.marklogic.hub.scaffold.Scaffolding;
-import com.marklogic.hub.scaffold.impl.ScaffoldingImpl;
 import com.marklogic.hub.util.FileUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -62,11 +45,6 @@ public class ScaffoldingTest extends HubTestBase {
         isMl9 = getMlMajorVersion() == 9;
 
     }
-    
-    @AfterAll
-    public static void teardownFinal() {
-        uninstallHub();
-    }
 
     @AfterEach
     public void teardown() throws IOException {
@@ -76,7 +54,7 @@ public class ScaffoldingTest extends HubTestBase {
     @Test
     public void createEntity() throws FileNotFoundException {
         assertFalse(projectDir.exists());
-        ScaffoldingImpl scaffolding = new ScaffoldingImpl(projectDir.toString(), stagingClient);
+        Scaffolding scaffolding = new Scaffolding(projectDir.toString(), stagingClient);
         scaffolding.createEntity("my-fun-test");
         assertTrue(projectDir.exists());
 
@@ -110,7 +88,7 @@ public class ScaffoldingTest extends HubTestBase {
         String entityName = "my-fun-test";
         String flowName = "test-" + flowType.toString() + "-" + codeFormat.toString() + "-" + dataFormat.toString();
 
-        ScaffoldingImpl scaffolding = new ScaffoldingImpl(projectDir.toString(), finalClient);
+        Scaffolding scaffolding = new Scaffolding(projectDir.toString(), finalClient);
 
         Path entityDir = scaffolding.getEntityDir(entityName);
         assertFalse(entityDir.toFile().exists(), entityDir.toString() + " should not exist but does");
@@ -216,7 +194,7 @@ public class ScaffoldingTest extends HubTestBase {
         String extensionName = "myExtension";
         FlowType flowType = FlowType.HARMONIZE;
         CodeFormat pluginCodeFormat = CodeFormat.XQUERY;
-        Scaffolding scaffolding = Scaffolding.create(projectDir.toString(), stagingClient);
+        Scaffolding scaffolding = new Scaffolding(projectDir.toString(), stagingClient);
         try {
             scaffolding.createRestExtension(entityName, extensionName, flowType, pluginCodeFormat);
         } catch (ScaffoldingValidationException e) {
@@ -240,7 +218,7 @@ public class ScaffoldingTest extends HubTestBase {
         String extensionName = "myExtension";
         FlowType flowType = FlowType.INPUT;
         CodeFormat pluginCodeFormat = CodeFormat.JAVASCRIPT;
-        Scaffolding scaffolding = Scaffolding.create(projectDir.toString(), stagingClient);
+        Scaffolding scaffolding = new Scaffolding(projectDir.toString(), stagingClient);
         try {
             scaffolding.createRestExtension(entityName, extensionName, flowType, pluginCodeFormat);
         } catch (ScaffoldingValidationException e) {
@@ -264,7 +242,7 @@ public class ScaffoldingTest extends HubTestBase {
         String transformName = "myTransform";
         FlowType flowType = FlowType.HARMONIZE;
         CodeFormat pluginCodeFormat = CodeFormat.XQUERY;
-        Scaffolding scaffolding = Scaffolding.create(projectDir.toString(), stagingClient);
+        Scaffolding scaffolding = new Scaffolding(projectDir.toString(), stagingClient);
         try {
             scaffolding.createRestTransform(entityName, transformName, flowType, pluginCodeFormat);
         } catch (ScaffoldingValidationException e) {
@@ -284,7 +262,7 @@ public class ScaffoldingTest extends HubTestBase {
         String transformName = "myTransform";
         FlowType flowType = FlowType.HARMONIZE;
         CodeFormat pluginCodeFormat = CodeFormat.JAVASCRIPT;
-        Scaffolding scaffolding = Scaffolding.create(projectDir.toString(), stagingClient);
+        Scaffolding scaffolding = new Scaffolding(projectDir.toString(), stagingClient);
         try {
             scaffolding.createRestTransform(entityName, transformName, flowType, pluginCodeFormat);
         } catch (ScaffoldingValidationException e) {
@@ -302,7 +280,7 @@ public class ScaffoldingTest extends HubTestBase {
         try {
             String flowName = "legacy-" + codeFormat.toString() + "-" + dataFormat.toString() + "-" + flowType.toString() + "-flow";
 
-            Scaffolding scaffolding = Scaffolding.create(projectDir.toString(), stagingClient);
+            Scaffolding scaffolding = new Scaffolding(projectDir.toString(), stagingClient);
             assertEquals(0, scaffolding.updateLegacyFlows(fromVersion, entityName).size());
 
             Path flowParentDir = projectPath.resolve("plugins").resolve("entities").resolve(entityName).resolve(flowType.toString());
