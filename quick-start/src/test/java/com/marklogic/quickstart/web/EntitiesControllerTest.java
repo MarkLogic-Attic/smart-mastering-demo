@@ -77,7 +77,7 @@ public class EntitiesControllerTest extends BaseTestController {
     }
 
     @Test
-    public void runHarmonizeNoOptions() throws IOException, InterruptedException {
+    public void runHarmonizeNoOptions() throws IOException {
         // Set up (not needed for other tests)
         baseSetUp();
         installHub();
