@@ -60,10 +60,6 @@ import { FacetsComponent } from './facets/facets.component';
 import { ObjectToArrayPipe } from './object-to-array.pipe';
 import { DatePipeModule } from './date-pipe/date-pipe.module';
 
-import { SelectKeyValuesComponent } from './select-key-values/select-key-values.component';
-import {JobExportDialogComponent} from "./jobs/job-export.component";
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -78,7 +74,6 @@ import {JobExportDialogComponent} from "./jobs/job-export.component";
     EntityModelerComponent,
     ExternalDefDialogComponent,
     JobsComponent,
-    JobExportDialogComponent,
     JobOutputComponent,
     LoginComponent,
     MlcpUiComponent,
@@ -102,8 +97,7 @@ import {JobExportDialogComponent} from "./jobs/job-export.component";
     FacetsComponent,
     TitlecasePipe,
     TruncateCharactersPipe,
-    ObjectToArrayPipe,
-    SelectKeyValuesComponent
+    ObjectToArrayPipe
   ],
   entryComponents: [
     HasBugsDialogComponent,
@@ -112,8 +106,7 @@ import {JobExportDialogComponent} from "./jobs/job-export.component";
     EntityEditorComponent,
     NewEntityComponent,
     NewFlowComponent,
-    JobOutputComponent,
-    JobExportDialogComponent
+    JobOutputComponent
   ],
   imports: [
     BrowserModule,

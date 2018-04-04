@@ -1,31 +1,32 @@
 /*
- * Copyright 2012-2018 MarkLogic Corporation
+ * Copyright 2012-2016 MarkLogic Corporation
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.marklogic.quickstart.service;
 
 import com.marklogic.appdeployer.command.Command;
 import com.marklogic.appdeployer.impl.SimpleAppDeployer;
 import com.marklogic.hub.DataHub;
+import com.marklogic.hub.DataHubUpgrader;
 import com.marklogic.hub.HubConfig;
+import com.marklogic.hub.PreInstallCheck;
 import com.marklogic.hub.deploy.commands.LoadUserModulesCommand;
 import com.marklogic.hub.deploy.util.HubDeployStatusListener;
 import com.marklogic.hub.error.CantUpgradeException;
-import com.marklogic.hub.impl.HubConfigImpl;
 import com.marklogic.hub.util.PerformanceLogger;
 import com.marklogic.hub.validate.EntitiesValidator;
+import com.marklogic.mgmt.resource.databases.DatabaseManager;
 import com.marklogic.quickstart.auth.ConnectionAuthenticationToken;
 import com.marklogic.quickstart.exception.DataHubException;
 import com.marklogic.quickstart.listeners.DeployUserModulesListener;
@@ -43,7 +44,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 @Service
 public class DataHubService {
@@ -52,7 +56,7 @@ public class DataHubService {
 
     public boolean install(HubConfig config, HubDeployStatusListener listener) throws DataHubException {
         logger.info("Installing Data Hub");
-        DataHub dataHub = DataHub.create(config);
+        DataHub dataHub = new DataHub(config);
         try {
             dataHub.install(listener);
             return true;
@@ -64,7 +68,7 @@ public class DataHubService {
     }
 
     public void updateIndexes(HubConfig config) {
-        DataHub dataHub = DataHub.create(config);
+        DataHub dataHub = new DataHub(config);
         try {
             dataHub.updateIndexes();
         } catch(Throwable e) {
@@ -99,7 +103,7 @@ public class DataHubService {
     public void reinstallUserModules(HubConfig config, DeployUserModulesListener deployListener, ValidateListener validateListener) {
         long startTime = PerformanceLogger.monitorTimeInsideMethod();
 
-        DataHub dataHub = DataHub.create(config);
+        DataHub dataHub = new DataHub(config);
         try {
             dataHub.clearUserModules();
             installUserModules(config, true, deployListener);
@@ -115,7 +119,7 @@ public class DataHubService {
     public void uninstallUserModules(HubConfig config) {
         long startTime = PerformanceLogger.monitorTimeInsideMethod();
 
-        DataHub dataHub = DataHub.create(config);
+        DataHub dataHub = new DataHub(config);
         try {
             dataHub.clearUserModules();
         } catch(Throwable e) {
@@ -124,20 +128,20 @@ public class DataHubService {
         PerformanceLogger.logTimeInsideMethod(startTime, "DataHubService.uninstallUserModules");
     }
 
-    public HashMap preInstallCheck(HubConfig config) {
-        DataHub dataHub = DataHub.create(config);
+    public PreInstallCheck preInstallCheck(HubConfig config) {
+        DataHub dataHub = new DataHub(config);
         return dataHub.runPreInstallCheck();
     }
 
     @Async
     public void validateUserModules(HubConfig hubConfig, ValidateListener validateListener) {
-        EntitiesValidator ev = EntitiesValidator.create(hubConfig.newStagingClient());
+        EntitiesValidator ev = new EntitiesValidator(hubConfig.newStagingClient());
         validateListener.onValidate(ev.validateAll());
 
     }
 
     public void uninstall(HubConfig config, HubDeployStatusListener listener) throws DataHubException {
-        DataHub dataHub = DataHub.create(config);
+        DataHub dataHub = new DataHub(config);
         try {
             dataHub.uninstall(listener);
         } catch(Throwable e) {
@@ -158,7 +162,7 @@ public class DataHubService {
     }
 
     public boolean updateHub(HubConfig config) throws IOException, CantUpgradeException {
-        boolean result = DataHub.create(config).upgradeHub();
+        boolean result = new DataHubUpgrader(config).upgradeHub();
         if (result) {
             ConnectionAuthenticationToken authenticationToken = (ConnectionAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
             if (authenticationToken != null) {
@@ -171,8 +175,9 @@ public class DataHubService {
     }
 
     public void clearContent(HubConfig config, String database) {
-        DataHub dataHub = DataHub.create(config);
-        dataHub.clearDatabase(database);
+        DataHub dataHub = new DataHub(config);
+        DatabaseManager mgr = new DatabaseManager(dataHub.getManageClient());
+        mgr.clearDatabase(database);
     }
 
     private void installUserModules(HubConfig hubConfig, boolean forceLoad, DeployUserModulesListener deployListener) {
@@ -181,7 +186,7 @@ public class DataHubService {
         loadUserModulesCommand.setForceLoad(forceLoad);
         commands.add(loadUserModulesCommand);
 
-        SimpleAppDeployer deployer = new SimpleAppDeployer(((HubConfigImpl)hubConfig).getManageClient(), ((HubConfigImpl)hubConfig).getAdminManager());
+        SimpleAppDeployer deployer = new SimpleAppDeployer(hubConfig.getManageClient(), hubConfig.getAdminManager());
         deployer.setCommands(commands);
         deployer.deploy(hubConfig.getAppConfig());
 

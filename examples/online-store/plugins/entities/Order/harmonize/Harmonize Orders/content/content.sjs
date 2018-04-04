@@ -47,7 +47,6 @@ function createContent(id, options) {
   return {
     '$attachments': attachments,
     '$type': 'Order',
-    '$version': '0.0.1',
     'id': id,
     'products': products,
     'price': price,

@@ -48,7 +48,6 @@ function extractInstanceProduct(source) {
   return {
     '$attachments': attachments,
     '$type': 'Product',
-    '$version': '0.0.1',
     'sku': sku,
     'title': title,
     'price': price

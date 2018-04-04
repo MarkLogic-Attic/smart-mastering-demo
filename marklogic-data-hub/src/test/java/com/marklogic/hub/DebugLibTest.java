@@ -9,8 +9,6 @@ import com.marklogic.hub.flow.CodeFormat;
 import com.marklogic.hub.flow.DataFormat;
 import com.marklogic.hub.flow.FlowType;
 import com.marklogic.hub.scaffold.Scaffolding;
-
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,16 +29,10 @@ public class DebugLibTest extends HubTestBase {
     public static void setup() {
         installHub();
 
-        Scaffolding scaffolding = Scaffolding.create(PROJECT_PATH, stagingClient);
+        Scaffolding scaffolding = new Scaffolding(PROJECT_PATH, stagingClient);
         scaffolding.createFlow(entityName, flowName, FlowType.INPUT, CodeFormat.XQUERY, DataFormat.XML);
 
         installUserModules(getHubConfig(), true);
-    }
-    
-    @AfterClass
-    public static void teardown() {
-      uninstallHub();
-      deleteProjectDir();
     }
 
     // testing https://github.com/marklogic-community/marklogic-data-hub/issues/516
@@ -63,7 +55,7 @@ public class DebugLibTest extends HubTestBase {
         clearDatabases(HubConfig.DEFAULT_STAGING_NAME);
         Assert.assertEquals(0, getStagingDocCount());
 
-        ServerTransform runFlow = new ServerTransform("ml:inputFlow");
+        ServerTransform runFlow = new ServerTransform("run-flow");
         runFlow.addParameter("entity-name", entityName);
         runFlow.addParameter("flow-name", flowName);
         runFlow.addParameter("job-id", UUID.randomUUID().toString());

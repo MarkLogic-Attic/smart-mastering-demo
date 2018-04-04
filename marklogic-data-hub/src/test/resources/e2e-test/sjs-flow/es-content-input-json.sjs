@@ -41,6 +41,12 @@ function createContent(id, rawContent, options) {
  *   metadata about the instance.
  */
 function extractInstanceE2eentity(source) {
+  xdmp.log(['source', source]);
+  xdmp.log(xdmp.nodeKind(source));
+  xdmp.log(['id', source.id]);
+  xdmp.log(['name', source.name]);
+  xdmp.log(['salary', source.salary]);
+
   // the original source documents
   let attachments = source;
 

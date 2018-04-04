@@ -22,11 +22,12 @@ public class SqlDbToHubJobTest extends AbstractJobRunnerTest {
     JobLauncherTestUtils jobLauncherTestUtils;
 
     @Test
-    public void migrateCustomersToDataHubTest() {
+    public void migrateSampleDatabaseToDataHubTest() {
         JobParametersBuilder jpb = new JobParametersBuilder();
         jpb.addString("allTables", "true");
-        jpb.addString("entity", "customer");
-        jpb.addString("flow", "customerInput");
+        jpb.addString("date", new Date().toString(), true);
+        jpb.addString("entity", "Monster");
+        jpb.addString("flow", "ingest-monster");
         jpb.addString("job_id", "1234");
         try {
             JobExecution execution = jobLauncherTestUtils.launchJob(jpb.toJobParameters());
@@ -36,9 +37,9 @@ public class SqlDbToHubJobTest extends AbstractJobRunnerTest {
         }
 
         getClientTestHelper().assertCollectionSize("CUSTOMER = 50", "CUSTOMER", 50);
-        //getClientTestHelper().assertCollectionSize("INVOICE = 50", "INVOICE", 50);
-        //getClientTestHelper().assertCollectionSize("ITEM = 650", "ITEM", 650);
-        //getClientTestHelper().assertCollectionSize("PRODUCT = 50", "PRODUCT", 50);
+        getClientTestHelper().assertCollectionSize("INVOICE = 50", "INVOICE", 50);
+        getClientTestHelper().assertCollectionSize("ITEM = 650", "ITEM", 650);
+        getClientTestHelper().assertCollectionSize("PRODUCT = 50", "PRODUCT", 50);
 
     }
 }

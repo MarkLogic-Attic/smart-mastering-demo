@@ -15,7 +15,7 @@
  */
 package com.marklogic.hub;
 
-import com.marklogic.hub.scaffold.impl.ScaffoldingImpl;
+import com.marklogic.hub.scaffold.Scaffolding;
 import com.marklogic.hub.util.FileUtil;
 import com.marklogic.hub.util.HubModuleManager;
 import org.apache.commons.io.FileUtils;
@@ -24,13 +24,14 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.core.io.Resource;
 import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.List;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
 import static org.junit.Assert.*;
@@ -40,7 +41,7 @@ public class EntityManagerTest extends HubTestBase {
     private static File projectDir = projectPath.toFile();
 
     @BeforeClass
-    public static void setup() {
+    public static void setup() throws IOException {
         XMLUnit.setIgnoreWhitespace(true);
 
         deleteProjectDir();
@@ -57,37 +58,23 @@ public class EntityManagerTest extends HubTestBase {
     }
 
     @AfterClass
-    public static void teardown() {
-    	uninstallHub();
+    public static void teardown() throws IOException {
         deleteProjectDir();
     }
 
-    private void installEntities() {
-        ScaffoldingImpl scaffolding = new ScaffoldingImpl(projectDir.toString(), finalClient);
+    private void installEntity() {
+        Scaffolding scaffolding = new Scaffolding(projectDir.toString(), finalClient);
         Path employeeDir = scaffolding.getEntityDir("employee");
         employeeDir.toFile().mkdirs();
         assertTrue(employeeDir.toFile().exists());
         FileUtil.copy(getResourceStream("scaffolding-test/employee.entity.json"), employeeDir.resolve("employee.entity.json").toFile());
-
-        Path managerDir = scaffolding.getEntityDir("manager");
-        managerDir.toFile().mkdirs();
-        assertTrue(managerDir.toFile().exists());
-        FileUtil.copy(getResourceStream("scaffolding-test/manager.entity.json"), managerDir.resolve("manager.entity.json").toFile());
     }
 
-    private void updateManagerEntity() {
-        ScaffoldingImpl scaffolding = new ScaffoldingImpl(projectDir.toString(), finalClient);
-        Path managerDir = scaffolding.getEntityDir("manager");
-        assertTrue(managerDir.toFile().exists());
-        File targetFile = managerDir.resolve("manager.entity.json").toFile();
-        FileUtil.copy(getResourceStream("scaffolding-test/manager2.entity.json"), targetFile);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        targetFile.setLastModified(System.currentTimeMillis());
-    }
+//    private void removeEntity() throws IOException {
+//        Scaffolding scaffolding = new Scaffolding(projectDir.toString(), finalClient);
+//        Path employeeDir = scaffolding.getEntityDir("employee");
+//        FileUtils.deleteDirectory(employeeDir.toFile());
+//    }
 
     private HubModuleManager getPropsMgr() {
         String timestampFile = getHubConfig().getUserModulesDeployTimestampFile();
@@ -96,79 +83,69 @@ public class EntityManagerTest extends HubTestBase {
     }
 
     @Test
-    public void testDeploySearchOptionsWithNoEntities() {
+    public void testDeploySearchOptionsWithNoEntities() throws IOException, SAXException {
         Path dir = Paths.get(getHubConfig().getProjectDir(), HubConfig.ENTITY_CONFIG_DIR);
 
-        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_STAGING_NAME + "/rest-api/options/" + HubConfig.STAGING_ENTITY_QUERY_OPTIONS_FILE));
-        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_FINAL_NAME + "/rest-api/options/" + HubConfig.FINAL_ENTITY_QUERY_OPTIONS_FILE));
-        Paths.get(dir.toString(), HubConfig.STAGING_ENTITY_QUERY_OPTIONS_FILE).toFile().delete();
-        Paths.get(dir.toString(), HubConfig.FINAL_ENTITY_QUERY_OPTIONS_FILE).toFile().delete();
-        assertFalse(Paths.get(dir.toString(), HubConfig.STAGING_ENTITY_QUERY_OPTIONS_FILE).toFile().exists());
-        assertFalse(Paths.get(dir.toString(), HubConfig.FINAL_ENTITY_QUERY_OPTIONS_FILE).toFile().exists());
+        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_STAGING_NAME + "/rest-api/options/" + HubConfig.STAGING_ENTITY_SEARCH_OPTIONS_FILE));
+        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_FINAL_NAME + "/rest-api/options/" + HubConfig.FINAL_ENTITY_SEARCH_OPTIONS_FILE));
+        Paths.get(dir.toString(), HubConfig.STAGING_ENTITY_SEARCH_OPTIONS_FILE).toFile().delete();
+        Paths.get(dir.toString(), HubConfig.FINAL_ENTITY_SEARCH_OPTIONS_FILE).toFile().delete();
+        assertFalse(Paths.get(dir.toString(), HubConfig.STAGING_ENTITY_SEARCH_OPTIONS_FILE).toFile().exists());
+        assertFalse(Paths.get(dir.toString(), HubConfig.FINAL_ENTITY_SEARCH_OPTIONS_FILE).toFile().exists());
         assertEquals(0, getStagingDocCount());
         assertEquals(0, getFinalDocCount());
 
-        EntityManager entityManager = EntityManager.create(getHubConfig());
-        HashMap<Enum, Boolean> deployed = entityManager.deployQueryOptions();
+        EntityManager entityManager = new EntityManager(getHubConfig());
+        List<Resource> deployed = entityManager.deploySearchOptions();
 
         assertEquals(0, deployed.size());
-        assertFalse(Paths.get(dir.toString(), HubConfig.STAGING_ENTITY_QUERY_OPTIONS_FILE).toFile().exists());
-        assertFalse(Paths.get(dir.toString(), HubConfig.FINAL_ENTITY_QUERY_OPTIONS_FILE).toFile().exists());
+        assertFalse(Paths.get(dir.toString(), HubConfig.STAGING_ENTITY_SEARCH_OPTIONS_FILE).toFile().exists());
+        assertFalse(Paths.get(dir.toString(), HubConfig.FINAL_ENTITY_SEARCH_OPTIONS_FILE).toFile().exists());
         assertEquals(0, getStagingDocCount());
         assertEquals(0, getFinalDocCount());
-        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_STAGING_NAME + "/rest-api/options/" + HubConfig.STAGING_ENTITY_QUERY_OPTIONS_FILE));
-        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_FINAL_NAME + "/rest-api/options/" + HubConfig.FINAL_ENTITY_QUERY_OPTIONS_FILE));
+        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_STAGING_NAME + "/rest-api/options/" + HubConfig.STAGING_ENTITY_SEARCH_OPTIONS_FILE));
+        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_FINAL_NAME + "/rest-api/options/" + HubConfig.FINAL_ENTITY_SEARCH_OPTIONS_FILE));
     }
 
     @Test
     public void testDeploySearchOptions() throws IOException, SAXException {
-        installEntities();
+        installEntity();
 
         Path dir = Paths.get(getHubConfig().getProjectDir(), HubConfig.ENTITY_CONFIG_DIR);
 
-        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_STAGING_NAME + "/rest-api/options/" + HubConfig.STAGING_ENTITY_QUERY_OPTIONS_FILE));
-        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_FINAL_NAME + "/rest-api/options/" + HubConfig.FINAL_ENTITY_QUERY_OPTIONS_FILE));
-        assertFalse(Paths.get(dir.toString(), HubConfig.STAGING_ENTITY_QUERY_OPTIONS_FILE).toFile().exists());
-        assertFalse(Paths.get(dir.toString(), HubConfig.FINAL_ENTITY_QUERY_OPTIONS_FILE).toFile().exists());
+        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_STAGING_NAME + "/rest-api/options/" + HubConfig.STAGING_ENTITY_SEARCH_OPTIONS_FILE));
+        assertNull(getModulesFile("/Default/" + HubConfig.DEFAULT_FINAL_NAME + "/rest-api/options/" + HubConfig.FINAL_ENTITY_SEARCH_OPTIONS_FILE));
+        assertFalse(Paths.get(dir.toString(), HubConfig.STAGING_ENTITY_SEARCH_OPTIONS_FILE).toFile().exists());
+        assertFalse(Paths.get(dir.toString(), HubConfig.FINAL_ENTITY_SEARCH_OPTIONS_FILE).toFile().exists());
         assertEquals(0, getStagingDocCount());
         assertEquals(0, getFinalDocCount());
 
-        EntityManager entityManager = EntityManager.create(getHubConfig());
-        HashMap<Enum, Boolean> deployed = entityManager.deployQueryOptions();
+        EntityManager entityManager = new EntityManager(getHubConfig());
+        List<Resource> deployed = entityManager.deploySearchOptions();
 
         assertEquals(2, deployed.size());
-        assertTrue(Paths.get(dir.toString(), HubConfig.STAGING_ENTITY_QUERY_OPTIONS_FILE).toFile().exists());
-        assertTrue(Paths.get(dir.toString(), HubConfig.FINAL_ENTITY_QUERY_OPTIONS_FILE).toFile().exists());
+        assertTrue(Paths.get(dir.toString(), HubConfig.STAGING_ENTITY_SEARCH_OPTIONS_FILE).toFile().exists());
+        assertTrue(Paths.get(dir.toString(), HubConfig.FINAL_ENTITY_SEARCH_OPTIONS_FILE).toFile().exists());
         assertEquals(0, getStagingDocCount());
         assertEquals(0, getFinalDocCount());
-        assertXMLEqual(getResource("entity-manager-test/options.xml"), getModulesFile("/Default/" + HubConfig.DEFAULT_STAGING_NAME + "/rest-api/options/" + HubConfig.STAGING_ENTITY_QUERY_OPTIONS_FILE));
-        assertXMLEqual(getResource("entity-manager-test/options.xml"), getModulesFile("/Default/" + HubConfig.DEFAULT_FINAL_NAME + "/rest-api/options/" + HubConfig.FINAL_ENTITY_QUERY_OPTIONS_FILE));
-
-        updateManagerEntity();
-        deployed = entityManager.deployQueryOptions();
-        assertEquals(2, deployed.size());
-        assertTrue(Paths.get(dir.toString(), HubConfig.STAGING_ENTITY_QUERY_OPTIONS_FILE).toFile().exists());
-        assertTrue(Paths.get(dir.toString(), HubConfig.FINAL_ENTITY_QUERY_OPTIONS_FILE).toFile().exists());
-        assertEquals(0, getStagingDocCount());
-        assertEquals(0, getFinalDocCount());
-        assertXMLEqual(getResource("entity-manager-test/options2.xml"), getModulesFile("/Default/" + HubConfig.DEFAULT_STAGING_NAME + "/rest-api/options/" + HubConfig.STAGING_ENTITY_QUERY_OPTIONS_FILE));
-        assertXMLEqual(getResource("entity-manager-test/options2.xml"), getModulesFile("/Default/" + HubConfig.DEFAULT_FINAL_NAME + "/rest-api/options/" + HubConfig.FINAL_ENTITY_QUERY_OPTIONS_FILE));
+        assertXMLEqual(getResource("entity-manager-test/options.xml"), getModulesFile("/Default/" + HubConfig.DEFAULT_STAGING_NAME + "/rest-api/options/" + HubConfig.STAGING_ENTITY_SEARCH_OPTIONS_FILE));
+        assertXMLEqual(getResource("entity-manager-test/options.xml"), getModulesFile("/Default/" + HubConfig.DEFAULT_FINAL_NAME + "/rest-api/options/" + HubConfig.FINAL_ENTITY_SEARCH_OPTIONS_FILE));
 
         // shouldn't deploy a 2nd time because of modules properties files
-        deployed = entityManager.deployQueryOptions();
+        deployed = entityManager.deploySearchOptions();
         assertEquals(0, deployed.size());
     }
 
     @Test
-    public void testSaveDbIndexes() throws IOException {
-        installEntities();
+    public void testSaveDbIndexes() throws IOException, SAXException {
+        installEntity();
 
         Path dir = getHubConfig().getEntityDatabaseDir();
 
         assertFalse(dir.resolve("final-database.json").toFile().exists());
         assertFalse(dir.resolve("staging-database.json").toFile().exists());
 
-        EntityManager entityManager = EntityManager.create(getHubConfig());
+        EntityManager entityManager = new EntityManager(getHubConfig());
         assertTrue(entityManager.saveDbIndexes());
 
         assertTrue(dir.resolve("final-database.json").toFile().exists());
@@ -176,12 +153,6 @@ public class EntityManagerTest extends HubTestBase {
 
         assertJsonEqual(getResource("entity-manager-test/db-config.json"), FileUtils.readFileToString(dir.resolve("final-database.json").toFile()), true);
         assertJsonEqual(getResource("entity-manager-test/db-config.json"), FileUtils.readFileToString(dir.resolve("staging-database.json").toFile()), true);
-
-        updateManagerEntity();
-        assertTrue(entityManager.saveDbIndexes());
-
-        assertJsonEqual(getResource("entity-manager-test/db-config2.json"), FileUtils.readFileToString(dir.resolve("final-database.json").toFile()), true);
-        assertJsonEqual(getResource("entity-manager-test/db-config2.json"), FileUtils.readFileToString(dir.resolve("staging-database.json").toFile()), true);
 
         // shouldn't save them on round 2 because of timestamps
         assertFalse(entityManager.saveDbIndexes());

@@ -51,7 +51,7 @@ export class NewFlowComponent {
     this.flow = _.clone(this.emptyFlow);
     this.actions = actions;
 
-    if (this.getMarkLogicVersion() === 8) {
+    if (this.getMarkLogicVersion().startsWith('8')) {
       this.flow.useEsModel = false;
     } else {
       if (flowType === 'INPUT') {
@@ -84,8 +84,7 @@ export class NewFlowComponent {
     this.hide();
   }
 
-  getMarkLogicVersion(): number {
-    let version = this.envService.marklogicVersion.substr(0, this.envService.marklogicVersion.indexOf('.'));
-    return parseInt(version);
+  getMarkLogicVersion(): string {
+    return this.envService.marklogicVersion;
   }
 }

@@ -3,8 +3,6 @@ import {pages} from '../page-objects/page';
 import auth from './auth'
 import create from './create';
 import runFlows from './run';
-import jobs from './jobs';
-import runTraces from './traces';
 import uninstall from './uninstall';
 
 import CUSTOM_MATCHERS from '../matchers'
@@ -13,7 +11,7 @@ const request = require('request').defaults({ strictSSL: false })
 const tmp = require('tmp');
 const fs = require('fs-extra');
 const path = require('path');
-let tmpobj = tmp.dirSync({ unsafeCleanup: true });
+let tmpobj = tmp.dirSync();
 fs.copySync('../examples/online-store/input', path.join(tmpobj.name, 'input'));
 console.log('DIR: ' + tmpobj.name);
 
@@ -45,7 +43,7 @@ describe('QuickStart', function () {
       // our Jenkins machine runs with a pretty low resolution, and we also
       // have an app that's misbehaving in smaller windows, so this is a delicate
       // setting
-      .then(() => browser.driver.manage().window().maximize())
+      .then(() => browser.driver.manage().window().setSize(width, height))
       .then(() => done())
     });
   });
@@ -57,8 +55,6 @@ describe('QuickStart', function () {
 
   auth(tmpobj.name);
   create();
-  runFlows(tmpobj.name);
-  jobs();
-  runTraces();
-  uninstall(tmpobj.name);
+  runFlows();
+  uninstall();
 });

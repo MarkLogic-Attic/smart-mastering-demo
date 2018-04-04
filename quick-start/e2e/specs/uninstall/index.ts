@@ -1,7 +1,7 @@
 import uninstall from './uninstall'
 
-export default function (tmpDir) {
+export default function () {
   describe('uninstall', function () {
-    uninstall(tmpDir)
+    uninstall()
   })
 }

@@ -1,29 +1,12 @@
-/*
- * Copyright 2012-2018 MarkLogic Corporation
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *  
- */
-
 package com.marklogic.gradle.task
 
 import com.marklogic.client.io.DOMHandle
 import com.marklogic.client.io.DocumentMetadataHandle
+import com.marklogic.hub.Debugging
 import com.marklogic.hub.HubConfig
+import com.marklogic.hub.Tracing
 import org.gradle.testkit.runner.UnexpectedBuildFailure
 import org.gradle.testkit.runner.UnexpectedBuildSuccess
-import com.marklogic.hub.Tracing;
-import com.marklogic.hub.Debugging;
 
 import java.nio.file.Paths
 
@@ -50,7 +33,7 @@ class InstalledTests extends BaseTest {
         then:
         notThrown(UnexpectedBuildFailure)
         result.task(":hubEnableDebugging").outcome == SUCCESS
-        Debugging d = Debugging.create(hubConfig().newStagingClient())
+        Debugging d = new Debugging(hubConfig().newStagingClient())
         d.isEnabled() == true
     }
 
@@ -61,7 +44,7 @@ class InstalledTests extends BaseTest {
         then:
         notThrown(UnexpectedBuildFailure)
         result.task(":hubDisableDebugging").outcome == SUCCESS
-        Debugging d = Debugging.create(hubConfig().newStagingClient())
+        Debugging d = new Debugging(hubConfig().newStagingClient())
         d.isEnabled() == false
     }
 
@@ -72,7 +55,7 @@ class InstalledTests extends BaseTest {
         then:
         notThrown(UnexpectedBuildFailure)
         result.task(":hubEnableTracing").outcome == SUCCESS
-        Tracing t = Tracing.create(hubConfig().newStagingClient())
+        Tracing t = new Tracing(hubConfig().newStagingClient())
         t.isEnabled() == true
     }
 
@@ -83,7 +66,7 @@ class InstalledTests extends BaseTest {
         then:
         notThrown(UnexpectedBuildFailure)
         result.task(":hubDisableTracing").outcome == SUCCESS
-        Tracing t = Tracing.create(hubConfig().newStagingClient())
+        Tracing t = new Tracing(hubConfig().newStagingClient())
         t.isEnabled() == false
     }
 

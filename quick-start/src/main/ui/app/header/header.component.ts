@@ -33,9 +33,8 @@ export class HeaderComponent {
     return this.jobListener.totalPercentComplete();
   }
 
-  getMarkLogicVersion(): number {
-    let version = this.envService.marklogicVersion.substr(0, this.envService.marklogicVersion.indexOf('.'));
-    return parseInt(version);
+  getMarkLogicVersion(): string {
+    return this.envService.marklogicVersion;
   }
 
   logout() {
