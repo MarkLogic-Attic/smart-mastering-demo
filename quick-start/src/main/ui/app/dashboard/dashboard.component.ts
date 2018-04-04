@@ -2,6 +2,7 @@ import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ProjectService } from '../projects';
+import { SmartMasteringService } from '../smart-mastering/smart-mastering.service';
 
 import { MdlDialogService } from '@angular-mdl/core';
 
@@ -23,11 +24,13 @@ export class DashboardComponent implements OnInit {
   ];
 
   stats: any;
+  masteringStats: any;
 
   constructor(
     private ngZone: NgZone,
     private projectService: ProjectService,
     private dialogService: MdlDialogService,
+    private sm: SmartMasteringService,
     private router: Router
   ) {}
 
@@ -39,6 +42,13 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.getStatus();
+    this.getMasteringStats();
+  }
+
+  getMasteringStats() {
+    this.sm.getStats().subscribe(stats => {
+      this.masteringStats = stats;
+    });
   }
 
   getDbCount(db) {
@@ -65,5 +75,4 @@ export class DashboardComponent implements OnInit {
     },
     () => {});
   }
-
 }
