@@ -78,13 +78,10 @@ public class EntitiesControllerTest extends BaseTestController {
     }
 
     @Test
-    public void runHarmonizeNoOptions() throws IOException, InterruptedException {
-        deleteProjectDir();
-        createProjectDir();
-
-        envConfig.setInitialized(true);
-        envConfig.setProjectDir(PROJECT_PATH);
-        envConfig.setMlSettings(HubConfigBuilder.newHubConfigBuilder(PROJECT_PATH).withPropertiesFromEnvironment().build());
+    public void runHarmonizeNoOptions() throws IOException {
+        // Set up (not needed for other tests)
+        baseSetUp();
+        installHub();
 
         Path projectDir = Paths.get(".", PROJECT_PATH);
         Scaffolding scaffolding = Scaffolding.create(projectDir.toString(), stagingClient);

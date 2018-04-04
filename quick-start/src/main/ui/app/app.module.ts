@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { TruncateCharactersPipe } from './truncate';
 import { AppComponent } from './app.component';
@@ -59,6 +60,8 @@ import { InlineEditComponent } from './inline-edit/inline-edit.component';
 import { FacetsComponent } from './facets/facets.component';
 import { ObjectToArrayPipe } from './object-to-array.pipe';
 import { DatePipeModule } from './date-pipe/date-pipe.module';
+
+import { SmartMasteringModule } from './smart-mastering/smart-mastering.module';
 
 import { SelectKeyValuesComponent } from './select-key-values/select-key-values.component';
 import {JobExportDialogComponent} from "./jobs/job-export.component";
@@ -119,13 +122,15 @@ import {JobExportDialogComponent} from "./jobs/job-export.component";
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     MdlModule,
     MdlPopoverModule,
     MdlSelectModule,
     TooltipModule,
     GridManiaModule,
     RouterModule.forRoot(ROUTES, { useHash: true }),
-    DatePipeModule
+    DatePipeModule,
+    SmartMasteringModule
   ],
   providers: [
     AUTH_PROVIDERS,

@@ -33,7 +33,7 @@ import java.io.IOException;
 
 public class BaseTestController extends HubTestBase {
 
-    protected static final String PROJECT_PATH = "ye-olde-project";
+    protected static String PROJECT_PATH = "ye-olde-project";
 
     protected EnvironmentConfig envConfig;
 
@@ -48,12 +48,14 @@ public class BaseTestController extends HubTestBase {
     }
 
     @Before
-    public void baseSetUp() throws IOException {
-        envConfig = new EnvironmentConfig(PROJECT_PATH, null, "admin", "admin");
+    public void baseSetUp() {
+        envConfig = new EnvironmentConfig(PROJECT_PATH, "local", "admin", "admin");
         setEnvConfig(envConfig);
         DataHub dh = DataHub.create(envConfig.getMlSettings());
         dh.initProject();
-        projectManagerService.addProject(PROJECT_PATH);
+        if (projectManagerService != null) {
+            projectManagerService.addProject(PROJECT_PATH);
+        }
     }
 
     @After
