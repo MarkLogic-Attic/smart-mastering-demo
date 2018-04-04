@@ -1,0 +1,27 @@
+<options xmlns='http://marklogic.com/appservices/search'>
+  <search-option>unfiltered</search-option>
+  <quality-weight>0</quality-weight>
+
+  <additional-query>
+    <cts:collection-query xmlns:cts="http://marklogic.com/cts">
+      <cts:uri>mdm-content</cts:uri>
+    </cts:collection-query>
+  </additional-query>
+
+  <!-- Example facet -->
+  <constraint name="Source">
+    <range type="xs:string" facet="true" collation="http://marklogic.com/collation/">
+      <facet-option>limit=5</facet-option>
+      <facet-option>frequency-order</facet-option>
+      <facet-option>descending</facet-option>
+      <element ns="http://marklogic.com/agile-mastering" name="name"/>
+    </range>
+  </constraint>
+
+  <transform-results apply="snippet">
+    <preferred-matches>
+      <element ns="" name="PersonName"/>
+    </preferred-matches>
+  </transform-results>
+
+</options>
