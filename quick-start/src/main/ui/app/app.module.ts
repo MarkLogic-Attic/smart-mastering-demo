@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { TruncateCharactersPipe } from './truncate';
 import { AppComponent } from './app.component';
@@ -60,6 +61,12 @@ import { FacetsComponent } from './facets/facets.component';
 import { ObjectToArrayPipe } from './object-to-array.pipe';
 import { DatePipeModule } from './date-pipe/date-pipe.module';
 
+import { SmartMasteringModule } from './smart-mastering/smart-mastering.module';
+
+import { SelectKeyValuesComponent } from './select-key-values/select-key-values.component';
+import {JobExportDialogComponent} from "./jobs/job-export.component";
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,6 +81,7 @@ import { DatePipeModule } from './date-pipe/date-pipe.module';
     EntityModelerComponent,
     ExternalDefDialogComponent,
     JobsComponent,
+    JobExportDialogComponent,
     JobOutputComponent,
     LoginComponent,
     MlcpUiComponent,
@@ -97,7 +105,8 @@ import { DatePipeModule } from './date-pipe/date-pipe.module';
     FacetsComponent,
     TitlecasePipe,
     TruncateCharactersPipe,
-    ObjectToArrayPipe
+    ObjectToArrayPipe,
+    SelectKeyValuesComponent
   ],
   entryComponents: [
     HasBugsDialogComponent,
@@ -106,19 +115,22 @@ import { DatePipeModule } from './date-pipe/date-pipe.module';
     EntityEditorComponent,
     NewEntityComponent,
     NewFlowComponent,
-    JobOutputComponent
+    JobOutputComponent,
+    JobExportDialogComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     MdlModule,
     MdlPopoverModule,
     MdlSelectModule,
     TooltipModule,
     GridManiaModule,
     RouterModule.forRoot(ROUTES, { useHash: true }),
-    DatePipeModule
+    DatePipeModule,
+    SmartMasteringModule
   ],
   providers: [
     AUTH_PROVIDERS,
