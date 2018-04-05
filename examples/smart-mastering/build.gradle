@@ -1,69 +1,134 @@
 buildscript {
-    repositories {
-        maven {url 'http://developer.marklogic.com/maven2/'}
+  repositories {
+    mavenLocal()
+    jcenter()
+    mavenCentral()
+    maven {url 'http://developer.marklogic.com/maven2/'}
+    fileTree(dir: 'lib', include: '*.jar')
+
+    // Needed for ml-unit-test-client dependency until it's available via jcenter()
+    maven {
+      url {"https://dl.bintray.com/rjrudin/maven/"}
     }
-    dependencies {
-        classpath "com.marklogic:ml-gradle:3.6.1"
-    }
+  }
+  dependencies {
+    classpath "com.marklogic:ml-unit-test-client:0.9.1"
+    classpath "com.marklogic:ml-gradle:3.6.1"
+    classpath "com.marklogic:ml-data-hub:2.0.4-sm.1"
+  }
 }
 
 plugins {
+    id 'net.saliman.properties' version '1.4.6'
+    id 'com.marklogic.ml-gradle' version '3.4.1'
     id 'java'
     id 'eclipse'
     id 'idea'
-
-    // This plugin allows you to create different environments
-    // for your gradle deploy. Each environment is represented
-    // by a gradle-${env}.properties file
-    // See https://github.com/stevesaliman/gradle-properties-plugin
-    // specify the env on the command line with:
-    // gradle -PenvironmentName=x ...
-    id 'net.saliman.properties' version '1.4.6'
-
-    id 'com.marklogic.ml-gradle' version '3.6.1'
-
-    // This gradle plugin extends the ml-gradle plugin with
-    // commands that make the Data Hub Framework do its magic
-    id 'com.marklogic.ml-data-hub' version '2.0.4'
+    id 'application'
+    // id 'com.marklogic.ml-data-hub' version '2.0.4'
+    id 'org.springframework.boot' version '1.5.9.RELEASE'
 }
 
+apply plugin: "com.marklogic.ml-data-hub"
+
 repositories {
-    jcenter()
-    maven {url 'http://developer.marklogic.com/maven2/'}
-    // Needed for smart-mastering-core dependency until it's available via jcenter()
-    maven {
-        url {"https://dl.bintray.com/marklogic-community/Maven/"}
-    }
+  mavenLocal()
+  jcenter()
+  mavenCentral()
+  maven {url 'http://developer.marklogic.com/maven2/'}
+  maven {
+    url "https://plugins.gradle.org/m2/"
+  }
+  // Needed for ml-unit-test-client dependency until it's available via jcenter()
+  maven {
+    url {"https://dl.bintray.com/rjrudin/maven/"}
+  }
+
+  // Needed for smart-mastering-core dependency until it's available via jcenter()
+  maven {
+    url {"https://dl.bintray.com/marklogic-community/Maven/"}
+  }
 }
 
 configurations {
+    // mlcp
+    mlcp {
+      resolutionStrategy {
+        force "xml-apis:xml-apis:1.4.01"
+      }
+    }
+
     smartMasteringCore
 }
 
 dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+    compile 'com.google.code.gson:gson:2.8.2'
+    compile("org.springframework.boot:spring-boot-starter-web") {
+      exclude group: 'org.slf4j'
+    }
+    // https://mvnrepository.com/artifact/org.springframework/spring-jdbc
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '5.0.2.RELEASE'
+    // https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.2.1.RELEASE'
+
+    compile("org.thymeleaf:thymeleaf-spring4")
+    compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
+    compile "com.marklogic:marklogic-spring-batch-core:1.+"
+    compile (group: "com.marklogic", name: "marklogic-client-api", version:"4.0.3.1")
+    compile ('com.marklogic:marklogic-data-hub:2.0.4-sm.1') {
+      exclude group: 'com.marklogic', module: 'ml-app-deployer'
+      exclude group: 'com.marklogic', module: 'ml-javaclient-util'
+    }
+
+    compile 'com.marklogic:marklogic-xcc:9.0.4'
+    compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
+    compile group: 'org.apache.commons', name: 'commons-text', version: '1.1'
 
     // Needed for loading modules into MarkLogic
     compile "com.marklogic:ml-gradle:3.6.1"
     compile "com.marklogic:ml-app-deployer:3.6.1"
 
-    // this allows you to write custom java code that depends
-    // on the Data Hub Framework library
-    compile 'com.marklogic:marklogic-data-hub:2.0.4'
-    compile 'com.marklogic:marklogic-xcc:9.0.4'
     smartMasteringCore "com.marklogic.community:smart-mastering-core:0.0.1"
-}
 
-task unzip(type: Copy) {
-    def zipPath = project.configurations.smartMasteringCore.files.toArray()[0]
-    println zipPath
-    def zipFile = file(zipPath)
-    def outputDir = file("${buildDir}")
+    // MLCP dependencies
+    mlcp "com.marklogic:mlcp:9.0.4"
 
-    from zipTree(zipFile)
-    into outputDir
-}
+    runtime "commons-fileupload:commons-fileupload:1.3.1"
 
-task deployCore(type: com.marklogic.gradle.task.client.LoadModulesTask) {
+    mlRestApi "com.marklogic:ml-unit-test:0.9.1"
+
+    // For running ml-unit-test tests via JUnit
+    testCompile "com.marklogic:ml-unit-test-client:0.9.1"
+
+    // https://mvnrepository.com/artifact/info.cukes/cucumber-java8
+    testCompile group: 'info.cukes', name: 'cucumber-java8', version: '1.2.5'
+    // https://mvnrepository.com/artifact/info.cukes/cucumber-junit
+    testCompile group: 'info.cukes', name: 'cucumber-junit', version: '1.2.5'
+
+    // Needed for writing JUnit tests with ml-junit
+    testCompile "com.marklogic:ml-junit:3.1.0"
+
+    // https://mvnrepository.com/artifact/guru.nidi.raml/raml-tester
+    testCompile group: 'guru.nidi.raml', name: 'raml-tester', version: '0.9.1'
+
+    testCompile 'com.marklogic:marklogic-spring-batch-test:1.+'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.0.3'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.0.3'
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-csv
+    compile group: 'org.apache.commons', name: 'commons-csv', version: '1.4'
+    /**
+     * If you need to import delimited text, be sure to include this dependency as well.
+     */
+    mlcp "org.apache.commons:commons-csv:1.2"
+    /**
+     * mlcp uses Log4j for logging, and if Log4j can't find a configuration file, it will complain and you'll
+     * get none of mlcp's usually-useful logging. It is recommended then that your Gradle configuration for
+     * mlcp include a directory or some other resource that provides a log4j.properties file.
+     */
+    mlcp files("lib")
 }
 
 // Map values from gradle.properties to tokens in config documents
@@ -81,10 +146,178 @@ ext {
         customTokens.put("%%mlUsername%%", mlUsername)
         customTokens.put("%%mlPassword%%", mlPassword)
         customTokens.put("%%mlSchemasDbName%%", mlSchemasDbName)
+        modulePaths = ["plugins"]
     }
 }
 
+task unzip(type: Copy) {
+    def zipPath = project.configurations.smartMasteringCore.files.toArray()[0]
+    println zipPath
+    def zipFile = file(zipPath)
+    def outputDir = file("${buildDir}")
+
+    from zipTree(zipFile)
+    into outputDir
+}
+
+task deployCore(type: com.marklogic.gradle.task.client.LoadModulesTask) {}
 tasks.deployCore.dependsOn unzip
 tasks.mlLoadModules.dependsOn deployCore
 // This dependsOn ensures that mlDeploy includes the deployCore step and runs it at the right time
 tasks.mlPostDeploy.dependsOn deployCore
+
+
+task importSchema(type: com.marklogic.gradle.task.MlcpTask) {
+  mustRunAfter mlLoadModules
+  classpath = configurations.mlcp
+  command = "IMPORT"
+  database = mlSchemasDbName
+  input_file_path = "schema"
+  output_collections = "mdm:schema"
+  output_permissions = "rest-reader,read,rest-writer,update"
+  output_uri_replace = ".*/schema,''"
+}
+
+task importThesauri(type: com.marklogic.gradle.task.MlcpTask) {
+  mustRunAfter mlLoadModules
+  classpath = configurations.mlcp
+  command = "IMPORT"
+  database = mlFinalDbName
+  input_file_path = "data/thesauri"
+  output_collections = "mdm-thesauri,mdm-configuration"
+  output_permissions = "rest-reader,read,rest-writer,update"
+  output_uri_replace = ".*/data,'/mdm/config'"
+}
+
+task printProps {
+    doLast {
+        println mlUsername
+        println mlPassword
+        println mlAdminUsername
+        println mlAdminPassword
+        println mlManageUsername
+        println mlManagePassword
+    }
+}
+
+task copyQueryOptions(type: com.marklogic.gradle.task.MarkLogicTask) {
+  doLast {
+    def xquery = "for \$uri in cts:uri-match('/Default/agile-mdm-data-hub-FINAL/rest-api/options/all.xml') " +
+      "let \$new-uri := fn:replace(\$uri, 'agile-mdm-data-hub-FINAL', 'agile-mdm-UI') " +
+      "let \$_ := xdmp:document-insert(\$new-uri, fn:doc(\$uri), xdmp:document-get-permissions(\$uri), xdmp:document-get-collections(\$uri)) " +
+      "return \$uri"
+      def client = getAppConfig().newModulesDatabaseClient()
+      try {
+        def results = client.newServerEval().xquery(xquery).eval()
+          while (results.hasNext()) {
+            println "Copied query options document: " + results.next().getAs(String.class)
+          }
+      } finally {
+        client.release()
+      }
+  }
+}
+mlPostDeploy.dependsOn copyQueryOptions
+
+class ImportTask extends JavaExec {
+  String configFile
+
+  @Override
+  void exec() {
+    this.setClasspath(project.sourceSets.main.runtimeClasspath)
+    this.setMain('com.marklogic.spring.batch.core.launch.support.CommandLineJobRunner')
+    this.setArgs([
+      '--job_id',
+      'job',
+      '--job_path',
+      'com.marklogic.mdm.toolkit.sources.CSVMDMSource',
+      '--project_dir',
+      project.projectDir.toString(),
+      '--env',
+      'local',
+      '--configuration',
+      new File(project.projectDir, configFile).toString()
+    ])
+    super.exec()
+  }
+}
+
+task csvImport(type: ImportTask) {
+  mustRunAfter importThesauri
+  mustRunAfter importSchema
+  configFile = "mdm-source-config/csv-mdm-source-config.json"
+}
+
+task oracleImport(type: ImportTask) {
+  mustRunAfter importThesauri
+  mustRunAfter importSchema
+  configFile = "mdm-source-config/oracle-mdm-source-config.json"
+}
+
+task crmImport(type: ImportTask) {
+  mustRunAfter importThesauri
+  mustRunAfter importSchema
+  configFile = "mdm-source-config/crm-mdm-source-config.json"
+}
+
+task caseMgmtImport(type: ImportTask) {
+  mustRunAfter importThesauri
+  mustRunAfter importSchema
+  configFile = "mdm-source-config/casemgmt-mdm-source-config.json"
+}
+
+task skoImport(type: ImportTask) {
+  mustRunAfter importThesauri
+  mustRunAfter importSchema
+  configFile = "mdm-source-config/casemgmt-mdm-source-config.json"
+}
+
+task sqlMdmImport(type: ImportTask) {
+  mustRunAfter importThesauri
+  mustRunAfter importSchema
+  configFile = "mdm-source-config/sql-mdm-source-config.json"
+}
+
+task harmonize(type: com.marklogic.gradle.task.RunFlowTask) {
+  mustRunAfter importThesauri
+  mustRunAfter importSchema
+  mustRunAfter csvImport
+  mustRunAfter oracleImport
+  mustRunAfter crmImport
+
+  entityName = "MDM"
+  flowName = "MDMHarmonize"
+  batchSize = 100
+  threadCount = 4
+}
+
+task doEverything {
+  dependsOn installDist
+  dependsOn mlDeploy
+  dependsOn mlLoadModules
+  dependsOn importThesauri
+  dependsOn importSchema
+  dependsOn csvImport
+  dependsOn harmonize
+}
+
+mlDeploy.mustRunAfter installDist
+mlLoadModules.mustRunAfter mlDeploy
+
+task skoDemo {
+  dependsOn doEverything
+  dependsOn oracleImport
+  dependsOn crmImport
+  dependsOn caseMgmtImport
+  dependsOn harmonize
+}
+
+distributions {
+    main {
+        baseName = 'baseJob'
+        applicationName = 'agile-mastering-toolkit'
+    }
+}
+
+// add the mainClassName to specify the Main class name
+mainClassName = "com.marklogic.spring.batch.core.launch.support.CommandLineJobRunner"
