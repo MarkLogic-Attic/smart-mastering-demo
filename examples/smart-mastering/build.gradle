@@ -89,7 +89,7 @@ dependencies {
     compile "com.marklogic:ml-gradle:3.6.1"
     compile "com.marklogic:ml-app-deployer:3.6.1"
 
-    smartMasteringCore "com.marklogic.community:smart-mastering-core:0.0.1"
+    smartMasteringCore "com.marklogic.community:smart-mastering-core:0.0.2"
 
     // MLCP dependencies
     mlcp "com.marklogic:mlcp:9.0.4"
@@ -146,7 +146,7 @@ ext {
         customTokens.put("%%mlUsername%%", mlUsername)
         customTokens.put("%%mlPassword%%", mlPassword)
         customTokens.put("%%mlSchemasDbName%%", mlSchemasDbName)
-        modulePaths = ["plugins"]
+        modulePaths = ["plugins", "build/ml-modules"]
     }
 }
 
