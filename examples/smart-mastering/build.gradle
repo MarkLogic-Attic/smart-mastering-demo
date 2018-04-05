@@ -1,7 +1,10 @@
 buildscript {
-  repositories {
-    maven {url 'http://developer.marklogic.com/maven2/'}
-  }
+    repositories {
+        maven {url 'http://developer.marklogic.com/maven2/'}
+    }
+    dependencies {
+        classpath "com.marklogic:ml-gradle:3.6.1"
+    }
 }
 
 plugins {
@@ -17,6 +20,8 @@ plugins {
     // gradle -PenvironmentName=x ...
     id 'net.saliman.properties' version '1.4.6'
 
+    id 'com.marklogic.ml-gradle' version '3.6.1'
+
     // This gradle plugin extends the ml-gradle plugin with
     // commands that make the Data Hub Framework do its magic
     id 'com.marklogic.ml-data-hub' version '2.0.4'
@@ -25,11 +30,61 @@ plugins {
 repositories {
     jcenter()
     maven {url 'http://developer.marklogic.com/maven2/'}
+    // Needed for smart-mastering-core dependency until it's available via jcenter()
+    maven {
+        url {"https://dl.bintray.com/marklogic-community/Maven/"}
+    }
+}
+
+configurations {
+    smartMasteringCore
 }
 
 dependencies {
+
+    // Needed for loading modules into MarkLogic
+    compile "com.marklogic:ml-gradle:3.6.1"
+    compile "com.marklogic:ml-app-deployer:3.6.1"
+
     // this allows you to write custom java code that depends
     // on the Data Hub Framework library
     compile 'com.marklogic:marklogic-data-hub:2.0.4'
     compile 'com.marklogic:marklogic-xcc:9.0.4'
+    smartMasteringCore "com.marklogic.community:smart-mastering-core:0.0.1"
 }
+
+task unzip(type: Copy) {
+    def zipPath = project.configurations.smartMasteringCore.files.toArray()[0]
+    println zipPath
+    def zipFile = file(zipPath)
+    def outputDir = file("${buildDir}")
+
+    from zipTree(zipFile)
+    into outputDir
+}
+
+task deployCore(type: com.marklogic.gradle.task.client.LoadModulesTask) {
+}
+
+// Map values from gradle.properties to tokens in config documents
+ext {
+    // mlAppConfig is an instance of com.marklogic.appdeployer.AppConfig
+    mlAppConfig {
+        // override some default values with our values
+        modulesDatabaseName = mlModulesDbName
+        triggersDatabaseName = mlTriggersDbName
+        schemasDatabaseName = mlSchemasDbName
+        restPort = Integer.parseInt(mlFinalPort)
+
+        // Configure custom tokens for our json files
+        customTokens.put("%%mlFinalDbName%%", mlFinalDbName)
+        customTokens.put("%%mlUsername%%", mlUsername)
+        customTokens.put("%%mlPassword%%", mlPassword)
+        customTokens.put("%%mlSchemasDbName%%", mlSchemasDbName)
+    }
+}
+
+tasks.deployCore.dependsOn unzip
+tasks.mlLoadModules.dependsOn deployCore
+// This dependsOn ensures that mlDeploy includes the deployCore step and runs it at the right time
+tasks.mlPostDeploy.dependsOn deployCore
