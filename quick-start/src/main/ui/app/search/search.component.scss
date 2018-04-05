@@ -4,6 +4,12 @@ $bg-color: unquote("rgb(#{$palette-datahub-500})");
 $link-color: unquote("rgb(#{$palette-datahub-900})");
 $line-color: unquote("rgb(#{$palette-datahub-100})");
 
+:host {
+  position: relative;
+  display: block;
+  margin-bottom: 200px;
+}
+
 .search-box {
   width: 60%;
   margin-bottom: 1rem;
@@ -80,5 +86,52 @@ input[type="search"] {
 
   /deep/ mdl-select {
     display: inline-block;
+  }
+}
+
+mdl-checkbox.compare-me {
+  display: inline;
+}
+
+.compare-items {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 500px;
+  padding: 20px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  // background: rgba(0,0,0,0.35);
+  background: $bg-color;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: auto;
+  color: white;
+
+  .items {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+
+    div {
+      padding: 20px;
+      margin: 10px;
+      background: rgba(255,255,255,0.25);
+      border: 1px solid white;
+      border-radius: 5px;
+    }
+
+    .placeholder {
+      border: 1px dashed white;
+      background: rgba(255,255,255,0.05);
+    }
+
+  }
+
+  button {
+    width: 200px;
+    margin: auto;
+    color: white;
   }
 }

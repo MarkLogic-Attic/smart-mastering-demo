@@ -20,7 +20,8 @@ module namespace transform = "http://marklogic.com/rest-api/transform/get-conten
 import module namespace perf = "http://marklogic.com/data-hub/perflog-lib"
   at "/MarkLogic/data-hub-framework/impl/perflog-lib.xqy";
 
-declare namespace envelope = "http://marklogic.com/data-hub/envelope";
+declare namespace hub = "http://marklogic.com/data-hub";
+declare namespace es = "http://marklogic.com/entity-services";
 
 declare function transform(
   $context as map:map,
@@ -30,15 +31,15 @@ declare function transform(
 {
   perf:log('/transforms/get-content:transform', function() {
     document {
-      if ($content/envelope:envelope) then
+      if ($content/(hub:envelope|es:envelope)) then
       (
         map:put($context, "output-type", "application/xml"),
-        $content/envelope:envelope/envelope:content/node()
+        $content/(hub:envelope|es:envelope)/(hub:content|es:instance)/node()
       )
       else
       (
         map:put($context, "output-type", "application/json"),
-        $content/content
+        $content/(*:content|*:instance)
       )
     }
   })
