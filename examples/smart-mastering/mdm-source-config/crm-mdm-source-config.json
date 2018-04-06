@@ -3,7 +3,7 @@
 	"sourceName": "CRM",
 	"dataRootName": "Person",
 	"delimiter": ",",
-	"inputFile": "data/CRM-person.csv",
+	"inputFile": "data/content/CRM-person.csv",
 	"modelMapping": {
 		"CLIENT_ID":"$.Person.id",
 		"CL_FIRST_NAME":"$.Person.PersonName.PersonGivenName",
@@ -21,6 +21,6 @@
 		"INCOME_AMT": "$.Person.Revenues.Revenue",
 		"BENEFIT_BEGIN_DATE": "$.Person.CaseStartDate",
 		"AU_BNFT_AMT": "$.Person.CaseAmount",
-		"PREGNANCY_DUE_DT": "$.Person.IncidentCategoryCodeDate"		
+		"PREGNANCY_DUE_DT": "$.Person.IncidentCategoryCodeDate"
 	}
 }

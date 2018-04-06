@@ -3,7 +3,7 @@
 	"sourceName": "CaseMgmt",
 	"dataRootName": "Person",
 	"delimiter": ",",
-	"inputFile": "data/CASEMANAGEMENT-person.csv",
+	"inputFile": "data/content/CASEMANAGEMENT-person.csv",
 	"modelMapping": {
 		"CLIENT_ID":"$.Person.id",
 		"CL_FIRST_NAME":"$.Person.PersonName.PersonGivenName",
