@@ -2,6 +2,9 @@ xquery version "1.0-ml";
 
 module namespace plugin = "http://marklogic.com/data-hub/plugins";
 
+import module namespace const = "http://marklogic.com/agile-mastering/constants"
+  at "/ext/com.marklogic.agile-mastering/constants.xqy";
+
 declare option xdmp:mapping "false";
 
 (:~
@@ -14,6 +17,5 @@ declare option xdmp:mapping "false";
 declare function plugin:collect(
   $options as map:map) as xs:string*
 {
-  cts:uris((), (), cts:collection-query("mdm-content"))
+  cts:uris((), (), cts:collection-query($const:CONTENT-COLL))
 };
-
