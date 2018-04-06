@@ -172,7 +172,7 @@ public abstract class MDMSource  extends LoggingObject implements EnvironmentAwa
     WriteBatcher writeBatcher = dataMovement.newWriteBatcher()
         .withBatchSize(25)
         .withThreadCount(4);
-    ServerTransform runFlow = new ServerTransform("run-flow");
+    ServerTransform runFlow = new ServerTransform("ml:inputFlow");
     runFlow
       .addParameter("entity-name", "MDM")
       .addParameter("flow-name", "MDMImport")
