@@ -27,8 +27,11 @@ plugins {
     id 'application'
     // id 'com.marklogic.ml-data-hub' version '2.0.4'
     id 'org.springframework.boot' version '1.5.9.RELEASE'
+    // for making REST calls
+    id "org.tenne.rest" version "0.4.2"
 }
 
+apply plugin: "java"
 apply plugin: "com.marklogic.ml-data-hub"
 
 repositories {
@@ -89,7 +92,7 @@ dependencies {
     compile "com.marklogic:ml-gradle:3.6.1"
     compile "com.marklogic:ml-app-deployer:3.6.1"
 
-    smartMasteringCore "com.marklogic.community:smart-mastering-core:0.0.3"
+    smartMasteringCore "com.marklogic.community:smart-mastering-core:0.0.4"
 
     // MLCP dependencies
     mlcp "com.marklogic:mlcp:9.0.4"
@@ -166,6 +169,27 @@ tasks.mlLoadModules.dependsOn deployCore
 // This dependsOn ensures that mlDeploy includes the deployCore step and runs it at the right time
 tasks.mlPostDeploy.dependsOn deployCore
 
+task deployMatchOptions(type: org._10ne.gradle.rest.RestTask) {
+    httpMethod = 'post'
+    uri = 'http://' + mlHost + ':' + mlFinalPort + '/v1/resources/sm-match-options?rs:name=mlw-match'
+    username = mlUsername
+    password = mlPassword
+    requestBody = file('mdm-match-options.xml').text
+    contentType = groovyx.net.http.ContentType.XML
+    responseHandler = {
+    }
+}
+
+task deployMergeOptions(type: org._10ne.gradle.rest.RestTask) {
+    httpMethod = 'post'
+    uri = 'http://' + mlHost + ':' + mlFinalPort + '/v1/resources/sm-merge-options?rs:name=mlw-merge'
+    username = mlUsername
+    password = mlPassword
+    requestBody = file('mdm-merge-options.xml').text
+    contentType = groovyx.net.http.ContentType.XML
+    responseHandler = {
+    }
+}
 
 task importSchema(type: com.marklogic.gradle.task.MlcpTask) {
   mustRunAfter mlLoadModules
@@ -243,6 +267,7 @@ class ImportTask extends JavaExec {
 }
 
 task csvImport(type: ImportTask) {
+  dependsOn build
   mustRunAfter importThesauri
   mustRunAfter importSchema
   configFile = "mdm-source-config/csv-mdm-source-config.json"
