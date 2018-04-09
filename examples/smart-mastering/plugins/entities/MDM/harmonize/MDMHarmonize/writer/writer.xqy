@@ -1,10 +1,10 @@
 xquery version "1.0-ml";
 
 module namespace plugin = "http://marklogic.com/data-hub/plugins";
-import module namespace auditing = "http://marklogic.com/agile-mastering/auditing"
-  at "/ext/com.marklogic.agile-mastering/auditing/base.xqy";
+import module namespace auditing = "http://marklogic.com/smart-mastering/auditing"
+  at "/ext/com.marklogic.smart-mastering/auditing/base.xqy";
 
-declare namespace agile-mastering = "http://marklogic.com/agile-mastering";
+declare namespace smart-mastering = "http://marklogic.com/smart-mastering";
 declare namespace es = "http://marklogic.com/entity-services";
 declare namespace prov = "http://www.w3.org/ns/prov#";
 
@@ -25,16 +25,16 @@ declare function plugin:write(
   $options as map:map) as empty-sequence()
 {
   auditing:audit-trace(
-    "harmonize", 
-    $id, 
+    "harmonize",
+    $id,
     $id,
     let $raw-doc := map:get($options, "raw-document")
     let $source-name := fn:string(
                     fn:head(
                       $raw-doc/(es:envelope|object-node("envelope"))
                       /(es:headers|object-node("headers"))
-                      /(agile-mastering:sources|array-node("sources"))
-                      /(agile-mastering:source|object-node())/*:name
+                      /(smart-mastering:sources|array-node("sources"))
+                      /(smart-mastering:source|object-node())/*:name
                     )
                   )
     let $instance := $raw-doc/(es:envelope|object-node("envelope"))/(es:instance|object-node("instance"))/*
@@ -77,7 +77,7 @@ declare function plugin:write(
         $prop-prov-entities
       },
       $other-prop-prov,
-      for $agent-id in 
+      for $agent-id in
         fn:distinct-values(
           $other-prop-prov[. instance of element(prov:wasInfluencedBy)]/
             prov:influencer/
@@ -91,7 +91,7 @@ declare function plugin:write(
     )
   ),
   xdmp:document-insert(
-    $id, 
+    $id,
     $envelope,
     (
       xdmp:permission("rest-reader", "read"),

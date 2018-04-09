@@ -2,8 +2,8 @@ xquery version "1.0-ml";
 
 module namespace plugin = "http://marklogic.com/data-hub/plugins";
 
-import module namespace const = "http://marklogic.com/agile-mastering/constants"
-  at "/ext/com.marklogic.agile-mastering/constants.xqy";
+import module namespace const = "http://marklogic.com/smart-mastering/constants"
+  at "/ext/com.marklogic.smart-mastering/constants.xqy";
 
 declare option xdmp:mapping "false";
 
