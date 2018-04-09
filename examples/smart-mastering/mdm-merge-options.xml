@@ -1,5 +1,5 @@
 <options xmlns="http://marklogic.com/smart-mastering/survivorship/merging">
-  <match-options>basic</match-options>
+  <match-options>mlw-match</match-options>
   <thresholds>
     <threshold label="Definitive Match" action="merge" />
     <threshold label="Likely Match" action="notify" />
