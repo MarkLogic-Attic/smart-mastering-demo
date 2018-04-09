@@ -1,5 +1,5 @@
 #%RAML 1.0
-title: Agile Mastering API
+title: smart Mastering API
 version: v0.0.1
 baseUri: http://ml-9:8010
 mediaType:  application/json
@@ -15,7 +15,7 @@ securitySchemes:
       responses:
         200:
           body:
-            application/json: 
+            application/json:
               example: |
             {
               "options": {
@@ -32,7 +32,7 @@ securitySchemes:
       responses:
         200:
           body:
-            application/json: 
+            application/json:
               example: |
             {
               "options": {
@@ -71,7 +71,7 @@ securitySchemes:
                   "algorithm": [{
                     "name": "cust-function",
                     "function": "customFunction",
-                    "at": "/ext/com.marklogic.agile-mastering/algorithms/test.sjs"
+                    "at": "/ext/com.marklogic.smart-mastering/algorithms/test.sjs"
                   }, {
                     "name": "std-reduce",
                     "function": "standard-reduction"
@@ -164,7 +164,7 @@ securitySchemes:
           required: true
           type: string
       body:
-        application/json: 
+        application/json:
           example: |
             {
               "options": {
@@ -203,7 +203,7 @@ securitySchemes:
                   "algorithm": [{
                     "name": "cust-function",
                     "function": "customFunction",
-                    "at": "/ext/com.marklogic.agile-mastering/algorithms/test.sjs"
+                    "at": "/ext/com.marklogic.smart-mastering/algorithms/test.sjs"
                   }, {
                     "name": "std-reduce",
                     "function": "standard-reduction"
@@ -292,7 +292,7 @@ securitySchemes:
       responses:
         200:
           body:
-            application/json: 
+            application/json:
               example: |
                 {
                   "success" : true
@@ -316,9 +316,9 @@ securitySchemes:
           type: integer
           default: max-scan from options
       body:
-        application/json: 
+        application/json:
           example: |
-            { 
+            {
               "document": {
                 "Person": {
                   "PersonName": {
@@ -363,7 +363,7 @@ securitySchemes:
                   "algorithm": [{
                     "name": "cust-function",
                     "function": "customFunction",
-                    "at": "/ext/com.marklogic.agile-mastering/algorithms/test.sjs"
+                    "at": "/ext/com.marklogic.smart-mastering/algorithms/test.sjs"
                   }, {
                     "name": "std-reduce",
                     "function": "standard-reduction"
@@ -452,7 +452,7 @@ securitySchemes:
       responses:
         200:
           body:
-            application/json: 
+            application/json:
               example: |
                 {
                   "results": {
@@ -589,7 +589,7 @@ securitySchemes:
       responses:
         200:
           body:
-            application/json: 
+            application/json:
               example: |
             {
               "options": {
@@ -606,7 +606,7 @@ securitySchemes:
       responses:
         200:
           body:
-            application/json: 
+            application/json:
               example: |
             {
               "options": {
@@ -655,7 +655,7 @@ securitySchemes:
           required: false
           type: string
       body:
-        application/json: 
+        application/json:
           example: |
             {
               "options": {
@@ -700,7 +700,7 @@ securitySchemes:
       responses:
         200:
           body:
-            application/json: 
+            application/json:
               example: |
                 {
                   "success": true
@@ -723,7 +723,7 @@ securitySchemes:
           required: false
           type: string
       body:
-        application/json: 
+        application/json:
           example: |
             {
               "options": {
@@ -768,7 +768,7 @@ securitySchemes:
       responses:
         200:
           body:
-            application/json: 
+            application/json:
               example: |
                 {
                   "$type": "MDM",
@@ -814,14 +814,14 @@ securitySchemes:
       responses:
         200:
           body:
-            application/json: 
+            application/json:
               example: |
                 {
                   "success": true
                 }
   /am-history-properties:
     get:
-      description: Get detailed information on document property lineage 
+      description: Get detailed information on document property lineage
       queryParameters:
         'rs:uri':
           required: true
@@ -832,17 +832,17 @@ securitySchemes:
       responses:
         200:
           body:
-            application/json: 
+            application/json:
               example: |
                 {
                   "Address": {
                     "MD 9999 VIRGINIA 215020000 CUMBERLAND": {
                       "details": [{
-                        "options": "/com.marklogic.agile-mastering/options/merging/default.xml",
+                        "options": "/com.marklogic.smart-mastering/options/merging/default.xml",
                         "algorithm": "standard",
                         "sourceName": "CSV_FILE"
                       }, {
-                        "options": "/com.marklogic.agile-mastering/options/merging/default.xml",
+                        "options": "/com.marklogic.smart-mastering/options/merging/default.xml",
                         "algorithm": "standard",
                         "sourceName": "CSV_FILE"
                       }],
@@ -852,7 +852,7 @@ securitySchemes:
                   "PersonName": {
                     "JILLIAN DEMODEC": {
                       "details": {
-                        "options": "/com.marklogic.agile-mastering/options/merging/default.xml",
+                        "options": "/com.marklogic.smart-mastering/options/merging/default.xml",
                         "algorithm": "standard",
                         "sourceName": "CSV_FILE"
                       },
@@ -862,11 +862,11 @@ securitySchemes:
                   "PersonSSNIdentification": {
                     "73777777": {
                       "details": [{
-                        "options": "/com.marklogic.agile-mastering/options/merging/default.xml",
+                        "options": "/com.marklogic.smart-mastering/options/merging/default.xml",
                         "algorithm": "standard",
                         "sourceName": "CSV_FILE"
                       }, {
-                        "options": "/com.marklogic.agile-mastering/options/merging/default.xml",
+                        "options": "/com.marklogic.smart-mastering/options/merging/default.xml",
                         "algorithm": "standard",
                         "sourceName": "CSV_FILE"
                       }],
@@ -884,15 +884,15 @@ securitySchemes:
       responses:
         200:
           body:
-            application/json: 
+            application/json:
               example: |
                 {
                   "activities": [{
                     "type": "merge",
-                    "auditUri": "/com.marklogic.agile-mastering/auditing/merge/4d486103-bf84-44fd-939b-d08b8f6e26d5.xml",
+                    "auditUri": "/com.marklogic.smart-mastering/auditing/merge/4d486103-bf84-44fd-939b-d08b8f6e26d5.xml",
                     "wasDerivedFromUris": ["/CSV_FILE/Person/208.xml", "/CSV_FILE/Person/199.xml"],
                     "time": "2017-11-09T21:54:34.564421Z",
-                    "resultUri": "/com.marklogic.agile-mastering/merged/a5bd0dc1-6ae7-4575-a9b2-6c132bd051da.xml",
+                    "resultUri": "/com.marklogic.smart-mastering/merged/a5bd0dc1-6ae7-4575-a9b2-6c132bd051da.xml",
                     "label": "merge by admin"
                   }]
                 }

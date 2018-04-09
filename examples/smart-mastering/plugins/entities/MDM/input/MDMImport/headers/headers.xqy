@@ -2,8 +2,7 @@ xquery version "1.0-ml";
 
 module namespace plugin = "http://marklogic.com/data-hub/plugins";
 
-declare namespace envelope = "http://marklogic.com/data-hub/envelope";
-declare namespace agile-mastering = "http://marklogic.com/agile-mastering";
+declare namespace smart-mastering = "http://marklogic.com/smart-mastering";
 
 declare option xdmp:mapping "false";
 
@@ -21,13 +20,13 @@ declare function plugin:create-headers(
   $content as node()?,
   $options as map:map) as node()*
 {
-  element agile-mastering:id {sem:uuid-string()},
-  element agile-mastering:sources {
-    element agile-mastering:source {
-      element agile-mastering:name {map:get($options, "mdm-source")},
-      element agile-mastering:import-id {map:get($options, "import-id")},
-      element agile-mastering:user {xdmp:get-current-user()},
-      element agile-mastering:dateTime {fn:current-dateTime()}
+  element smart-mastering:id {sem:uuid-string()},
+  element smart-mastering:sources {
+    element smart-mastering:source {
+      element smart-mastering:name {map:get($options, "mdm-source")},
+      element smart-mastering:import-id {map:get($options, "import-id")},
+      element smart-mastering:user {xdmp:get-current-user()},
+      element smart-mastering:dateTime {fn:current-dateTime()}
     }
   }
 };

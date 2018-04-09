@@ -2,9 +2,7 @@ xquery version "1.0-ml";
 
 module namespace plugin = "http://marklogic.com/data-hub/plugins";
 
-declare namespace envelope = "http://marklogic.com/data-hub/envelope";
-declare namespace es = "http://marklogic.com/entity-services";
-declare namespace agile-mastering = "http://marklogic.com/agile-mastering";
+declare namespace smart-mastering = "http://marklogic.com/smart-mastering";
 
 declare option xdmp:mapping "false";
 
@@ -22,6 +20,6 @@ declare function plugin:create-headers(
   $content as item()?,
   $options as map:map) as node()*
 {
-  <agile-mastering:id>{sem:uuid-string()}</agile-mastering:id>,
+  <smart-mastering:id>{sem:uuid-string()}</smart-mastering:id>,
   map:get($options, "headers")
 };

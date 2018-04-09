@@ -1,14 +1,9 @@
 xquery version "1.0-ml";
 
 module namespace plugin = "http://marklogic.com/data-hub/plugins";
-import module namespace auditing = "http://marklogic.com/agile-mastering/auditing"
-  at "/ext/com.marklogic.agile-mastering/auditing/base.xqy";
-import module namespace process = "http://marklogic.com/agile-mastering/process-records"
-  at "/ext/com.marklogic.agile-mastering/process-records.xqy";
 
-declare namespace agile-mastering = "http://marklogic.com/agile-mastering";
-declare namespace es = "http://marklogic.com/entity-services";
-declare namespace prov = "http://www.w3.org/ns/prov#";
+import module namespace process = "http://marklogic.com/smart-mastering/process-records"
+  at "/ext/com.marklogic.smart-mastering/process-records.xqy";
 
 declare option xdmp:mapping "false";
 
@@ -26,14 +21,14 @@ declare function plugin:write(
   $envelope as node(),
   $options as map:map) as empty-sequence()
 {
-  let $doc-collections := 
+  let $doc-collections :=
     xdmp:invoke-function(function() {
       xdmp:document-get-collections($id)
     }, map:new((map:entry("update","false"))))
-  where 
-    $doc-collections = "mdm-content" and 
+  where
+    $doc-collections = "mdm-content" and
     fn:not($doc-collections = "mdm-merged")
-  return 
+  return
     let $_process := process:process-match-and-merge($id)
     return ()
 };
