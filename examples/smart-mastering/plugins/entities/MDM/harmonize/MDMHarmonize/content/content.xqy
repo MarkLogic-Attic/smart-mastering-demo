@@ -5,8 +5,11 @@ module namespace plugin = "http://marklogic.com/data-hub/plugins";
 import module namespace flow = "http://marklogic.com/data-hub/flow-lib"
   at "/MarkLogic/data-hub-framework/impl/flow-lib.xqy";
 
+import module namespace const = "http://marklogic.com/smart-mastering/constants"
+  at "/ext/com.marklogic.smart-mastering/constants.xqy";
+
 declare namespace es = "http://marklogic.com/entity-services";
-declare namespace am = "http://marklogic.com/agile-mastering";
+declare namespace sm = "http://marklogic.com/smart-mastering";
 
 declare option xdmp:mapping "false";
 
@@ -27,7 +30,7 @@ declare function plugin:create-content(
   let $content := $doc/es:instance/*
 
   let $model-mapping := plugin:get-model-mapping(
-        $headers[self::am:sources]/am:source/am:import-id
+        $headers[self::sm:sources]/sm:source/sm:import-id
       )
   where fn:exists($content)
   return (
@@ -58,24 +61,13 @@ declare function plugin:extract-instance-MDM(
   (: the original source documents :)
   let $attachments := $source
   (: return the in-memory instance :)
-  (: using the XQuery 3.0 syntax... :)
-  let $model := json:object()
-  let $_ := (
-    map:put($model, '$attachments', $attachments),
-    map:put($model, '$type', 'MDM'),
-    plugin:build-from-annotated-xml($source, $model, $model-mapping, "$.")
-  )
-
-
-
-  (: if you prefer the xquery 3.1 version with the => operator....
-   : https://www.w3.org/TR/xquery-31/#id-arrow-operator
   let $model :=
     json:object()
       =>map:with('$attachments', $attachments)
       =>map:with('$type', 'MDM')
+  let $_ :=
+    plugin:build-from-annotated-xml($source, $model, $model-mapping, "$.")
 
-  :)
   return
     $model
 };
@@ -90,7 +82,7 @@ declare function plugin:make-reference-object(
 declare function plugin:get-model-mapping(
   $import-id as xs:string
 ) as map:map {
-  fn:collection("mdm-model-mapper")
+  fn:collection($const:MODEL-MAPPER-COLL)
   /object-node()[importID = $import-id]/modelMapping
 };
 

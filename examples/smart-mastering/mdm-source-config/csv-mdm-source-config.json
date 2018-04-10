@@ -3,7 +3,7 @@
 	"sourceName": "CSV_FILE",
 	"dataRootName": "Person",
 	"delimiter": ",",
-	"inputFile": "data/person.csv",
+	"inputFile": "data/content/person.csv",
 	"modelMapping": {
 		"CLIENT_ID":"$.Person.id",
 		"CL_FIRST_NAME":"$.Person.PersonName.PersonGivenName",

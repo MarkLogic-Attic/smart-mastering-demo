@@ -2,8 +2,8 @@ xquery version "1.0-ml";
 
 (: Your plugin must be in this namespace for the DHF to recognize it:)
 module namespace plugin = "http://marklogic.com/data-hub/plugins";
-import module namespace auditing = "http://marklogic.com/agile-mastering/auditing"
-  at "/ext/com.marklogic.agile-mastering/auditing/base.xqy";
+import module namespace auditing = "http://marklogic.com/smart-mastering/auditing"
+  at "/ext/com.marklogic.smart-mastering/auditing/base.xqy";
 
 (:
  : This module exposes helper functions to make your life easier

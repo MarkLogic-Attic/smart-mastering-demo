@@ -316,6 +316,20 @@ task harmonize(type: com.marklogic.gradle.task.RunFlowTask) {
   threadCount = 4
 }
 
+task master(type: com.marklogic.gradle.task.RunFlowTask) {
+    mustRunAfter importThesauri
+    mustRunAfter importSchema
+    mustRunAfter csvImport
+    mustRunAfter oracleImport
+    mustRunAfter crmImport
+    mustRunAfter harmonize
+
+    entityName = "MDM"
+    flowName = "MDMMaster"
+    batchSize = 100
+    threadCount = 4
+}
+
 task doEverything {
   dependsOn installDist
   dependsOn mlDeploy
@@ -340,7 +354,7 @@ task skoDemo {
 distributions {
     main {
         baseName = 'baseJob'
-        applicationName = 'agile-mastering-toolkit'
+        applicationName = 'smart-mastering-toolkit'
     }
 }
 
