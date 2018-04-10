@@ -1,10 +1,13 @@
 package com.marklogic.quickstart.service;
 
 import com.marklogic.client.DatabaseClient;
+import com.marklogic.client.document.GenericDocumentManager;
+import com.marklogic.client.document.ServerTransform;
 import com.marklogic.client.extensions.ResourceManager;
 import com.marklogic.client.extensions.ResourceServices;
 import com.marklogic.client.io.StringHandle;
 import com.marklogic.client.util.RequestParameters;
+import com.marklogic.hub.DatabaseKind;
 import com.sun.jersey.api.client.ClientHandlerException;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,11 @@ public class SmartMasteringService {
 
     public String getStats(DatabaseClient client) {
         return new GenericResourceManager(MASTERING_STATS, client).get();
+    }
+
+    public String getDoc(DatabaseClient client, String docUri) {
+        GenericDocumentManager docMgr = client.newDocumentManager();
+        return docMgr.readAs(docUri, String.class, new ServerTransform("get-instance"));
     }
 
     class GenericResourceManager extends ResourceManager {

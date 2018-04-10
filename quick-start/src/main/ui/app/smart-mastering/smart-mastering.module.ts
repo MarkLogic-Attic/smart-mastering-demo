@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { MdlModule } from '@angular-mdl/core';
-
 import { SmartMasteringService } from './smart-mastering.service';
+import { CompareComponent } from './compare/compare.component';
 
 @NgModule({
   declarations: [
+    CompareComponent
   ],
   entryComponents: [],
   imports: [
@@ -18,6 +19,7 @@ import { SmartMasteringService } from './smart-mastering.service';
     RouterModule
   ],
   exports: [
+    CompareComponent
   ],
   providers: [
     SmartMasteringService

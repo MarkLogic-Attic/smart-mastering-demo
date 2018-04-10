@@ -7,6 +7,7 @@ import { JobsComponent } from './jobs';
 import { TracesComponent, TraceViewerComponent } from './traces';
 import { SearchComponent, SearchViewerComponent } from './search';
 import { SettingsComponent } from './settings';
+import { CompareComponent } from './smart-mastering/compare/compare.component';
 import { NoContentComponent } from './no-content';
 import { AuthGuard } from './auth/auth-guard.service';
 
@@ -23,6 +24,7 @@ export const ROUTES: Routes = [
   { path: 'view', component: SearchViewerComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'compare', component: CompareComponent, canActivate: [AuthGuard] },
   // make sure you match the component type string to the require in asyncRoutes
   { path: '**',    component: NoContentComponent },
 ];
