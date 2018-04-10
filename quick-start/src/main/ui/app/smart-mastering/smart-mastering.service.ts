@@ -9,4 +9,8 @@ export class SmartMasteringService {
   getStats(): Observable<any> {
     return this.http.get<any>('/api/mastering/stats');
   }
+
+  getDoc(docUri: string) {
+    return this.http.get<any>(`/api/mastering/doc?docUri=${docUri}`);
+  }
 }
