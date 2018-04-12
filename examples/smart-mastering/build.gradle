@@ -338,10 +338,25 @@ task doEverything {
   dependsOn importSchema
   dependsOn csvImport
   dependsOn harmonize
+  dependsOn deployMatchOptions
+  dependsOn deployMergeOptions
+  dependsOn master
+}
+
+// deployMatch/MergeOptions must happen after harmonization, otherwise the name dictionaries won't be populated
+task reloadFinal {
+  dependsOn importThesauri
+  dependsOn importSchema
+  dependsOn harmonize
+  dependsOn deployMatchOptions
+  dependsOn deployMergeOptions
+  dependsOn master
 }
 
 mlDeploy.mustRunAfter installDist
 mlLoadModules.mustRunAfter mlDeploy
+deployMatchOptions.mustRunAfter harmonize
+deployMergeOptions.mustRunAfter harmonize
 
 task skoDemo {
   dependsOn doEverything
