@@ -164,7 +164,7 @@ task unzip(type: Copy) {
 }
 
 task deployCore(type: com.marklogic.gradle.task.client.LoadModulesTask) {}
-tasks.deployCore.dependsOn unzip
+//tasks.deployCore.dependsOn unzip
 tasks.mlLoadModules.dependsOn deployCore
 // This dependsOn ensures that mlDeploy includes the deployCore step and runs it at the right time
 tasks.mlPostDeploy.dependsOn deployCore
@@ -326,7 +326,7 @@ task master(type: com.marklogic.gradle.task.RunFlowTask) {
 
     entityName = "MDM"
     flowName = "MDMMaster"
-    batchSize = 100
+    batchSize = 1
     threadCount = 4
 }
 
