@@ -13,6 +13,5 @@ import { TruncateCharactersPipe } from './truncate.pipe';
     ObjectToArrayPipe,
     TruncateCharactersPipe
   ]
-  // providers: [ObjectToArrayPipe]
 })
 export class PipesModule { }

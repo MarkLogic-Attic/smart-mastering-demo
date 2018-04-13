@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class SmartMasteringService {
 
     private final String MASTERING_STATS = "mastering-stats";
-    private final String MASTERING_MERGE = "am-merge";
+    private final String MASTERING_MERGE = "sm-merge";
 
     private DatabaseClient client;
 
