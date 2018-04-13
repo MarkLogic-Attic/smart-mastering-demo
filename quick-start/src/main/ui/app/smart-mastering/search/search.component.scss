@@ -1,0 +1,188 @@
+@import '../../../styles/variables';
+
+$bg-color: unquote("rgb(#{$palette-datahub-500})");
+$link-color: unquote("rgb(#{$palette-datahub-900})");
+$line-color: unquote("rgb(#{$palette-datahub-100})");
+
+:host {
+  position: relative;
+  display: block;
+  margin-bottom: 200px;
+}
+
+.search-box {
+  width: 60%;
+  margin-bottom: 1rem;
+  flex: none; // IE fix
+}
+
+pagination {
+  margin: 1rem 0px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+input[type="search"] {
+  margin-right: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+  border: none;
+  box-shadow: none;
+  width: 100%;
+  padding: 0 15px;
+  line-height: 40px;
+  height: 40px;
+  background: rgb(250,250,250);
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+}
+
+.results {
+  width: 90%;
+}
+
+.results-wrapper {
+  flex-wrap: wrap;
+}
+
+.mdl-data-table {
+  thead {
+    tr {
+      background: $bg-color;
+      th {
+        color: white;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      td {
+        max-width: 400px;
+      }
+    }
+  }
+}
+
+.result {
+  padding: 20px;
+  margin: 5px;
+  border: 1px rgba(0,0,0,0.15) solid;
+  width: 300px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+  position: relative;
+
+  .matches {
+    margin-bottom: 70px;
+  }
+
+  .sub-header {
+    text-align: center;
+    font-size: 80%;
+    margin-bottom: 20px;
+  }
+
+  .actions {
+    justify-content: center;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  .link {
+    text-align: center;
+    margin: 0px;
+
+    a {
+      color: $link-color;
+      cursor: pointer;
+    }
+  }
+}
+
+.database-chooser {
+  /deep/ mdl-checkbox {
+    display: inline-block;
+    width: inherit;
+    margin-left: 20px;
+  }
+
+  /deep/ mdl-select {
+    display: inline-block;
+  }
+}
+
+mdl-checkbox.compare-me {
+  display: inline;
+  width: auto;
+}
+
+.compare-items {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 300px;
+  padding: 20px;
+  bottom: 0px;
+  left: 5px;
+  right: 0;
+  bottom: 5px;
+  background: $bg-color;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: white;
+
+  .items {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+
+    div {
+      padding: 20px;
+      margin: 10px;
+      background: rgba(255,255,255,0.25);
+      border: 1px solid white;
+      border-radius: 5px;
+    }
+
+    .placeholder {
+      border: 1px dashed white;
+      background: rgba(255,255,255,0.05);
+    }
+
+  }
+
+  button {
+    width: 200px;
+    margin: auto;
+    color: white;
+  }
+}
+
+.compare-wrapper {
+  margin-top: 10px;
+  border: 2px solid rgba(0,0,0, 0.54);
+  padding: 10px;
+  display: inline;
+
+  /deep/ .mdl-checkbox__box-outline {
+    top: 1px;
+  }
+  cursor: pointer;
+
+  &:not(.disabled) {
+    &:hover {
+      background-color: #ddd;
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+    }
+  }
+
+  &.disabled {
+    border: 2px solid rgba(0,0,0, 0.26);
+    cursor: inherit;
+  }
+}

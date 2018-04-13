@@ -11,12 +11,13 @@ import * as _ from 'lodash';
 })
 export class CompareComponent implements OnInit {
 
-  const flatten = (arr) => arr.reduce((flat, next) => flat.concat(next), []);
+  flatten = (arr) => arr.reduce((flat, next) => flat.concat(next), []);
 
   uri1: string = null;
   uri2: string = null;
-  doc1: string = null;
-  doc2: string = null;
+  doc1: any = null;
+  doc2: any = null;
+  optionsName: string = 'default';
 
   constructor(
     private route: ActivatedRoute,
@@ -44,7 +45,7 @@ export class CompareComponent implements OnInit {
           if (_.isObject(value)) {
             a.push(this.toArray(value));
           } else if (key !== '$type') {
-            a.push({ k: key: v: value });
+            a.push({ k: key, v: value });
           }
         }
       }
@@ -62,5 +63,15 @@ export class CompareComponent implements OnInit {
       return 'mismatch';
     }
     return '';
+  }
+
+  merge() {
+    this.sm.merge(this.uri1, this.uri2, this.optionsName).subscribe(() => {
+
+    });
+  }
+
+  notMatch() {
+
   }
 }

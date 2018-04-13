@@ -1,17 +1,28 @@
 <div class="side-by-side" *ngIf="doc1 && doc2">
-  <table left-align
-    class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-    <thead>
-      <th class="mdl-data-table__cell--non-numeric">Field</th>
-      <th class="mdl-data-table__cell--non-numeric">{{uri1}}</th>
-      <th class="mdl-data-table__cell--non-numeric">{{uri2}}</th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let d of doc1; index as i" [ngClass]="getClass(i)">
-        <td>{{d.k}}</td>
-        <td>{{d.v}}</td>
-        <td>{{doc2[i].v}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div layout="column" layout-align="center center">
+    <table left-align
+      class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+      <thead>
+        <th class="mdl-data-table__cell--non-numeric">Field</th>
+        <th class="mdl-data-table__cell--non-numeric">{{uri1}}</th>
+        <th class="mdl-data-table__cell--non-numeric">{{uri2}}</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of doc1; index as i" [ngClass]="getClass(i)">
+          <td>{{d.k}}</td>
+          <td>{{d.v}}</td>
+          <td>{{doc2[i].v}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="actions">
+      <button (click)="merge()"
+      type="button" mdl-colored="primary"
+      mdl-button mdl-button-type="raised">Merge</button>
+      <button (click)="notMatch()"
+      type="button" mdl-colored="primary"
+      mdl-button mdl-button-type="raised">Not a Match</button>
+    </div>
+  </div>
 </div>
