@@ -92,7 +92,7 @@ dependencies {
     compile "com.marklogic:ml-gradle:3.6.1"
     compile "com.marklogic:ml-app-deployer:3.6.1"
 
-    smartMasteringCore "com.marklogic.community:smart-mastering-core:0.0.4"
+    smartMasteringCore "com.marklogic.community:smart-mastering-core:0.0.5"
 
     // MLCP dependencies
     mlcp "com.marklogic:mlcp:9.0.4"
@@ -321,7 +321,7 @@ task harmonize(type: com.marklogic.gradle.task.RunFlowTask) {
 // Looking at 208, 199 is a match, so archive both and create a merged document.
 // With batch size > 1, these operations may be in the same transaction. If in separate transaction, the code avoids
 // the duplication.
-// TODO: come up with a better solution. 
+// TODO: come up with a better solution.
 task master(type: com.marklogic.gradle.task.RunFlowTask) {
     mustRunAfter importThesauri
     mustRunAfter importSchema
