@@ -316,6 +316,12 @@ task harmonize(type: com.marklogic.gradle.task.RunFlowTask) {
   threadCount = 4
 }
 
+// Batch size is set to 1 for now so that we don't get duplicate merges. For instance, documents 199 and 208 match.
+// Looking at 199, 208 is a match, so archive both and create a merged document.
+// Looking at 208, 199 is a match, so archive both and create a merged document.
+// With batch size > 1, these operations may be in the same transaction. If in separate transaction, the code avoids
+// the duplication.
+// TODO: come up with a better solution. 
 task master(type: com.marklogic.gradle.task.RunFlowTask) {
     mustRunAfter importThesauri
     mustRunAfter importSchema
