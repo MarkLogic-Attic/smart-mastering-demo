@@ -42,3 +42,7 @@ $error-color: unquote("rgb(#{$palette-datahub-red})");
 td {
   border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
+
+.actions {
+  margin-top: 20px;
+}

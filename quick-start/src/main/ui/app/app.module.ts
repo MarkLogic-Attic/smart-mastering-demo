@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { TruncateCharactersPipe } from './truncate';
 import { AppComponent } from './app.component';
 import { FlowsComponent } from './flows';
 import { HasBugsDialogComponent } from './has-bugs-dialog';
@@ -22,6 +21,9 @@ import { MdlModule } from '@angular-mdl/core';
 import { MdlPopoverModule } from '@angular-mdl/popover';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { GridManiaModule } from './grid';
+import { PaginationModule } from './pagination/pagination.module';
+import { PipesModule } from './pipes/pipes.module';
+import { FacetsModule } from './facets/facets.module';
 
 import { ROUTES } from './app.routes';
 import { AUTH_PROVIDERS } from './auth';
@@ -34,7 +36,6 @@ import { MlErrorComponent } from './ml-error';
 import { NewEntityComponent } from './new-entity/new-entity.component';
 import { NewFlowComponent } from './new-flow/new-flow.component';
 import { NoContentComponent } from './no-content';
-import { PaginationComponent } from './pagination';
 import { ResizableComponent } from './resizable/resizable.component';
 import { SelectComponent } from './select/select.component';
 import { SelectListComponent } from './select-list/select-list.component';
@@ -57,8 +58,6 @@ import { HarmonizeFlowOptionsComponent } from './harmonize-flow-options/harmoniz
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TitlecasePipe } from './titlecase.pipe';
 import { InlineEditComponent } from './inline-edit/inline-edit.component';
-import { FacetsComponent } from './facets/facets.component';
-import { ObjectToArrayPipe } from './object-to-array.pipe';
 import { DatePipeModule } from './date-pipe/date-pipe.module';
 
 import { SmartMasteringModule } from './smart-mastering/smart-mastering.module';
@@ -88,7 +87,6 @@ import {JobExportDialogComponent} from "./jobs/job-export.component";
     MlErrorComponent,
     NewEntityComponent,
     NewFlowComponent,
-    PaginationComponent,
     ResizableComponent,
     SelectComponent,
     SelectListComponent,
@@ -102,10 +100,7 @@ import {JobExportDialogComponent} from "./jobs/job-export.component";
     HarmonizeFlowOptionsComponent,
     DashboardComponent,
     InlineEditComponent,
-    FacetsComponent,
     TitlecasePipe,
-    TruncateCharactersPipe,
-    ObjectToArrayPipe,
     SelectKeyValuesComponent
   ],
   entryComponents: [
@@ -128,6 +123,9 @@ import {JobExportDialogComponent} from "./jobs/job-export.component";
     MdlSelectModule,
     TooltipModule,
     GridManiaModule,
+    PaginationModule,
+    PipesModule,
+    FacetsModule,
     RouterModule.forRoot(ROUTES, { useHash: true }),
     DatePipeModule,
     SmartMasteringModule
