@@ -17,13 +17,23 @@
   <scoring>
     <add property-name="ssn" weight="50"/>
     <add property-name="last-name" weight="8"/>
-    <add property-name="first-name" weight="12"/>
+    <!--
+      We want 12 points for the first name. Six here, plus six from a thesaurus match, which includes the original
+      target name.
+    -->
+    <add property-name="first-name" weight="6"/>
     <add property-name="addr1" weight="5"/>
     <add property-name="city" weight="3"/>
     <add property-name="state" weight="1"/>
     <add property-name="zip" weight="3"/>
+    <!--
     <expand property-name="first-name" algorithm-ref="dbl-metaphone" weight="6">
       <dictionary>first-name-dictionary.xml</dictionary>
+      <distance-threshold>50</distance-threshold>
+    </expand>
+    -->
+    <expand property-name="first-name" algorithm-ref="thesaurus" weight="6">
+      <thesaurus>/mdm/config/thesauri/first-name-synonyms.xml</thesaurus>
       <distance-threshold>50</distance-threshold>
     </expand>
     <expand property-name="last-name" algorithm-ref="dbl-metaphone" weight="8">
