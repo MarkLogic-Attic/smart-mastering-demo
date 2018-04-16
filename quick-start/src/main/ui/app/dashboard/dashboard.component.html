@@ -57,7 +57,17 @@
         <div class="info-title"><i class="mdi mdi-database"></i> Merged Documents</div>
         <div class="info-body" layout="row" *ngIf="stats">
           <div class="info-column" layout="column" layout-align="center center">
-            <div class="column-body" *ngIf="masteringStats">{{masteringStats.afterMergeCount}}</div>
+            <div class="column-body" *ngIf="masteringStats">{{masteringStats.mergeCount}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div layout="row" layout-align="center center">
+      <div class="info-card" mdl-shadow="2">
+        <div class="info-title"><i class="mdi mdi-database"></i> Instance Documents</div>
+        <div class="info-body" layout="row" *ngIf="stats">
+          <div class="info-column" layout="column" layout-align="center center">
+            <div class="column-body" *ngIf="masteringStats">{{masteringStats.instanceCount}}</div>
           </div>
         </div>
       </div>
