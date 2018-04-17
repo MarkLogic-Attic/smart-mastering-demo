@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { SearchResponse } from '../search';
 
@@ -12,7 +12,18 @@ export class SmartMasteringService {
   }
 
   getDoc(docUri: string) {
-    return this.http.get<any>(`/api/mastering/doc?docUri=${docUri}`);
+    const headers = new HttpHeaders({ 'Content-Type': 'text/xml' }).set('Accept', 'text/xml');
+    const options: {
+      observe: 'response';
+      headers: HttpHeaders;
+      responseType: 'text'
+    } = {
+      headers: headers,
+      observe: 'response',
+      responseType: 'text'
+    };
+    return this.http.get(`/api/mastering/doc?docUri=${docUri}`, options)
+    .map(resp => resp.body);
   }
 
   merge(doc1: string, doc2: string, optionsName: string) {
@@ -41,5 +52,13 @@ export class SmartMasteringService {
     data['facets'] = facets;
 
     return this.http.post<SearchResponse>(`/api/mastering/search`, data);
+  }
+
+  getHistoryDocument(uri: string) {
+    return this.http.get<any>(`/api/mastering/history-document?uri=${uri}`);
+  }
+
+  getHistoryProperties(uri: string) {
+    return this.http.get<any>(`/api/mastering/history-properties?uri=${uri}`);
   }
 }

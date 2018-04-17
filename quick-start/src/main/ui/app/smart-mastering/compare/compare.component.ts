@@ -17,7 +17,7 @@ export class CompareComponent implements OnInit {
   uri2: string = null;
   doc1: any = null;
   doc2: any = null;
-  optionsName: string = 'default';
+  optionsName: string = 'mlw-merge';
 
   constructor(
     private route: ActivatedRoute,

@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { MdlModule } from '@angular-mdl/core';
 import { PaginationModule } from '../pagination/pagination.module';
 import { FacetsModule } from '../facets/facets.module';
+import { PipesModule } from '../pipes/pipes.module';
 import { SmartMasteringService } from './smart-mastering.service';
 import { CompareComponent } from './compare/compare.component';
 import { SmartMasteringSearchComponent } from './search/search.component';
@@ -24,7 +25,8 @@ import { SmartMasteringDocViewerComponent } from './doc-viewer/doc-viewer.compon
     MdlModule,
     RouterModule,
     PaginationModule,
-    FacetsModule
+    FacetsModule,
+    PipesModule
   ],
   exports: [
     CompareComponent,

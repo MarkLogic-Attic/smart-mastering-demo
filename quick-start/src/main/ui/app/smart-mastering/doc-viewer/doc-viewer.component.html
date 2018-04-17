@@ -1,5 +1,52 @@
-<div class="innards">
-  <div class="title">
-    <h4>Uri: {{uri}}</h4>
+<div class="container" layout="row" layout-align="center center">
+  <div layout="row" layout-align="center start" class="card-row">
+    <div class="person-card" mdl-shadow="2" layout="row" layout-align="center start">
+      <div class="person-icon">
+        <i class="fa fa-user"></i>
+        <!-- <img src="/assets/img/person.png" alt="" className="img-circle" /> -->
+      </div>
+      <div class="data" layout="column" layout-align="center start" *ngIf="doc">
+        <h5 *ngFor="let name of doc.names">
+        {{name.PersonGivenName}} {{name.PersonSurName}}
+        </h5>
+        <p *ngFor="let loc of doc.addresses">
+          <i class="fa fa-map-marker"></i>
+          <span>{{loc.LocationCityName}}, {{loc.LocationState}} {{loc.LocationPostalCode}}</span>
+        </p>
+        <p *ngFor="let ssn of doc.ssns">
+          <i class="fa fa-key"></i>
+          <span>SSN: </span>
+          <span>{{ssn}}</span>
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="sourceUris" class="sources" layout="column" layout-align="center start">
+      <h5>Sources</h5>
+      <div class="source-uri" *ngFor="let uri of sourceUris" mdl-shadow="2">
+        {{uri}}
+        <a [routerLink]="['/view-sm']" [queryParams]="{docUri: uri}" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>View</a>
+      </div>
+      <div *ngIf="sourceUris.length > 1">
+        <button type="button" (click)="unmerge()" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Unmerge</button>
+      </div>
+    </div>
   </div>
 </div>
+
+<div #provSankey class="sankey"></div>
+
+<table left-align *ngIf="historyDocument" class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+  <thead>
+    <th class="mdl-data-table__cell--non-numeric">activity</th>
+    <th class="mdl-data-table__cell--non-numeric">Resulting Doc</th>
+    <th class="mdl-data-table__cell--non-numeric">Time</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let activity of historyDocument.activities">
+      <td>{{activity.type}}</td>
+      <td>{{activity.resultUri}}</td>
+      <td>{{activity.time}}</td>
+    </tr>
+  </tbody>
+</table>

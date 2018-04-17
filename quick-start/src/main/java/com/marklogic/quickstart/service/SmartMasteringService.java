@@ -17,6 +17,8 @@ public class SmartMasteringService {
 
     private final String MASTERING_STATS = "mastering-stats";
     private final String MASTERING_MERGE = "sm-merge";
+    private final String MASTERING_HISTORY_DOCUMENT = "sm-history-document";
+    private final String MASTERING_HISTORY_PROPERTIES = "sm-history-properties";
 
     private DatabaseClient client;
 
@@ -30,7 +32,7 @@ public class SmartMasteringService {
 
     public String getDoc(String docUri) {
         GenericDocumentManager docMgr = client.newDocumentManager();
-        return docMgr.readAs(docUri, String.class, new ServerTransform("get-instance"));
+        return docMgr.readAs(docUri, String.class);//, new ServerTransform("get-instance"));
     }
 
     public void mergeDocs(String doc1, String doc2, String options) {
@@ -39,6 +41,18 @@ public class SmartMasteringService {
         params.add("secondary-uri", doc2);
         params.add("options", options);
         new GenericResourceManager(MASTERING_MERGE, client).post(params, new StringHandle("").withFormat(Format.JSON));
+    }
+
+    public String getHistoryDocument(String uri) {
+        RequestParameters params = new RequestParameters();
+        params.add("uri", uri);
+        return new GenericResourceManager(MASTERING_HISTORY_DOCUMENT, client).get(params);
+    }
+
+    public String getHistoryProperties(String uri) {
+        RequestParameters params = new RequestParameters();
+        params.add("uri", uri);
+        return new GenericResourceManager(MASTERING_HISTORY_PROPERTIES, client).get(params);
     }
 
     class GenericResourceManager extends ResourceManager {

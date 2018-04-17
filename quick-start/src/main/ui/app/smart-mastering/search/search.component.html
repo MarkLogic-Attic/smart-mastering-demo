@@ -22,7 +22,8 @@
         <div *ngIf="searchResponse && searchResponse.total > 0" flex layout="row" class="results-wrapper">
           <div *ngFor="let result of searchResponse.results" class="result">
             <h4 class="link">
-              <a (click)="showDoc(currentDatabase, result.uri)">{{ result.content.Person.PersonName.PersonGivenName }} {{result.content.Person.PersonName.PersonSurName}}</a>
+              <a [routerLink]="['/view-sm']" [queryParams]="{docUri: result.uri}">{{ result.content.Person.PersonName.PersonGivenName }} {{result.content.Person.PersonName.PersonSurName}}</a>
+              <i *ngIf="isMerged(result)" class="fa fa-compress"></i>
             </h4>
             <div class="sub-header">
             {{ result.content.Person.Address.LocationCityName }}, {{result.content.Person.Address.LocationState}}
