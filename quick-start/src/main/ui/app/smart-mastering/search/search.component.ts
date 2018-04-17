@@ -54,15 +54,6 @@ export class SmartMasteringSearchComponent implements OnDestroy, OnInit {
     this.runQuery();
   }
 
-  showDoc(database: string, docUri: string) {
-    this.router.navigate(['/view'], {
-      queryParams: {
-        database: database,
-        docUri: docUri
-      }
-    });
-  }
-
   doSearch(): void {
     this.currentPage = 1;
     this.runQuery();
@@ -131,5 +122,10 @@ export class SmartMasteringSearchComponent implements OnDestroy, OnInit {
 
   getMatcherPath(s: string) {
     return s.replace(/^.+\/([^\/]+)$/, '$1');
+  }
+
+  isMerged(item) {
+    const collections = item.collections as Array<any>;
+    return collections.includes('mdm-merged');
   }
 }

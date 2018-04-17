@@ -1,9 +1,7 @@
 package com.marklogic.quickstart.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.marklogic.quickstart.EnvironmentAware;
 import com.marklogic.quickstart.model.SearchQuery;
-import com.marklogic.quickstart.service.SearchService;
 import com.marklogic.quickstart.service.SmartMasteringSearchService;
 import com.marklogic.quickstart.service.SmartMasteringService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +62,25 @@ public class SmartMasteringController extends EnvironmentAware {
 
     @RequestMapping(value = "/mastering/merge", method = RequestMethod.POST)
     public ResponseEntity<String> merge(@RequestParam String doc1, @RequestParam String doc2, @RequestParam String options) {
-        smartMasteringService.mergeDocs(doc1, doc2, options);
-        return new ResponseEntity<>("{}", HttpStatus.OK);
+        String resp = smartMasteringService.mergeDocs(doc1, doc2, options);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mastering/merge", method = RequestMethod.DELETE)
+    public ResponseEntity<String> unmerge(@RequestParam String uri) {
+        smartMasteringService.unmerge(uri);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mastering/history-document", method = RequestMethod.GET)
+    public ResponseEntity<String> historyDocument(@RequestParam String uri) {
+        String resp = smartMasteringService.getHistoryDocument(uri);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mastering/history-properties", method = RequestMethod.GET)
+    public ResponseEntity<String> historyProperties(@RequestParam String uri) {
+        String resp = smartMasteringService.getHistoryProperties(uri);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 }

@@ -44,6 +44,7 @@
     "semver": "^5.4.1",
     "sockjs-client": "^1.1.4",
     "stompjs": "^2.3.3",
+    "x2js": "^3.2.1",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
