@@ -35,12 +35,18 @@ public class SmartMasteringService {
         return docMgr.readAs(docUri, String.class);//, new ServerTransform("get-instance"));
     }
 
-    public void mergeDocs(String doc1, String doc2, String options) {
+    public String mergeDocs(String doc1, String doc2, String options) {
         RequestParameters params = new RequestParameters();
         params.add("primary-uri", doc1);
         params.add("secondary-uri", doc2);
         params.add("options", options);
-        new GenericResourceManager(MASTERING_MERGE, client).post(params, new StringHandle("").withFormat(Format.JSON));
+        return new GenericResourceManager(MASTERING_MERGE, client).post(params, new StringHandle("").withFormat(Format.JSON));
+    }
+
+    public void unmerge(String uri) {
+        RequestParameters params = new RequestParameters();
+        params.add("mergedUri", uri);
+        new GenericResourceManager(MASTERING_MERGE, client).delete(params);
     }
 
     public String getHistoryDocument(String uri) {
@@ -76,6 +82,15 @@ public class SmartMasteringService {
             catch(ClientHandlerException e) {
             }
             return "{}";
+        }
+
+        public void delete(RequestParameters params) {
+            try {
+                StringHandle handle = new StringHandle();
+                this.getServices().delete(params, handle);
+            }
+            catch(ClientHandlerException e) {
+            }
         }
 
         public String post(RequestParameters params, AbstractWriteHandle input) {

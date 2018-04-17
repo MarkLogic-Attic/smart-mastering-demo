@@ -62,8 +62,14 @@ public class SmartMasteringController extends EnvironmentAware {
 
     @RequestMapping(value = "/mastering/merge", method = RequestMethod.POST)
     public ResponseEntity<String> merge(@RequestParam String doc1, @RequestParam String doc2, @RequestParam String options) {
-        smartMasteringService.mergeDocs(doc1, doc2, options);
-        return new ResponseEntity<>("{}", HttpStatus.OK);
+        String resp = smartMasteringService.mergeDocs(doc1, doc2, options);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mastering/merge", method = RequestMethod.DELETE)
+    public ResponseEntity<String> unmerge(@RequestParam String uri) {
+        smartMasteringService.unmerge(uri);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/mastering/history-document", method = RequestMethod.GET)

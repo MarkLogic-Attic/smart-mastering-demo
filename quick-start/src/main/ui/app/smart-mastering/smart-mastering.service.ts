@@ -3,6 +3,25 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { SearchResponse } from '../search';
 
+import * as X2JS from 'x2js';
+let x2js;
+
+const xmlToJson = xml => {
+  x2js = x2js || new X2JS();
+  return x2js.xml2js(xml);
+};
+
+const headers = new HttpHeaders({ 'Content-Type': 'text/xml' }).set('Accept', 'text/xml');
+const xmlOptions: {
+  observe: 'response';
+  headers: HttpHeaders;
+  responseType: 'text'
+} = {
+  headers: headers,
+  observe: 'response',
+  responseType: 'text'
+};
+
 @Injectable()
 export class SmartMasteringService {
   constructor(private http: HttpClient) {}
@@ -12,23 +31,18 @@ export class SmartMasteringService {
   }
 
   getDoc(docUri: string) {
-    const headers = new HttpHeaders({ 'Content-Type': 'text/xml' }).set('Accept', 'text/xml');
-    const options: {
-      observe: 'response';
-      headers: HttpHeaders;
-      responseType: 'text'
-    } = {
-      headers: headers,
-      observe: 'response',
-      responseType: 'text'
-    };
-    return this.http.get(`/api/mastering/doc?docUri=${docUri}`, options)
-    .map(resp => resp.body);
+    return this.http.get(`/api/mastering/doc?docUri=${docUri}`, xmlOptions)
+    .map(resp => xmlToJson(resp.body));
   }
 
   merge(doc1: string, doc2: string, optionsName: string) {
     const url = `/api/mastering/merge?doc1=${doc1}&doc2=${doc2}&options=${optionsName}`;
-    return this.http.post<any>(url, null);
+    return this.http.post(url, null, xmlOptions).map(resp => xmlToJson(resp.body));
+  }
+
+  unmerge(uri: string) {
+    const url = `/api/mastering/merge?uri=${uri}`;
+    return this.http.delete(url);
   }
 
   search(query: string, activeFacets: any, page: number, pageLength: number) {

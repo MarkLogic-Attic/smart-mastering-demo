@@ -21,17 +21,18 @@ export class CompareComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private sm: SmartMasteringService) {}
 
   ngOnInit() {
     this.uri1 = this.route.snapshot.queryParamMap.get("uri1");
     this.uri2 = this.route.snapshot.queryParamMap.get("uri2");
     this.sm.getDoc(this.uri1).subscribe(doc => {
-      this.doc1 = this.toArray(doc);
+      this.doc1 = this.toArray(doc.envelope.instance);
     });
 
     this.sm.getDoc(this.uri2).subscribe(doc => {
-      this.doc2 = this.toArray(doc);
+      this.doc2 = this.toArray(doc.envelope.instance);
     });
   }
 
@@ -40,7 +41,7 @@ export class CompareComponent implements OnInit {
 
     if (_.isObject(data)) {
       for (let key in data) {
-        if (data.hasOwnProperty(key)) {
+        if (key !== '_xmlns' && data.hasOwnProperty(key)) {
           var value = data[key];
           if (_.isObject(value)) {
             a.push(this.toArray(value));
@@ -66,8 +67,9 @@ export class CompareComponent implements OnInit {
   }
 
   merge() {
-    this.sm.merge(this.uri1, this.uri2, this.optionsName).subscribe(() => {
-
+    this.sm.merge(this.uri1, this.uri2, this.optionsName).subscribe(newDoc => {
+      const newId = newDoc.envelope.headers.id.toString();
+      this.router.navigate(['/view-sm'], { queryParams: {docUri: `/com.marklogic.smart-mastering/merged/${newId}.xml`}});
     });
   }
 
