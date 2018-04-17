@@ -7,6 +7,7 @@ import { JobsComponent } from './jobs';
 import { TracesComponent, TraceViewerComponent } from './traces';
 import { SearchComponent, SearchViewerComponent } from './search';
 import { SmartMasteringSearchComponent } from './smart-mastering/search/search.component';
+import { SmartMasteringDocViewerComponent } from './smart-mastering/doc-viewer/doc-viewer.component';
 import { SettingsComponent } from './settings';
 import { CompareComponent } from './smart-mastering/compare/compare.component';
 import { NoContentComponent } from './no-content';
@@ -24,6 +25,7 @@ export const ROUTES: Routes = [
   { path: 'browse', component: SearchComponent, canActivate: [AuthGuard] },
   { path: 'search', component: SmartMasteringSearchComponent, canActivate: [AuthGuard] },
   { path: 'view', component: SearchViewerComponent, canActivate: [AuthGuard] },
+  { path: 'view-sm', component: SmartMasteringDocViewerComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'compare', component: CompareComponent, canActivate: [AuthGuard] },
