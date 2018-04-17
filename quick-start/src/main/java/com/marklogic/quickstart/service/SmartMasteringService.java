@@ -32,7 +32,7 @@ public class SmartMasteringService {
 
     public String getDoc(String docUri) {
         GenericDocumentManager docMgr = client.newDocumentManager();
-        return docMgr.readAs(docUri, String.class);//, new ServerTransform("get-instance"));
+        return docMgr.readAs(docUri, String.class);
     }
 
     public String mergeDocs(String doc1, String doc2, String options) {
