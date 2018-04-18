@@ -291,7 +291,7 @@ export class SmartMasteringDocViewerComponent implements OnInit {
   }
 
   unmerge() {
-    this.sm.unmerge(this.uri).subscribe(() => this.router.navigate(['/search']);
+    this.sm.unmerge(this.uri).subscribe(() => this.router.navigate(['/search']));
   }
 }
 
