@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { tap, merge, mergeAll, zip } from 'rxjs/operators';
 import { SmartMasteringService } from '../smart-mastering.service';
+import { MdlDialogService } from '@angular-mdl/core';
 
 import * as _ from 'lodash';
 
@@ -30,7 +31,8 @@ export class SmartMasteringDocViewerComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private sm: SmartMasteringService
+    private sm: SmartMasteringService,
+    private dialogService: MdlDialogService
   ) {}
 
   ngOnInit() {
@@ -291,7 +293,10 @@ export class SmartMasteringDocViewerComponent implements OnInit {
   }
 
   unmerge() {
-    this.sm.unmerge(this.uri).subscribe(() => this.router.navigate(['/search']));
+    this.dialogService.confirm('Really Unmerge?', 'Cancel', 'Unmerge').subscribe(() => {
+      this.sm.unmerge(this.uri).subscribe(() => this.router.navigate(['/search']));
+    },
+    () => {});
   }
 }
 
