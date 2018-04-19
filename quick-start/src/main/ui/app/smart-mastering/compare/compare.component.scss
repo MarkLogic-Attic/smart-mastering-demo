@@ -46,3 +46,12 @@ td {
 .actions {
   margin-top: 20px;
 }
+
+.merge-blocked {
+  border: 1px solid $error-color;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  background: rgba(255,0,0,0.25);
+}

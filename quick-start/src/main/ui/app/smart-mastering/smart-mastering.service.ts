@@ -45,6 +45,21 @@ export class SmartMasteringService {
     return this.http.delete(url);
   }
 
+  getBlockedMatchUrls(uri: string) {
+    const url = `/api/mastering/block-match?uri=${uri}`;
+    return this.http.get<string[]>(url);
+  }
+
+  blockMatch(uri1: string, uri2: string) {
+    const url = `/api/mastering/block-match?uri1=${uri1}&uri2=${uri2}`;
+    return this.http.post(url, null);
+  }
+
+  unblockMatch(uri1: string, uri2: string) {
+    const url = `/api/mastering/block-match?uri1=${uri1}&uri2=${uri2}`;
+    return this.http.delete(url);
+  }
+
   search(query: string, activeFacets: any, page: number, pageLength: number) {
     let start: number = (page - 1) * pageLength + 1;
     let data = {
