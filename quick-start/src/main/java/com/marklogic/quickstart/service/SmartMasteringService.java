@@ -19,6 +19,7 @@ public class SmartMasteringService {
     private final String MASTERING_MERGE = "sm-merge";
     private final String MASTERING_HISTORY_DOCUMENT = "sm-history-document";
     private final String MASTERING_HISTORY_PROPERTIES = "sm-history-properties";
+    private final String MASTERING_BLOCK_MATCH = "sm-block-match";
 
     private DatabaseClient client;
 
@@ -59,6 +60,26 @@ public class SmartMasteringService {
         RequestParameters params = new RequestParameters();
         params.add("uri", uri);
         return new GenericResourceManager(MASTERING_HISTORY_PROPERTIES, client).get(params);
+    }
+
+    public String getBlockedMatches(String uri) {
+        RequestParameters params = new RequestParameters();
+        params.add("uri", uri);
+        return new GenericResourceManager(MASTERING_BLOCK_MATCH, client).get(params);
+    }
+
+    public void blockMatch(String uri1, String uri2) {
+        RequestParameters params = new RequestParameters();
+        params.add("uri1", uri1);
+        params.add("uri2", uri2);
+        new GenericResourceManager(MASTERING_BLOCK_MATCH, client).post(params, new StringHandle("").withFormat(Format.JSON));
+    }
+
+    public void unblockMatch(String uri1, String uri2) {
+        RequestParameters params = new RequestParameters();
+        params.add("uri1", uri1);
+        params.add("uri2", uri2);
+        new GenericResourceManager(MASTERING_BLOCK_MATCH, client).delete(params);
     }
 
     class GenericResourceManager extends ResourceManager {

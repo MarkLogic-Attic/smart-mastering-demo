@@ -83,4 +83,23 @@ public class SmartMasteringController extends EnvironmentAware {
         String resp = smartMasteringService.getHistoryProperties(uri);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/mastering/block-match", method = RequestMethod.GET)
+    public ResponseEntity<?> getBlockedMatches(@RequestParam String uri) {
+        String resp = smartMasteringService.getBlockedMatches(uri);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mastering/block-match", method = RequestMethod.POST)
+    public ResponseEntity<?> blockMatch(@RequestParam String uri1, @RequestParam String uri2) {
+        smartMasteringService.blockMatch(uri1, uri2);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mastering/block-match", method = RequestMethod.DELETE)
+    public ResponseEntity<?> unblockMatch(@RequestParam String uri1, @RequestParam String uri2) {
+        smartMasteringService.unblockMatch(uri1, uri2);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

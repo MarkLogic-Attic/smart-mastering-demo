@@ -18,6 +18,7 @@ export class CompareComponent implements OnInit {
   doc1: any = null;
   doc2: any = null;
   optionsName: string = 'mlw-merge';
+  mergeBlocked: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,6 +35,10 @@ export class CompareComponent implements OnInit {
     this.sm.getDoc(this.uri2).subscribe(doc => {
       this.doc2 = this.toArray(doc.envelope.instance);
     });
+
+    this.sm.getBlockedMatchUrls(this.uri1).subscribe((matches: string[]) => {
+      this.mergeBlocked = matches.includes(this.uri2);
+    })
   }
 
   toArray(data: any) {
@@ -73,7 +78,15 @@ export class CompareComponent implements OnInit {
     });
   }
 
-  notMatch() {
+  blockMatch() {
+    this.sm.blockMatch(this.uri1, this.uri2).subscribe(() => {
+      this.mergeBlocked = true;
+    });
+  }
 
+  unblockMatch() {
+    this.sm.unblockMatch(this.uri1, this.uri2).subscribe(() => {
+      this.mergeBlocked = false;
+    });
   }
 }
