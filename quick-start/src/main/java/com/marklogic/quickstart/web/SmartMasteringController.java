@@ -102,4 +102,15 @@ public class SmartMasteringController extends EnvironmentAware {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/mastering/notifications", method = RequestMethod.GET)
+    public ResponseEntity<String> getNotifications(@RequestParam(defaultValue = "1") Integer start, @RequestParam(defaultValue = "10") Integer pageSize) {
+        String resp = smartMasteringService.getNotifications(start, pageSize);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/mastering/notifications", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteNotification(@RequestParam String uri) {
+        smartMasteringService.deleteNotifications(uri);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

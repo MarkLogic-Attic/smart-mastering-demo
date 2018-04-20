@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div *ngIf="sourceUris" class="sources" layout="column" layout-align="center start">
+    <div *ngIf="sourceUris && sourceUris.length > 0" class="sources" layout="column" layout-align="center start">
       <h5>Sources</h5>
       <div class="source-uri" *ngFor="let uri of sourceUris" mdl-shadow="2">
         {{uri}}
@@ -33,7 +33,7 @@
   </div>
 </div>
 
-<div #provSankey class="sankey"></div>
+<div #provSankey *ngIf="sourceUris && sourceUris.length > 1" class="sankey"></div>
 
 <table left-align *ngIf="historyDocument" class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
   <thead>

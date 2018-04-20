@@ -1,0 +1,37 @@
+<div class="sm-inbox-page" layout-padding layout="column" layout-align="center center">
+  <h1><i class="mdi mdi-inbox"></i> Inbox Items</h1>
+
+  <div *ngIf="!loading" layout="column" flex layout-align="center center" class="full-width">
+    <div *ngIf="!loading && (!items || items.length === 0)">No Items</div>
+    <div class="mdl-grid results">
+      <div class="mdl-cell mdl-cell--12-col">
+        <table left-align
+          class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp"
+          *ngIf="items && items.length > 0">
+          <thead>
+            <tr>
+              <th class="mdl-data-table__cell--non-numeric">Type</th>
+              <th class="mdl-data-table__cell--non-numeric">Matches</th>
+              <th class="mdl-data-table__cell--non-numeric">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items">
+              <td (click)="compareItems(item)">{{item.thresholdLabel}}</td>
+              <td (click)="compareItems(item)">{{item.uris.length}}</td>
+              <td (click)="compareItems(item)">{{item.meta.dateTime | datePipe}}</td>
+              <td><i (click)="delete(item)" class="fa fa-trash"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="loading" flex layout="column" layout-align="center center">
+    <h3>Loading Items...</h3>
+    <div class="center-text">
+      <mdl-spinner single-color active></mdl-spinner>
+    </div>
+  </div>
+</div>
+

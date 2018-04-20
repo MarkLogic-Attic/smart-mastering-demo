@@ -90,4 +90,12 @@ export class SmartMasteringService {
   getHistoryProperties(uri: string) {
     return this.http.get<any>(`/api/mastering/history-properties?uri=${uri}`);
   }
+
+  getInboxItems() {
+    return this.http.get<any>(`/api/mastering/notifications`);
+  }
+
+  deleteNotification(item) {
+    return this.http.delete(`/api/mastering/notifications?uri=${item.meta.uri}`);
+  }
 }

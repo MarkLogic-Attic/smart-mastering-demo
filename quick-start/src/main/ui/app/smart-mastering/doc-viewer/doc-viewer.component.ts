@@ -90,6 +90,10 @@ export class SmartMasteringDocViewerComponent implements OnInit {
   }
 
   render() {
+    if (!this.sanKeyDiv) {
+      return;
+    }
+
     const links = [];
     let activities = [{
         resultUri: this.uri

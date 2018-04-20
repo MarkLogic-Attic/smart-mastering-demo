@@ -33,16 +33,15 @@
                 <em *ngFor="let text of match['match-text']">
                   <span ngClass="{ highlight: text.highlight !== undefined }">
                     <span *ngIf="text.highlight !== undefined">{{getMatcherPath(match.path)}}: {{ text.highlight }}</span>
-                    <!-- <span *ngIf="text.highlight === undefined">{{ text }}</span> -->
                   </span>
                 </em>
               </div>
             </div>
             <div class="actions" layout-align="center center" layout="row">
-              <div class="compare-wrapper" [ngClass]="{'disabled': selectedResults.length == 2}" (click)="toggleItemCompare(result)">
+              <div class="compare-wrapper"
+               (click)="toggleItemCompare(result)">
                 <mdl-checkbox
                   class="compare-me"
-                  [disabled]="selectedResults.length == 2 && selectedResults.indexOf(result) == -1"
                   [ngModel]="selectedResults.indexOf(result) != -1">Compare</mdl-checkbox>
               </div>
             </div>
