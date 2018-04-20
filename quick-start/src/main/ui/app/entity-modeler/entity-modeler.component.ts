@@ -227,7 +227,7 @@ export class EntityModelerComponent implements AfterViewChecked {
         connection.arrowTransform = `translate(${dst.x},${dst.y}) scale(1) rotate(${angle})`;
 
         const pathEl: SVGPathElement = svg.querySelector(`#${connection.from.name}-${connection.to.name}`);
-        if (pathEl) {
+        if (pathEl instanceof SVGPathElement) {
           setTimeout(() => {
             let p: SVGPoint = pathEl.getPointAtLength(25);
             connection.labelTransform = `translate(${p.x},${p.y}) scale(1) rotate(${cardinalityAngle})`;

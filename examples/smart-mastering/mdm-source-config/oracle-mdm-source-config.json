@@ -1,0 +1,26 @@
+{
+	"primaryKey": "CLIENT_ID",
+	"sourceName": "Oracle",
+	"dataRootName": "Person",
+	"delimiter": ",",
+	"inputFile": "data/content/ORACLE-person.csv",
+	"modelMapping": {
+		"CLIENT_ID":"$.Person.id",
+		"CL_FIRST_NAME":"$.Person.PersonName.PersonGivenName",
+		"CL_LAST_NAME":"$.Person.PersonName.PersonSurName",
+		"SSN": "$.Person.PersonSSNIdentification.IdentificationID",
+		"STREET_NUM": "$.Person.Address.AddressPrivateMailboxText",
+		"STREET_NAME": "$.Person.Address.AddressSecondaryUnitText",
+		"CITY": "$.Person.Address.LocationCityName",
+		"STATE": "$.Person.Address.LocationState",
+		"ZIPCODE": "$.Person.Address.LocationPostalCode",
+		"GENDER": "$.Person.PersonSex",
+		"DOB": "$.Person.PersonBirthDate",
+		"LANGUAGE": "$.Person.PersonPrimaryLanguage",
+		"LIVING_ARRANGEMENT": "$.Person.PersonUnionStatus",
+		"INCOME_AMT": "$.Person.Revenues.Revenue",
+		"BENEFIT_BEGIN_DATE": "$.Person.CaseStartDate",
+		"AU_BNFT_AMT": "$.Person.CaseAmount",
+		"PREGNANCY_DUE_DT": "$.Person.IncidentCategoryCodeDate"
+	}
+}

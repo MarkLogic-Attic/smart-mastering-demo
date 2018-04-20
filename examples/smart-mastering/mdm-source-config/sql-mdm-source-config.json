@@ -1,0 +1,32 @@
+{
+	"sourceName": "SQL_SOURCE",
+	"sqlDriver": "oracle.jdbc.driver.OracleDriver",
+	"jdbcURL": "jdbc:oracle:thin:@//localhost:1521/orcl",
+	"jdbcUsername": "system",
+	"jdbcPassword": "password",
+	"sql": "select distinct con.FST_NAME AS FIRST_NAME, con.LAST_NAME AS LAST_NAME, con.MARITAL_STAT_CD AS MARITAL_STATUS, con.ROW_ID AS CONTACT_ID, con.SOC_SECURITY_NUM as SOC_SECURITY_NUM FROM s_contact con",
+	"primaryKey": "CONTACT_ID",
+	"dataRootName": "Person",
+	"itemDetails": {
+		"CONTACT_ID": [
+			{
+				"rootNode": "ADDRESS",
+				"sql": "select distinct con_addr.ADDR_TYPE_CD AS ADDRESS_TYPE, addr.addr_name as ADDRESS, addr.addr as ADDRESS_LINE_1, addr.addr_line_2 as ADDRESS_LINE_2, addr.city as CITY, addr.country as COUNTRY,addr.state as STATE, addr.zipcode as ZIPCODE FROM s_contact con left outer join s_con_addr con_addr on con_addr.CONTACT_ID = con.ROW_ID left outer join s_addr_per addr on addr.row_id = con_addr.addr_per_id WHERE con.ROW_ID = ? AND addr.addr IS NOT NULL"
+			}
+		]
+	},
+	"modelMapping": {
+		"CONTACT_ID":"$.Person.id",
+		"FIRST_NAME":"$.Person.PersonName.PersonGivenName",
+		"LAST_NAME":"$.Person.PersonName.PersonSurName",
+		"SOC_SECURITY_NUM": "$.Person.PersonSSNIdentification.IdentificationID",
+		"MARITAL_STATUS": "$.Person.PersonUnionStatus",
+		"ADDRESS": "$.Person.Address",
+		"ADDRESS_LINE_1": "$.Person.Address.AddressPrivateMailboxText",
+		"ADDRESS_LINE_2": "$.Person.Address.AddressSecondaryUnitText",
+		"CITY": "$.Person.Address.LocationCityName",
+		"COUNTRY": "$.Person.Address.LocationCountry",
+		"STATE": "$.Person.Address.LocationState",
+		"ZIPCODE": "$.Person.Address.LocationPostalCode"
+	}
+}

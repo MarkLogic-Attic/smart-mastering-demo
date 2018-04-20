@@ -1,0 +1,75 @@
+<div layout-padding layout="column" layout-align="center center">
+  <div class="search-box" flex layout-align="center center" layout="row">
+    <form (submit)="doSearch()" flex layout-align="center center" layout="row">
+      <input type="search" name="searchText" [(ngModel)]="searchText" placeholder="Enter you search query here...">
+      <button type="submit" mdl-colored="primary" mdl-button mdl-button-type="raised">Search</button>
+    </form>
+  </div>
+  <div *ngIf="!loadingTraces" layout="column" flex layout-align="center center" class="full-width">
+    <app-pagination [start]="searchResponse.start"
+          [total]="searchResponse.total"
+          [pageLength]="searchResponse['page-length']"
+          (pageChanged)="pageChanged($event)"></app-pagination>
+    <div *ngIf="!loadingTraces && (!searchResponse || searchResponse.total === 0)">No Data</div>
+    <div class="mdl-grid results">
+      <div class="mdl-cell mdl-cell--2-col">
+        <app-facets
+          [facets]="searchResponse.facets"
+          [(activeFacets)]="activeFacets"
+          (activeFacetsChange)="updateFacets($event)"></app-facets>
+      </div>
+      <div class="mdl-cell mdl-cell--10-col">
+        <div *ngIf="searchResponse && searchResponse.total > 0" flex layout="row" class="results-wrapper">
+          <div *ngFor="let result of searchResponse.results" class="result">
+            <h4 class="link">
+              <a [routerLink]="['/view-sm']" [queryParams]="{docUri: result.uri}">{{ result.content.Person.PersonName.PersonGivenName }} {{result.content.Person.PersonName.PersonSurName}}</a>
+              <i *ngIf="isMerged(result)" class="fa fa-compress"></i>
+            </h4>
+            <div class="sub-header">
+            {{ result.content.Person.Address.LocationCityName }}, {{result.content.Person.Address.LocationState}}
+            </div>
+            <div class="matches">
+              <div class="match" *ngFor="let match of result.matches">
+                <em *ngFor="let text of match['match-text']">
+                  <span ngClass="{ highlight: text.highlight !== undefined }">
+                    <span *ngIf="text.highlight !== undefined">{{getMatcherPath(match.path)}}: {{ text.highlight }}</span>
+                    <!-- <span *ngIf="text.highlight === undefined">{{ text }}</span> -->
+                  </span>
+                </em>
+              </div>
+            </div>
+            <div class="actions" layout-align="center center" layout="row">
+              <div class="compare-wrapper" [ngClass]="{'disabled': selectedResults.length == 2}" (click)="toggleItemCompare(result)">
+                <mdl-checkbox
+                  class="compare-me"
+                  [disabled]="selectedResults.length == 2 && selectedResults.indexOf(result) == -1"
+                  [ngModel]="selectedResults.indexOf(result) != -1">Compare</mdl-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="loadingTraces" flex layout="column" layout-align="center center">
+    <h3>Searching...</h3>
+    <div class="center-text">
+      <mdl-spinner single-color active></mdl-spinner>
+    </div>
+  </div>
+
+</div>
+<div *ngIf="selectedResults.length > 0" class="compare-items">
+  <div class="items">
+    <div *ngFor="let item of selectedResults">
+      {{ item.content.Person.PersonName.PersonGivenName }} {{item.content.Person.PersonName.PersonSurName}}
+    </div>
+    <div *ngIf="selectedResults.length == 1" class="placeholder">
+      Need one More
+    </div>
+  </div>
+  <button (click)="compareItems()"
+    [disabled]="selectedResults.length < 2"
+    type="button" mdl-colored="accent"
+    mdl-button mdl-button-type="raised">Compare</button>
+</div>

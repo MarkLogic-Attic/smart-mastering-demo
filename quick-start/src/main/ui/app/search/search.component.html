@@ -30,6 +30,12 @@
         <div *ngIf="searchResponse && searchResponse.total > 0">
           <div *ngFor="let result of searchResponse.results" class="result">
             <h4 class="link">
+              <mdl-checkbox
+                *ngIf="currentDatabase === 'FINAL' && entitiesOnly"
+                class="compare-me"
+                [disabled]="selectedResults.length == 2 && selectedResults.indexOf(result.uri) == -1"
+                ng-checked="selectedResults.indexOf(result.uri) != -1"
+                (click)="toggleItemCompare(result.uri)"></mdl-checkbox>
               <a (click)="showDoc(currentDatabase, result.uri)">{{ result.label || result.uri }}</a>
             </h4>
             <div class="matches">
@@ -54,4 +60,18 @@
     </div>
   </div>
 
+</div>
+<div *ngIf="selectedResults.length > 0" class="compare-items">
+  <div class="items">
+    <div *ngFor="let item of selectedResults">
+      {{item}}
+    </div>
+    <div *ngIf="selectedResults.length == 1" class="placeholder">
+      Need one More
+    </div>
+  </div>
+  <button (click)="compareItems()"
+    [disabled]="selectedResults.length < 2"
+    type="button" mdl-colored="accent"
+    mdl-button mdl-button-type="raised">Compare</button>
 </div>

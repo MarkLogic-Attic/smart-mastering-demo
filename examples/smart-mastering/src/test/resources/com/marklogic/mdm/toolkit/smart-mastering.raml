@@ -1,0 +1,1255 @@
+#%RAML 1.0
+title: smart Mastering API
+version: v0.0.1
+baseUri: http://ml-9:8010
+mediaType:  application/json
+securitySchemes:
+  digest:
+    description: |
+      This API supports DigestSecurityScheme Authentication.
+    type: Digest Authentication
+/LATEST/resources:
+  /am-match-option-names:
+    get:
+      description: Retrieve names of options for matching records together
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+            {
+              "options": {
+                "option": ["basic"]
+              }
+            }
+  /am-match-options:
+    get:
+      description: Retrieve options for matching records together
+      queryParameters:
+        'rs:options':
+          required: true
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+            {
+              "options": {
+                "property-defs": {
+                  "property": [{
+                    "namespace": "",
+                    "localname": "IdentificationID",
+                    "name": "ssn"
+                  }, {
+                    "namespace": "",
+                    "localname": "PersonGivenName",
+                    "name": "first-name"
+                  }, {
+                    "namespace": "",
+                    "localname": "PersonSurName",
+                    "name": "last-name"
+                  }, {
+                    "namespace": "",
+                    "localname": "AddressPrivateMailboxText",
+                    "name": "addr1"
+                  }, {
+                    "namespace": "",
+                    "localname": "LocationCity",
+                    "name": "city"
+                  }, {
+                    "namespace": "",
+                    "localname": "LocationState",
+                    "name": "state"
+                  }, {
+                    "namespace": "",
+                    "localname": "LocationPostalCode",
+                    "name": "zip"
+                  }]
+                },
+                "algorithms": {
+                  "algorithm": [{
+                    "name": "cust-function",
+                    "function": "customFunction",
+                    "at": "/ext/com.marklogic.smart-mastering/algorithms/test.sjs"
+                  }, {
+                    "name": "std-reduce",
+                    "function": "standard-reduction"
+                  }, {
+                    "name": "dbl-metaphone",
+                    "function": "double-metaphone"
+                  }, {
+                    "name": "thesaurus",
+                    "function": "thesaurus"
+                  }]
+                },
+                "scoring": [{
+                  "add": [{
+                    "property-name": "ssn",
+                    "weight": "75"
+                  }, {
+                    "property-name": "last-name",
+                    "weight": "8"
+                  }, {
+                    "property-name": "first-name",
+                    "weight": "12"
+                  }, {
+                    "property-name": "addr1",
+                    "weight": "5"
+                  }, {
+                    "property-name": "city",
+                    "weight": "3"
+                  }, {
+                    "property-name": "state",
+                    "weight": "1"
+                  }, {
+                    "property-name": "zip",
+                    "weight": "3"
+                  }],
+                  "expand": [{
+                    "property-name": "first-name",
+                    "algorithm-ref": "thesaurus",
+                    "weight": "3",
+                    "thesaurus": "/mdm/config/thesauri/first-name-synonyms.xml"
+                  }, {
+                    "property-name": "first-name",
+                    "algorithm-ref": "thesaurus",
+                    "weight": "2",
+                    "thesaurus": "/mdm/config/thesauri/names-across-languages.xml"
+                  }, {
+                    "property-name": "first-name",
+                    "algorithm-ref": "dbl-metaphone",
+                    "weight": "6",
+                    "dictionary": "/mdm/config/dictionaries/first-names.xml",
+                    "distance-threshold": "50"
+                  }, {
+                    "property-name": "last-name",
+                    "algorithm-ref": "dbl-metaphone",
+                    "weight": "5",
+                    "dictionary": "/mdm/config/dictionaries/last-names.xml"
+                  }],
+                  "reduce": [{
+                    "algorithm-ref": "std-reduce",
+                    "weight": "18",
+                    "all-match": {
+                      "property": [
+                        "last-name",
+                        "addr1"
+                      ]
+                    }
+                  }]
+                }],
+                "thresholds": {
+                  "threshold": [{
+                    "above": "30",
+                    "label": "Possible Match"
+                  }, {
+                    "above": "50",
+                    "label": "Likely Match"
+                  }, {
+                    "above": "75",
+                    "label": "Definitive Match"
+                  }]
+                },
+                "tuning": {
+                  "max-scan": "200",
+                  "initial-scan": "20"
+                }
+              }
+            }
+    post:
+      description: Save options for matching records together
+      queryParameters:
+        'rs:options':
+          required: true
+          type: string
+      body:
+        application/json:
+          example: |
+            {
+              "options": {
+                "property-defs": {
+                  "property": [{
+                    "namespace": "",
+                    "localname": "IdentificationID",
+                    "name": "ssn"
+                  }, {
+                    "namespace": "",
+                    "localname": "PersonGivenName",
+                    "name": "first-name"
+                  }, {
+                    "namespace": "",
+                    "localname": "PersonSurName",
+                    "name": "last-name"
+                  }, {
+                    "namespace": "",
+                    "localname": "AddressPrivateMailboxText",
+                    "name": "addr1"
+                  }, {
+                    "namespace": "",
+                    "localname": "LocationCity",
+                    "name": "city"
+                  }, {
+                    "namespace": "",
+                    "localname": "LocationState",
+                    "name": "state"
+                  }, {
+                    "namespace": "",
+                    "localname": "LocationPostalCode",
+                    "name": "zip"
+                  }]
+                },
+                "algorithms": {
+                  "algorithm": [{
+                    "name": "cust-function",
+                    "function": "customFunction",
+                    "at": "/ext/com.marklogic.smart-mastering/algorithms/test.sjs"
+                  }, {
+                    "name": "std-reduce",
+                    "function": "standard-reduction"
+                  }, {
+                    "name": "dbl-metaphone",
+                    "function": "double-metaphone"
+                  }, {
+                    "name": "thesaurus",
+                    "function": "thesaurus"
+                  }]
+                },
+                "scoring": [{
+                  "add": [{
+                    "property-name": "ssn",
+                    "weight": "75"
+                  }, {
+                    "property-name": "last-name",
+                    "weight": "8"
+                  }, {
+                    "property-name": "first-name",
+                    "weight": "12"
+                  }, {
+                    "property-name": "addr1",
+                    "weight": "5"
+                  }, {
+                    "property-name": "city",
+                    "weight": "3"
+                  }, {
+                    "property-name": "state",
+                    "weight": "1"
+                  }, {
+                    "property-name": "zip",
+                    "weight": "3"
+                  }],
+                  "expand": [{
+                    "property-name": "first-name",
+                    "algorithm-ref": "thesaurus",
+                    "weight": "3",
+                    "thesaurus": "/mdm/config/thesauri/first-name-synonyms.xml"
+                  }, {
+                    "property-name": "first-name",
+                    "algorithm-ref": "thesaurus",
+                    "weight": "2",
+                    "thesaurus": "/mdm/config/thesauri/names-across-languages.xml"
+                  }, {
+                    "property-name": "first-name",
+                    "algorithm-ref": "dbl-metaphone",
+                    "weight": "6",
+                    "dictionary": "/mdm/config/dictionaries/first-names.xml",
+                    "distance-threshold": "50"
+                  }, {
+                    "property-name": "last-name",
+                    "algorithm-ref": "dbl-metaphone",
+                    "weight": "5",
+                    "dictionary": "/mdm/config/dictionaries/last-names.xml"
+                  }],
+                  "reduce": [{
+                    "algorithm-ref": "std-reduce",
+                    "weight": "18",
+                    "all-match": {
+                      "property": [
+                        "last-name",
+                        "addr1"
+                      ]
+                    }
+                  }]
+                }],
+                "thresholds": {
+                  "threshold": [{
+                    "above": "30",
+                    "label": "Possible Match"
+                  }, {
+                    "above": "50",
+                    "label": "Likely Match"
+                  }, {
+                    "above": "75",
+                    "label": "Definitive Match"
+                  }]
+                },
+                "tuning": {
+                  "max-scan": "200",
+                  "initial-scan": "20"
+                }
+              }
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "success" : true
+                }
+  /am-match:
+    post:
+      description: find records that match up with a document at a given uri or provided in POST body.
+      queryParameters:
+        'rs:uri':
+          required: false
+          type: string
+        'rs:options':
+          required: false
+          type: string
+        'rs:start':
+          required: false
+          type: integer
+          default: 1
+        'rs:pageLength':
+          required: false
+          type: integer
+          default: max-scan from options
+      body:
+        application/json:
+          example: |
+            {
+              "document": {
+                "Person": {
+                  "PersonName": {
+                    "PersonGivenName": "Jane",
+                    "PersonSurName": "Doe"
+                  }
+                }
+              },
+              "options": {
+                "property-defs": {
+                  "property": [{
+                    "namespace": "",
+                    "localname": "IdentificationID",
+                    "name": "ssn"
+                  }, {
+                    "namespace": "",
+                    "localname": "PersonGivenName",
+                    "name": "first-name"
+                  }, {
+                    "namespace": "",
+                    "localname": "PersonSurName",
+                    "name": "last-name"
+                  }, {
+                    "namespace": "",
+                    "localname": "AddressPrivateMailboxText",
+                    "name": "addr1"
+                  }, {
+                    "namespace": "",
+                    "localname": "LocationCity",
+                    "name": "city"
+                  }, {
+                    "namespace": "",
+                    "localname": "LocationState",
+                    "name": "state"
+                  }, {
+                    "namespace": "",
+                    "localname": "LocationPostalCode",
+                    "name": "zip"
+                  }]
+                },
+                "algorithms": {
+                  "algorithm": [{
+                    "name": "cust-function",
+                    "function": "customFunction",
+                    "at": "/ext/com.marklogic.smart-mastering/algorithms/test.sjs"
+                  }, {
+                    "name": "std-reduce",
+                    "function": "standard-reduction"
+                  }, {
+                    "name": "dbl-metaphone",
+                    "function": "double-metaphone"
+                  }, {
+                    "name": "thesaurus",
+                    "function": "thesaurus"
+                  }]
+                },
+                "scoring": [{
+                  "add": [{
+                    "property-name": "ssn",
+                    "weight": "75"
+                  }, {
+                    "property-name": "last-name",
+                    "weight": "8"
+                  }, {
+                    "property-name": "first-name",
+                    "weight": "12"
+                  }, {
+                    "property-name": "addr1",
+                    "weight": "5"
+                  }, {
+                    "property-name": "city",
+                    "weight": "3"
+                  }, {
+                    "property-name": "state",
+                    "weight": "1"
+                  }, {
+                    "property-name": "zip",
+                    "weight": "3"
+                  }],
+                  "expand": [{
+                    "property-name": "first-name",
+                    "algorithm-ref": "thesaurus",
+                    "weight": "3",
+                    "thesaurus": "/mdm/config/thesauri/first-name-synonyms.xml"
+                  }, {
+                    "property-name": "first-name",
+                    "algorithm-ref": "thesaurus",
+                    "weight": "2",
+                    "thesaurus": "/mdm/config/thesauri/names-across-languages.xml"
+                  }, {
+                    "property-name": "first-name",
+                    "algorithm-ref": "dbl-metaphone",
+                    "weight": "6",
+                    "dictionary": "/mdm/config/dictionaries/first-names.xml",
+                    "distance-threshold": "50"
+                  }, {
+                    "property-name": "last-name",
+                    "algorithm-ref": "dbl-metaphone",
+                    "weight": "5",
+                    "dictionary": "/mdm/config/dictionaries/last-names.xml"
+                  }],
+                  "reduce": [{
+                    "algorithm-ref": "std-reduce",
+                    "weight": "18",
+                    "all-match": {
+                      "property": [
+                        "last-name",
+                        "addr1"
+                      ]
+                    }
+                  }]
+                }],
+                "thresholds": {
+                  "threshold": [{
+                    "above": "30",
+                    "label": "Possible Match"
+                  }, {
+                    "above": "50",
+                    "label": "Likely Match"
+                  }, {
+                    "above": "75",
+                    "label": "Definitive Match"
+                  }]
+                },
+                "tuning": {
+                  "max-scan": "200",
+                  "initial-scan": "20"
+                }
+              }
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "results": {
+                    "query": {
+                      "and-query": {
+                        "queries": [{
+                            "collection-query": {
+                              "uri": "mdm-content"
+                            }
+                          },
+                          {
+                            "not-query": {
+                              "document-query": {
+                                "uri": "/CSV_FILE/Person/199.xml"
+                              }
+                            }
+                          },
+                          {
+                            "or-query": {
+                              "queries": [{
+                                  "element-value-query": {
+                                    "weight": 50,
+                                    "element": [
+                                      "IdentificationID"
+                                    ],
+                                    "text": [{
+                                      "lang": "en",
+                                      "_value": "73777777"
+                                    }],
+                                    "option": [
+                                      "case-insensitive"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "element-value-query": {
+                                    "weight": 8,
+                                    "element": [
+                                      "PersonSurName"
+                                    ],
+                                    "text": [{
+                                      "lang": "en",
+                                      "_value": "DEMODEC"
+                                    }],
+                                    "option": [
+                                      "case-insensitive"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "element-value-query": {
+                                    "weight": 12,
+                                    "element": [
+                                      "PersonGivenName"
+                                    ],
+                                    "text": [{
+                                      "lang": "en",
+                                      "_value": "JILL"
+                                    }],
+                                    "option": [
+                                      "case-insensitive"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "element-value-query": {
+                                    "weight": 5,
+                                    "element": [
+                                      "AddressPrivateMailboxText"
+                                    ],
+                                    "text": [{
+                                      "lang": "en",
+                                      "_value": "9999"
+                                    }],
+                                    "option": [
+                                      "case-insensitive"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "element-value-query": {
+                                    "element": [
+                                      "LocationState"
+                                    ],
+                                    "text": [{
+                                      "lang": "en",
+                                      "_value": "MD"
+                                    }],
+                                    "option": [
+                                      "case-insensitive"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "element-value-query": {
+                                    "weight": 3,
+                                    "element": [
+                                      "LocationPostalCode"
+                                    ],
+                                    "text": [{
+                                      "lang": "en",
+                                      "_value": "215020000"
+                                    }],
+                                    "option": [
+                                      "case-insensitive"
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "result": [{
+                      "uri": "/CSV_FILE/Person/208.xml",
+                      "index": "1",
+                      "total": "1",
+                      "score": "63",
+                      "threshold": "Likely Match",
+                      "matches": {
+                        "PersonSurName": "DEMODEC",
+                        "LocationState": "MD",
+                        "AddressPrivateMailboxText": "9999",
+                        "LocationPostalCode": "215020000",
+                        "IdentificationID": "73777777"
+                      }
+                    }]
+                  }
+                }
+  /am-merge-option-names:
+    get:
+      description: Retrieve names of options for merging records together
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+            {
+              "options": {
+                "option": ["default"]
+              }
+            }
+  /am-merge-options:
+    get:
+      description: Save options that determine if and how records are merged.
+      queryParameters:
+        'rs:options':
+          required: false
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+            {
+              "options": {
+                "match-options": "basic",
+                "thresholds": {
+                  "threshold": {
+                    "label": "Likely Match",
+                    "action": "notify"
+                  }
+                },
+                "property-defs": {
+                  "property": {
+                    "namespace": "",
+                    "localname": "Address",
+                    "name": "address"
+                  }
+                },
+                "algorithms": {
+                  "algorithm": {
+                    "name": "address",
+                    "function": "address"
+                  }
+                },
+                "merging": {
+                  "merge": {
+                    "property-name": "address",
+                    "algorithm-ref": "address",
+                    "max-values": "1",
+                    "postal-code": {
+                      "prefer": "zip+4"
+                    },
+                    "length": {
+                      "weight": "8"
+                    },
+                    "double-metaphone": {
+                      "distance-threshold": "50"
+                    }
+                  }
+                }
+              }
+            }
+    post:
+      description: Save options that determine if and how records are merged.
+      queryParameters:
+        'rs:options':
+          required: false
+          type: string
+      body:
+        application/json:
+          example: |
+            {
+              "options": {
+                "match-options": "basic",
+                "thresholds": {
+                  "threshold": {
+                    "label": "Likely Match",
+                    "action": "notify"
+                  }
+                },
+                "property-defs": {
+                  "property": {
+                    "namespace": "",
+                    "localname": "Address",
+                    "name": "address"
+                  }
+                },
+                "algorithms": {
+                  "algorithm": {
+                    "name": "address",
+                    "function": "address"
+                  }
+                },
+                "merging": {
+                  "merge": {
+                    "property-name": "address",
+                    "algorithm-ref": "address",
+                    "max-values": "1",
+                    "postal-code": {
+                      "prefer": "zip+4"
+                    },
+                    "length": {
+                      "weight": "8"
+                    },
+                    "double-metaphone": {
+                      "distance-threshold": "50"
+                    }
+                  }
+                }
+              }
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "success": true
+                }
+  /am-merge:
+    post:
+      description: merge records together using a defined set of rules
+      queryParameters:
+        'rs:primary-uri':
+          required: true
+          type: string
+        'rs:secondary-uri':
+          required: true
+          type: string
+        'rs:preview':
+          required: false
+          type: boolean
+          default: false
+        'rs:options':
+          required: false
+          type: string
+      body:
+        application/json:
+          example: |
+            {
+              "options": {
+                "match-options": "basic",
+                "thresholds": {
+                  "threshold": {
+                    "label": "Likely Match",
+                    "action": "notify"
+                  }
+                },
+                "property-defs": {
+                  "property": {
+                    "namespace": "",
+                    "localname": "Address",
+                    "name": "address"
+                  }
+                },
+                "algorithms": {
+                  "algorithm": {
+                    "name": "address",
+                    "function": "address"
+                  }
+                },
+                "merging": {
+                  "merge": {
+                    "property-name": "address",
+                    "algorithm-ref": "address",
+                    "max-values": "1",
+                    "postal-code": {
+                      "prefer": "zip+4"
+                    },
+                    "length": {
+                      "weight": "8"
+                    },
+                    "double-metaphone": {
+                      "distance-threshold": "50"
+                    }
+                  }
+                }
+              }
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "$type": "MDM",
+                  "Person": {
+                    "Address": {
+                      "$type": "Address",
+                      "LocationState": "MD",
+                      "AddressPrivateMailboxText": "9999",
+                      "AddressSecondaryUnitText": "VIRGINIA",
+                      "LocationPostalCode": "215020000",
+                      "LocationCityName": "CUMBERLAND"
+                    },
+                    "PersonName": [{
+                      "$type": "PersonName",
+                      "PersonGivenName": "JILL",
+                      "PersonSurName": "DEMODEC"
+                    }, {
+                      "$type": "PersonName",
+                      "PersonGivenName": "JILLIAN",
+                      "PersonSurName": "DEMODEC"
+                    }],
+                    "PersonSSNIdentification": {
+                      "$type": "PersonSSNIdentification",
+                      "IdentificationID": "73777777"
+                    },
+                    "$type": "Person",
+                    "id": [
+                      "199",
+                      "208"
+                    ]
+                  }
+                }
+    delete:
+      description: Unmerge a particular merged document.
+      queryParameters:
+        'rs:mergedUri':
+          required: true
+          type: string
+        'rs:retainAuditTrail':
+          required: false
+          type: boolean
+          default: true
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "success": true
+                }
+  /am-history-properties:
+    get:
+      description: Get detailed information on document property lineage
+      queryParameters:
+        'rs:uri':
+          required: true
+          type: string
+        'rs:property':
+          required: false
+          type: string+
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "Address": {
+                    "MD 9999 VIRGINIA 215020000 CUMBERLAND": {
+                      "details": [{
+                        "options": "/com.marklogic.smart-mastering/options/merging/default.xml",
+                        "algorithm": "standard",
+                        "sourceName": "CSV_FILE"
+                      }, {
+                        "options": "/com.marklogic.smart-mastering/options/merging/default.xml",
+                        "algorithm": "standard",
+                        "sourceName": "CSV_FILE"
+                      }],
+                      "count": 2
+                    }
+                  },
+                  "PersonName": {
+                    "JILLIAN DEMODEC": {
+                      "details": {
+                        "options": "/com.marklogic.smart-mastering/options/merging/default.xml",
+                        "algorithm": "standard",
+                        "sourceName": "CSV_FILE"
+                      },
+                      "count": 1
+                    }
+                  },
+                  "PersonSSNIdentification": {
+                    "73777777": {
+                      "details": [{
+                        "options": "/com.marklogic.smart-mastering/options/merging/default.xml",
+                        "algorithm": "standard",
+                        "sourceName": "CSV_FILE"
+                      }, {
+                        "options": "/com.marklogic.smart-mastering/options/merging/default.xml",
+                        "algorithm": "standard",
+                        "sourceName": "CSV_FILE"
+                      }],
+                      "count": 2
+                    }
+                  }
+                }
+  /am-history-document:
+    get:
+      description: Get history of document lineage.
+      queryParameters:
+        'rs:uri':
+          required: true
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "activities": [{
+                    "type": "merge",
+                    "auditUri": "/com.marklogic.smart-mastering/auditing/merge/4d486103-bf84-44fd-939b-d08b8f6e26d5.xml",
+                    "wasDerivedFromUris": ["/CSV_FILE/Person/208.xml", "/CSV_FILE/Person/199.xml"],
+                    "time": "2017-11-09T21:54:34.564421Z",
+                    "resultUri": "/com.marklogic.smart-mastering/merged/a5bd0dc1-6ae7-4575-a9b2-6c132bd051da.xml",
+                    "label": "merge by admin"
+                  }]
+                }
+  /am-entity-services:
+    get:
+      description: Get information on Entities in Entity Services.
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                [{
+                  "entityIRI": "http://example.org/AddressType-0.0.1/Address",
+                  "entityTitle": "Address",
+                  "properties": [{
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/AddressDeliveryPoint",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "AddressDeliveryPoint",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/AddressDeliveryPoint/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/AddressFullText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "AddressFullText",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/AddressFullText/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/AddressPrivateMailboxText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "AddressPrivateMailboxText",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/AddressPrivateMailboxText/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/AddressRecipientName",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "AddressRecipientName",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/AddressRecipientName/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/AddressSecondaryUnitText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "AddressSecondaryUnitText",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/AddressSecondaryUnitText/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/AddressUrbanizationName",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "AddressUrbanizationName",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/AddressUrbanizationName/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/LocationCityName",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "LocationCityName",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/LocationCityName/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/LocationCountry",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "LocationCountry",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/LocationCountry/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/LocationCounty",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "LocationCounty",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/LocationCounty/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/LocationPostalCode",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "LocationPostalCode",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/LocationPostalCode/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/LocationPostalExtensionCode",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "LocationPostalExtensionCode",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/LocationPostalExtensionCode/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/AddressType-0.0.1/Address/LocationState",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "LocationState",
+                    "datatype": "array",
+                    "items": "http://example.org/AddressType-0.0.1/Address/LocationState/items"
+                  }]
+                }, {
+                  "entityIRI": "http://release.niem.gov/niem/niem-core/3.0/MDM-0.0.1/MDM",
+                  "entityTitle": "MDM",
+                  "properties": [{
+                    "itemsRef": null,
+                    "propertyIRI": "http://release.niem.gov/niem/niem-core/3.0/MDM-0.0.1/MDM/id",
+                    "itemsDatatype": null,
+                    "collation": null,
+                    "title": "id",
+                    "datatype": "string",
+                    "items": null
+                  }]
+                }, {
+                  "entityIRI": "http://example.org/PersonType-0.0.1/Person",
+                  "entityTitle": "Person",
+                  "properties": [{
+                    "itemsRef": "http://example.org/PersonType-0.0.1/AddressType",
+                    "propertyIRI": "http://example.org/PersonType-0.0.1/Person/Address",
+                    "itemsDatatype": null,
+                    "collation": null,
+                    "title": "Address",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonType-0.0.1/Person/Address/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonType-0.0.1/Person/PersonAccentText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonAccentText",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonType-0.0.1/Person/PersonAccentText/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonType-0.0.1/Person/PersonBloodType",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonBloodType",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonType-0.0.1/Person/PersonBloodType/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonType-0.0.1/Person/PersonDescriptionText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonDescriptionText",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonType-0.0.1/Person/PersonDescriptionText/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonType-0.0.1/Person/PersonEducationLevelText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonEducationLevelText",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonType-0.0.1/Person/PersonEducationLevelText/items"
+                  }, {
+                    "itemsRef": "http://example.org/PersonType-0.0.1/PersonNameType",
+                    "propertyIRI": "http://example.org/PersonType-0.0.1/Person/PersonName",
+                    "itemsDatatype": null,
+                    "collation": null,
+                    "title": "PersonName",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonType-0.0.1/Person/PersonName/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonType-0.0.1/Person/PersonNationality",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonNationality",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonType-0.0.1/Person/PersonNationality/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonType-0.0.1/Person/PersonRace",
+                    "itemsDatatype": null,
+                    "collation": null,
+                    "title": "PersonRace",
+                    "datatype": "string",
+                    "items": null
+                  }, {
+                    "itemsRef": "http://example.org/PersonType-0.0.1/PersonSSNIdentificationType",
+                    "propertyIRI": "http://example.org/PersonType-0.0.1/Person/PersonSSNIdentification",
+                    "itemsDatatype": null,
+                    "collation": null,
+                    "title": "PersonSSNIdentification",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonType-0.0.1/Person/PersonSSNIdentification/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonType-0.0.1/Person/PersonSex",
+                    "itemsDatatype": null,
+                    "collation": null,
+                    "title": "PersonSex",
+                    "datatype": "string",
+                    "items": null
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonType-0.0.1/Person/PersonUnionStatus",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonUnionStatus",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonType-0.0.1/Person/PersonUnionStatus/items"
+                  }]
+                }, {
+                  "entityIRI": "http://example.org/PersonNameType-0.0.1/PersonName",
+                  "entityTitle": "PersonName",
+                  "properties": [{
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonFullName",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonFullName",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonFullName/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonGivenName",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonGivenName",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonGivenName/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonMaidenName",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonMaidenName",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonMaidenName/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonMiddleName",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonMiddleName",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonMiddleName/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonNameAugmentationPoint",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonNameAugmentationPoint",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonNameAugmentationPoint/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonNameCategory",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonNameCategory",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonNameCategory/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonNamePrefixText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonNamePrefixText",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonNamePrefixText/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonNameSalutationText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonNameSalutationText",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonNameSalutationText/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonNameSuffixText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonNameSuffixText",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonNameSuffixText/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonOfficialGivenName",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonOfficialGivenName",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonOfficialGivenName/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonPreferredName",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonPreferredName",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonPreferredName/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonSurName",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonSurName",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonSurName/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonNameType-0.0.1/PersonName/PersonSurNamePrefixText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "PersonSurNamePrefixText",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonNameType-0.0.1/PersonName/PersonSurNamePrefixText/items"
+                  }]
+                }, {
+                  "entityIRI": "http://example.org/PersonSSNIdentificationType-0.0.1/PersonSSNIdentification",
+                  "entityTitle": "PersonSSNIdentification",
+                  "properties": [{
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonSSNIdentificationType-0.0.1/PersonSSNIdentification/IdentificationCategory",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "IdentificationCategory",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonSSNIdentificationType-0.0.1/PersonSSNIdentification/IdentificationCategory/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonSSNIdentificationType-0.0.1/PersonSSNIdentification/IdentificationCategoryDescriptionText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "IdentificationCategoryDescriptionText",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonSSNIdentificationType-0.0.1/PersonSSNIdentification/IdentificationCategoryDescriptionText/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonSSNIdentificationType-0.0.1/PersonSSNIdentification/IdentificationID",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "IdentificationID",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonSSNIdentificationType-0.0.1/PersonSSNIdentification/IdentificationID/items"
+                  }, {
+                    "itemsRef": null,
+                    "propertyIRI": "http://example.org/PersonSSNIdentificationType-0.0.1/PersonSSNIdentification/IdentificationSourceText",
+                    "itemsDatatype": "string",
+                    "collation": null,
+                    "title": "IdentificationSourceText",
+                    "datatype": "array",
+                    "items": "http://example.org/PersonSSNIdentificationType-0.0.1/PersonSSNIdentification/IdentificationSourceText/items"
+                  }]
+                }]
