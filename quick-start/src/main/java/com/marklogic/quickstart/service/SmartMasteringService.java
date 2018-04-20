@@ -20,6 +20,7 @@ public class SmartMasteringService {
     private final String MASTERING_HISTORY_DOCUMENT = "sm-history-document";
     private final String MASTERING_HISTORY_PROPERTIES = "sm-history-properties";
     private final String MASTERING_BLOCK_MATCH = "sm-block-match";
+    private final String SM_NOTIFICATIONS = "sm-notifications";
 
     private DatabaseClient client;
 
@@ -80,6 +81,19 @@ public class SmartMasteringService {
         params.add("uri1", uri1);
         params.add("uri2", uri2);
         new GenericResourceManager(MASTERING_BLOCK_MATCH, client).delete(params);
+    }
+
+    public String getNotifications(Integer start, Integer pageSize) {
+        RequestParameters params = new RequestParameters();
+        params.add("start", start.toString());
+        params.add("page-size", pageSize.toString());
+        return new GenericResourceManager(SM_NOTIFICATIONS, client).get(params);
+    }
+
+    public void deleteNotifications(String uri) {
+        RequestParameters params = new RequestParameters();
+        params.add("uri", uri);
+        new GenericResourceManager(SM_NOTIFICATIONS, client).delete(params);
     }
 
     class GenericResourceManager extends ResourceManager {

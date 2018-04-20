@@ -106,16 +106,16 @@ export class SmartMasteringSearchComponent implements OnDestroy, OnInit {
     let index = this.selectedResults.indexOf(item);
     if (index > -1) {
       this.selectedResults.splice(index, 1);
-    } else if (this.selectedResults.length < 2) {
+    } else {
       this.selectedResults.push(item);
     }
   }
 
   compareItems() {
+    const uris = this.selectedResults.map(sr => sr.uri);
     this.router.navigate(['/compare'], {
       queryParams: {
-        uri1: this.selectedResults[0].uri,
-        uri2: this.selectedResults[1].uri
+        uris
       }
     });
   }

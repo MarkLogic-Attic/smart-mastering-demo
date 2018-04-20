@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { NgDragDropModule } from 'ng-drag-drop';
 import { AppComponent } from './app.component';
 import { FlowsComponent } from './flows';
 import { HasBugsDialogComponent } from './has-bugs-dialog';
@@ -128,6 +129,7 @@ import {JobExportDialogComponent} from "./jobs/job-export.component";
     FacetsModule,
     RouterModule.forRoot(ROUTES, { useHash: true }),
     DatePipeModule,
+    NgDragDropModule.forRoot(),
     SmartMasteringModule
   ],
   providers: [
