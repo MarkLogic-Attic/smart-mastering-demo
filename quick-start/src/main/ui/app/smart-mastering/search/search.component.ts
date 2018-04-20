@@ -106,7 +106,7 @@ export class SmartMasteringSearchComponent implements OnDestroy, OnInit {
     let index = this.selectedResults.indexOf(item);
     if (index > -1) {
       this.selectedResults.splice(index, 1);
-    } else { // if (this.selectedResults.length < 2) {
+    } else {
       this.selectedResults.push(item);
     }
   }

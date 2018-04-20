@@ -71,7 +71,6 @@ table th:not(:first-child) {
   &:hover::after {
     content: "";
     position: absolute;
-    // background-color: rgba(238,238,238,0.3);
     border: 2px solid $bg-color;
     left: 0;
     top: -5000px;
