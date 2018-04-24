@@ -47,7 +47,12 @@ export class DashboardComponent implements OnInit {
 
   getMasteringStats() {
     this.sm.getStats().subscribe(stats => {
-      this.masteringStats = stats;
+      this.masteringStats = {};
+      for (let i in stats) {
+        if (stats.hasOwnProperty(i)) {
+          this.masteringStats[i] = Number(stats[i]).toLocaleString();
+        }
+      }
     });
   }
 
