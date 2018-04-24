@@ -13,6 +13,7 @@ import * as _ from 'lodash';
   styleUrls: ['./inbox.component.scss']
 })
 export class SmartMasteringInboxComponent implements OnInit {
+  total = 0;
   items = [];
 
   constructor(
@@ -22,7 +23,10 @@ export class SmartMasteringInboxComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.sm.getInboxItems().subscribe(items => this.items = items);
+    this.sm.getInboxItems().subscribe(response => {
+      this.items = response.notifications;
+      this.total = response.total;
+    });
   }
 
   compareItems(item) {
