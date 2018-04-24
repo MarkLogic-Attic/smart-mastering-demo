@@ -71,6 +71,14 @@
           </div>
         </div>
       </div>
+      <div class="info-card" mdl-shadow="2">
+        <div class="info-title"><i class="mdi mdi-database"></i> Notifications</div>
+        <div class="info-body" layout="row" *ngIf="stats">
+          <div class="info-column" layout="column" layout-align="center center">
+            <div class="column-body" *ngIf="masteringStats">{{masteringStats.notificationCount}}</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
