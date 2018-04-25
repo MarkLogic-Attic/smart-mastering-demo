@@ -40,18 +40,14 @@ export class SmartMasteringDocViewerComponent implements OnInit {
 
     const o1 = this.sm.getDoc(this.uri).pipe(tap(doc => {
       this.doc = this.formatDoc(doc);
+      if (doc && doc.envelope && doc.envelope.headers && doc.envelope.headers.merges && doc.envelope.headers.merges['document-uri']) {
+        this.sourceUris = doc.envelope.headers.merges['document-uri'].map(item => item.toString());
+      }
     }));
-
 
     const o2 = this.sm.getHistoryDocument(this.uri).pipe(
       tap(history => {
         this.historyDocument = history;
-        this.sourceUris = this.historyDocument.activities.reduce((sourceUris, activity) => {
-          if (activity.type === 'merge') {
-            sourceUris = _.union(sourceUris, activity.wasDerivedFromUris);
-          }
-          return sourceUris;
-        }, []);
       })
     );
 
