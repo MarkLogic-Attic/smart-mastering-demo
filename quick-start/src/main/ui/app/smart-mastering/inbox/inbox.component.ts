@@ -37,7 +37,6 @@ export class SmartMasteringInboxComponent implements OnInit {
 
   toggle(item) {
     this.checked[item.meta.uri] = !this.checked[item.meta.uri];
-    console.log(this.checked);
   }
 
   constructor(
