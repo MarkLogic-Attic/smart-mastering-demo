@@ -1,0 +1,28 @@
+.mdl-checkbox {
+  width: auto;
+}
+
+.mark-read {
+  cursor: pointer;
+}
+
+.actions {
+  min-width: inherit;
+  padding: 0px;
+}
+
+.unread {
+  font-weight: bold;
+}
+
+.read {
+  background-color: #fafafa;
+}
+
+::ng-deep .mdl-menu__container.is-visible {
+  border: 1px solid #ddd;
+}
+
+.read-status {
+  padding: 0px;
+}
