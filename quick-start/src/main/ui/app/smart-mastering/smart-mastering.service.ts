@@ -91,11 +91,20 @@ export class SmartMasteringService {
     return this.http.get<any>(`/api/mastering/history-properties?uri=${uri}`);
   }
 
-  getInboxItems() {
+  getInboxItems(start: number, pageSize: number) {
     return this.http.get<any>(`/api/mastering/notifications`);
   }
 
-  deleteNotification(item) {
-    return this.http.delete(`/api/mastering/notifications?uri=${item.meta.uri}`);
+  markAs(uris: any[], status: string) {
+    const payload = {
+      uris,
+      status: status
+    };
+    return this.http.put(`/api/mastering/notifications`, payload);
+  }
+
+  deleteNotifications(uris) {
+    const params = uris.map(uri => `uri=${uri}`);
+    return this.http.delete(`/api/mastering/notifications?${params.join('&')}`);
   }
 }

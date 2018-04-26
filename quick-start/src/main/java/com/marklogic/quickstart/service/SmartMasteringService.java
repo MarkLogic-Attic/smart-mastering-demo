@@ -90,6 +90,11 @@ public class SmartMasteringService {
         return new GenericResourceManager(SM_NOTIFICATIONS, client).get(params);
     }
 
+    public String updateNotifications(String body) {
+        RequestParameters params = new RequestParameters();
+        return new GenericResourceManager(SM_NOTIFICATIONS, client).put(params, new StringHandle(body).withFormat(Format.JSON));
+    }
+
     public void deleteNotifications(String uri) {
         RequestParameters params = new RequestParameters();
         params.add("uri", uri);
@@ -113,6 +118,15 @@ public class SmartMasteringService {
                 ResourceServices.ServiceResult res = resultItr.next();
                 StringHandle handle = new StringHandle();
                 return res.getContent(handle).get();
+            }
+            catch(ClientHandlerException e) {
+            }
+            return "{}";
+        }
+
+        public String put(RequestParameters params, AbstractWriteHandle input) {
+            try {
+                return this.getServices().put(params, input, new StringHandle()).get();
             }
             catch(ClientHandlerException e) {
             }
