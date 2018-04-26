@@ -273,6 +273,12 @@ task csvImport(type: ImportTask) {
   configFile = "mdm-source-config/csv-mdm-source-config.json"
 }
 
+task deleteModuleCache {
+    delete "build/ml-javaclient-util"
+}
+
+mlReloadModules.dependsOn deleteModuleCache
+
 task oracleImport(type: ImportTask) {
   mustRunAfter importThesauri
   mustRunAfter importSchema
@@ -357,6 +363,18 @@ task reloadFinal {
   dependsOn deployMatchOptions
   dependsOn deployMergeOptions
   dependsOn master
+}
+
+task prepDemo {
+  dependsOn mlReloadModules
+  dependsOn importThesauri
+  dependsOn importSchema
+  dependsOn csvImport
+  dependsOn crmImport
+  dependsOn oracleImport
+  dependsOn harmonize
+  dependsOn deployMatchOptions
+  dependsOn deployMergeOptions
 }
 
 mlDeploy.mustRunAfter installDist
