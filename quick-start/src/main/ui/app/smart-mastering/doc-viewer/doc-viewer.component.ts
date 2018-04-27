@@ -36,27 +36,33 @@ export class SmartMasteringDocViewerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.uri = this.route.snapshot.queryParamMap.get('docUri');
+    this.sub = this.route.queryParams.subscribe(params => {
+      this.doc = null;
+      this.historyDocument = null;
+      this.historyProperties = null;
+      this.sourceUris = null;
 
-    const o1 = this.sm.getDoc(this.uri).pipe(tap(doc => {
-      this.doc = this.formatDoc(doc);
-      if (doc && doc.envelope && doc.envelope.headers && doc.envelope.headers.merges && doc.envelope.headers.merges['document-uri']) {
-        this.sourceUris = doc.envelope.headers.merges['document-uri'].map(item => item.toString());
-      }
-    }));
+      this.uri = params['docUri'];
+      const o1 = this.sm.getDoc(this.uri).pipe(tap(doc => {
+        this.doc = this.formatDoc(doc);
+        if (doc && doc.envelope && doc.envelope.headers && doc.envelope.headers.merges && doc.envelope.headers.merges['document-uri']) {
+          this.sourceUris = doc.envelope.headers.merges['document-uri'].map(item => item.toString());
+        }
+      }));
 
-    const o2 = this.sm.getHistoryDocument(this.uri).pipe(
-      tap(history => {
-        this.historyDocument = history;
-      })
-    );
+      const o2 = this.sm.getHistoryDocument(this.uri).pipe(
+        tap(history => {
+          this.historyDocument = history;
+        })
+      );
 
-    const o3 = this.sm.getHistoryProperties(this.uri).pipe(tap(history => {
-      this.historyProperties = history;
-    }));
+      const o3 = this.sm.getHistoryProperties(this.uri).pipe(tap(history => {
+        this.historyProperties = history;
+      }));
 
-    Observable.zip(o1, o2, o3, () => {}).subscribe(() => {
-      this.render();
+      Observable.zip(o1, o2, o3, () => {}).subscribe(() => {
+        this.render();
+      });
     });
   }
 
@@ -211,6 +217,7 @@ export class SmartMasteringDocViewerComponent implements OnInit {
       width = window.innerWidth - margin.left - margin.right,
       height = window.innerHeight - margin.top - margin.bottom;
     const color = d3_scale.scaleOrdinal(d3_scale_chromatic.schemePaired);
+    d3.select(this.sanKeyDiv.nativeElement).select('svg').remove();
     const svg = d3.select(this.sanKeyDiv.nativeElement)
       .append('svg')
       .attr('width', width + margin.left + margin.right)
