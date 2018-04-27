@@ -114,7 +114,7 @@ export class CompareComponent implements OnInit {
     if (this.uris.length !== 2) {
       return;
     }
-    this.sm.unblockMatch(this.uris[0], this.uris[0]).subscribe(() => {
+    this.sm.unblockMatch(this.uris[0], this.uris[1]).subscribe(() => {
       this.mergeBlocked = false;
     });
   }
