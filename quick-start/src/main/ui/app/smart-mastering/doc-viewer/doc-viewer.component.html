@@ -17,6 +17,26 @@
           <span>SSN: </span>
           <span>{{ssn}}</span>
         </p>
+        <p *ngFor="let bd of doc.birthDates">
+          <i class="fa fa-birthday-cake"></i>
+          <span>Birthdate: </span>
+          <span>{{bd}}</span>
+        </p>
+        <p *ngFor="let csd of doc.caseStartDates">
+          <i class="fa fa-calendar"></i>
+          <span>Case Start Date: </span>
+          <span>{{csd}}</span>
+        </p>
+        <p *ngFor="let amt of doc.caseAmounts">
+          <i class="fa fa-dollar"></i>
+          <span>Case Amount: </span>
+          <span>${{amt | number}}</span>
+        </p>
+        <p *ngFor="let rev of doc.revenues">
+          <i class="fa fa-dollar"></i>
+          <span>Revenue: </span>
+          <span>${{rev | number}}</span>
+        </p>
       </div>
     </div>
 

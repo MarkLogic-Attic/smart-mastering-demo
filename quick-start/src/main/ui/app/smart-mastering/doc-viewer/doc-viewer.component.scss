@@ -35,6 +35,12 @@ h5 {
 }
 .data {
   padding-left: 15px;
+
+  p {
+    span:first-of-type {
+      font-weight: bold;
+    }
+  }
 }
 
 .sources {
