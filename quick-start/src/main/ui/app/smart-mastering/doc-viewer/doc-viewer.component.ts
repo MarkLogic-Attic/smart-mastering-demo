@@ -1,9 +1,10 @@
 import { Component, ElementRef, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { tap, merge, mergeAll, zip } from 'rxjs/operators';
+import { tap, map, merge, mergeAll, zip } from 'rxjs/operators';
 import { SmartMasteringService } from '../smart-mastering.service';
 import { MdlDialogService } from '@angular-mdl/core';
+import { SmartMasteringRawViewerComponent } from '../raw-viewer/raw-viewer.component';
 
 import * as _ from 'lodash';
 
@@ -20,6 +21,7 @@ import * as d3_scale_chromatic from 'd3-scale-chromatic';
 })
 export class SmartMasteringDocViewerComponent implements OnInit {
   private sub: any;
+  rawDoc: any = null;
   doc: any = null;
   historyDocument: any = null;
   historyProperties: any = null;
@@ -36,27 +38,37 @@ export class SmartMasteringDocViewerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.uri = this.route.snapshot.queryParamMap.get('docUri');
+    this.sub = this.route.queryParams.subscribe(params => {
+      this.doc = null;
+      this.historyDocument = null;
+      this.historyProperties = null;
+      this.sourceUris = null;
 
-    const o1 = this.sm.getDoc(this.uri).pipe(tap(doc => {
-      this.doc = this.formatDoc(doc);
-      if (doc && doc.envelope && doc.envelope.headers && doc.envelope.headers.merges && doc.envelope.headers.merges['document-uri']) {
-        this.sourceUris = doc.envelope.headers.merges['document-uri'].map(item => item.toString());
-      }
-    }));
+      this.uri = params['docUri'];
+      const o1 = this.sm.getDoc(this.uri).pipe(tap(doc => {
+        this.rawDoc = doc;
+      }),
+      map(doc => this.sm.xmlToJson(doc)),
+      tap(doc => {
+        this.doc = this.formatDoc(doc);
+        if (doc && doc.envelope && doc.envelope.headers && doc.envelope.headers.merges && doc.envelope.headers.merges['document-uri']) {
+          this.sourceUris = doc.envelope.headers.merges['document-uri'].map(item => item.toString());
+        }
+      }));
 
-    const o2 = this.sm.getHistoryDocument(this.uri).pipe(
-      tap(history => {
-        this.historyDocument = history;
-      })
-    );
+      const o2 = this.sm.getHistoryDocument(this.uri).pipe(
+        tap(history => {
+          this.historyDocument = history;
+        })
+      );
 
-    const o3 = this.sm.getHistoryProperties(this.uri).pipe(tap(history => {
-      this.historyProperties = history;
-    }));
+      const o3 = this.sm.getHistoryProperties(this.uri).pipe(tap(history => {
+        this.historyProperties = history;
+      }));
 
-    Observable.zip(o1, o2, o3, () => {}).subscribe(() => {
-      this.render();
+      Observable.zip(o1, o2, o3, () => {}).subscribe(() => {
+        this.render();
+      });
     });
   }
 
@@ -111,7 +123,7 @@ export class SmartMasteringDocViewerComponent implements OnInit {
           if (!propertyValues.hasOwnProperty(propertyValue)) {
             continue;
           }
-          links.push({
+          const link = {
             source: 0,
             target: nodeUris.length,
             value: 1,
@@ -119,7 +131,13 @@ export class SmartMasteringDocViewerComponent implements OnInit {
             sourceName: 'final',
             propertyName: propertyName,
             propertyValue: propertyValue
-          });
+          }
+
+          if (propertyName === 'PersonName') {
+            links.unshift(link);
+          } else {
+            links.push(link);
+          }
           let propertyValueDetails = propertyValues[propertyValue].details;
           propertyValueDetails = Array.isArray(propertyValueDetails) ? propertyValueDetails : [propertyValueDetails];
           propertyValueDetails.forEach(function(detail) {
@@ -130,7 +148,7 @@ export class SmartMasteringDocViewerComponent implements OnInit {
             }
             nodeUriSources[detail.sourceLocation] = detail.sourceName;
             if (indexOfDerivedFrom !== 0) {
-              links.push({
+              const link = {
                 source: indexOfDerivedFrom,
                 target: 0,
                 value: 1,
@@ -138,7 +156,13 @@ export class SmartMasteringDocViewerComponent implements OnInit {
                 sourceName: detail.sourceName,
                 propertyName: propertyName,
                 propertyValue: propertyValue
-              });
+              };
+
+              if (propertyName === 'PersonName') {
+                links.unshift(link);
+              } else {
+                links.push(link);
+              }
             }
           });
         }
@@ -177,7 +201,7 @@ export class SmartMasteringDocViewerComponent implements OnInit {
                     let propertyValueDetails = propertyValues[propertyValue].details;
                     propertyValueDetails = Array.isArray(propertyValueDetails) ? propertyValueDetails : [propertyValueDetails];
                     propertyValueDetails.forEach(function(detail) {
-                      links.push({
+                      const link = {
                         source: activityIndex,
                         target: connectionIndex,
                         value: 1,
@@ -185,7 +209,12 @@ export class SmartMasteringDocViewerComponent implements OnInit {
                         sourceName: detail.sourceName,
                         propertyName: propertyName,
                         propertyValue: propertyValue
-                      });
+                      };
+                      if (propertyName === 'PersonName') {
+                        links.unshift(link);
+                      } else {
+                        links.push(link);
+                      }
                     });
                   }
                 }
@@ -211,6 +240,7 @@ export class SmartMasteringDocViewerComponent implements OnInit {
       width = window.innerWidth - margin.left - margin.right,
       height = window.innerHeight - margin.top - margin.bottom;
     const color = d3_scale.scaleOrdinal(d3_scale_chromatic.schemePaired);
+    d3.select(this.sanKeyDiv.nativeElement).select('svg').remove();
     const svg = d3.select(this.sanKeyDiv.nativeElement)
       .append('svg')
       .attr('width', width + margin.left + margin.right)
@@ -297,6 +327,16 @@ export class SmartMasteringDocViewerComponent implements OnInit {
       this.sm.unmerge(this.uri).subscribe(() => this.router.navigate(['/search']));
     },
     () => {});
+  }
+
+  showRaw(): void {
+    this.dialogService.showCustomDialog({
+      component: SmartMasteringRawViewerComponent,
+      providers: [
+        { provide: 'doc', useValue: this.rawDoc }
+      ],
+      isModal: true
+    });
   }
 }
 

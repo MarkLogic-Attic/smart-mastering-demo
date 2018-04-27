@@ -1,0 +1,14 @@
+<div class="dialog-container job-output-dialog">
+  <div class="mdl-dialog__title">
+    <div>Original Document</div>
+    <div class="mdl-layout-spacer"></div>
+    <mdl-button mdl-button-type="icon" (click)="cancel()">
+      <i class="fa fa-close"></i>
+    </mdl-button>
+  </div>
+  <div class="mdl-dialog__content">
+    <app-codemirror *ngIf="doc" [ngModel]="doc" [config]="codeMirrorConfig"></app-codemirror>
+  </div>
+</div>
+
+

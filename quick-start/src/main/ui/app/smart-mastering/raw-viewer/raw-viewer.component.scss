@@ -1,0 +1,12 @@
+@import '../../../styles/variables';
+@import '../../../styles/dialog';
+
+:host {
+  display: block;
+  height: 500px;
+  overflow: hidden;
+}
+
+.mdl-dialog__content {
+  padding: 0px;
+}

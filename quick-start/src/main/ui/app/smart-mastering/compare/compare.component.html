@@ -1,21 +1,27 @@
 <div class="side-by-side" *ngIf="docs && docs.length > 0">
-  <div layout="column" layout-align="center center">
+  <div class="top-area">
+    <h1>Compare People</h1>
+  </div>
 
+  <div layout="column" layout-align="center center">
     <div *ngIf="mergeBlocked" class="merge-blocked">Match Blocked <i class="fa fa-ban"></i></div>
 
     <div class="table" *ngIf="keys.length > 0 && uris.length > 0">
-      <div class="fields column">
-        <div class="header">&nbsp;</div>
-        <div *ngFor="let key of keys" class="header cell">{{key}}</div>
-      </div>
       <div class="column" draggable droppable (onDragStart)="draggingUri = uri" [dropEnabled]="draggingUri !== uri"
         [dragScope]="uri"
         [dropScope]="allOthers(uri)"
         (onDrop)="onDrop(uri, $event)"
         [dragData]="uri"
-        *ngFor="let uri of uris">
-        <div class="header">{{uri}}</div>
-        <div *ngFor="let key of keys" class="cell" [ngClass]="getClass(key)">{{getValue(uri, key)}}&nbsp;</div>
+        *ngFor="let uri of uris; let i = index">
+        <div class="top-header">
+          <i class="fa fa-user"></i> {{getValue(uri, 'PersonGivenName')}} {{getValue(uri, 'PersonSurName')}}
+          <a (click)="showRaw(i)">View Original</a>
+
+        </div>
+        <ng-container *ngFor="let key of keys">
+          <div class="header">{{key}}</div>
+          <div class="cell" [ngClass]="getClass(key, i)">{{getValue(uri, key)}}&nbsp;</div>
+        </ng-container>
       </div>
     </div>
 

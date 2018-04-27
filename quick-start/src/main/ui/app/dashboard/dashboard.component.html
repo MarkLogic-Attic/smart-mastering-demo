@@ -41,13 +41,19 @@
   </div>
   <div flex layout="column" layout-align="center start" class="smart-mastering">
     <div layout="row" flex layout-align="center center" class="section-header">
-      <div class="section-title">Smart Mastering <i class="fa fa-magic"></i></div>
+      <div class="section-title">Smart Mastering <img src="/assets/img/smart-mastering.svg"></div>
       <div class="mdl-layout-spacer"></div>
     </div>
     <div layout="row" layout-align="center center">
       <div class="info-card" mdl-shadow="2">
         <div class="info-title"><i class="mdi mdi-database"></i> All Documents</div>
-        <div class="info-body" layout="row" *ngIf="stats">
+        <div class="info-body" layout="column" *ngIf="!masteringStats">
+          <div class="info-column" layout="column" layout-align="center center">
+            <mdl-spinner single-color active></mdl-spinner>
+            <div>Loading...</div>
+          </div>
+        </div>
+        <div class="info-body" layout="row" *ngIf="masteringStats">
           <div class="info-column" layout="column" layout-align="center center">
             <div class="column-body" *ngIf="masteringStats">{{masteringStats.docCount}}</div>
           </div>
@@ -55,7 +61,13 @@
       </div>
       <div class="info-card" mdl-shadow="2">
         <div class="info-title"><i class="mdi mdi-database"></i> Merged Documents</div>
-        <div class="info-body" layout="row" *ngIf="stats">
+        <div class="info-body" layout="column" *ngIf="!masteringStats">
+          <div class="info-column" layout="column" layout-align="center center">
+            <mdl-spinner single-color active></mdl-spinner>
+            <div>Loading...</div>
+          </div>
+        </div>
+        <div class="info-body" layout="row" *ngIf="masteringStats">
           <div class="info-column" layout="column" layout-align="center center">
             <div class="column-body" *ngIf="masteringStats">{{masteringStats.mergeCount}}</div>
           </div>
@@ -65,7 +77,13 @@
     <div layout="row" layout-align="center center">
       <div class="info-card" mdl-shadow="2">
         <div class="info-title"><i class="mdi mdi-database"></i> Instance Documents</div>
-        <div class="info-body" layout="row" *ngIf="stats">
+        <div class="info-body" layout="column" *ngIf="!masteringStats">
+          <div class="info-column" layout="column" layout-align="center center">
+            <mdl-spinner single-color active></mdl-spinner>
+            <div>Loading...</div>
+          </div>
+        </div>
+        <div class="info-body" layout="row" *ngIf="masteringStats">
           <div class="info-column" layout="column" layout-align="center center">
             <div class="column-body" *ngIf="masteringStats">{{masteringStats.instanceCount}}</div>
           </div>
@@ -73,7 +91,13 @@
       </div>
       <div class="info-card" mdl-shadow="2">
         <div class="info-title"><i class="mdi mdi-database"></i> Notifications</div>
-        <div class="info-body" layout="row" *ngIf="stats">
+        <div class="info-body" layout="column" *ngIf="!masteringStats">
+          <div class="info-column" layout="column" layout-align="center center">
+            <mdl-spinner single-color active></mdl-spinner>
+            <div>Loading...</div>
+          </div>
+        </div>
+        <div class="info-body" layout="row" *ngIf="masteringStats">
           <div class="info-column" layout="column" layout-align="center center">
             <div class="column-body" *ngIf="masteringStats">{{masteringStats.notificationCount}}</div>
           </div>
