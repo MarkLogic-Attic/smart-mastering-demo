@@ -1,5 +1,7 @@
-<div class="sm-inbox-page" layout-padding layout="column" layout-align="center center">
-  <h1><i class="mdi mdi-inbox"></i> Inbox Items</h1>
+<div class="sm-inbox-page" layout="column" layout-align="center center">
+  <div class="top-area">
+    <h1><i class="mdi mdi-inbox"></i> Inbox Items</h1>
+  </div>
 
   <div *ngIf="!loading" layout="column" flex layout-align="center center" class="full-width">
     <div *ngIf="!loading && (!items || items.length === 0)">No Items</div>
