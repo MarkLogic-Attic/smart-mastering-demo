@@ -19,6 +19,7 @@ export class SmartMasteringInboxComponent implements OnInit {
   items = [];
 
   checked = {};
+  loading: boolean = true;
 
   get allChecked() {
     return _.size(_.filter(this.checked, c => !!c)) === this.items.length;
@@ -84,6 +85,7 @@ export class SmartMasteringInboxComponent implements OnInit {
       this.start = response.start;
       this.pageSize = response['page-size'];
       this.total = response.total;
+      this.loading = false;
     });
   }
 
@@ -102,6 +104,6 @@ export class SmartMasteringInboxComponent implements OnInit {
   }
 
   getNames(item) {
-    return _.map(item.names, (value, key) => value.toLowerCase());
+    return _.map(item.names, (value: any, key) => value.toLowerCase());
   }
 }

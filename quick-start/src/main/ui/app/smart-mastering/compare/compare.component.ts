@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { SmartMasteringService } from '../smart-mastering.service';
+import { MdlDialogService } from '@angular-mdl/core';
+import { SmartMasteringRawViewerComponent } from '../raw-viewer/raw-viewer.component';
 
 import * as _ from 'lodash';
 
@@ -19,6 +21,7 @@ export class CompareComponent implements OnInit {
 
   uris: string[] = [];
   docs: any[] = [];
+  rawDocs: any[] = [];
   optionsName: string = 'mlw-merge';
   mergeBlocked: boolean = false;
   table = {};
@@ -28,14 +31,19 @@ export class CompareComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private sm: SmartMasteringService) {}
+    private sm: SmartMasteringService,
+    private dialogService: MdlDialogService) {}
 
   ngOnInit() {
     this.uris = this.route.snapshot.queryParamMap.getAll("uris");
 
     const calls = [];
     this.uris.forEach(uri => {
-      calls.push(this.sm.getDoc(uri).pipe(tap(doc => this.docs.push(this.toArray(uri, doc.envelope.instance)))));
+      calls.push(this.sm.getDoc(uri).pipe(
+        tap(doc => this.rawDocs.push(doc)),
+        map(doc => this.sm.xmlToJson(doc)),
+        tap(doc => this.docs.push(this.toArray(uri, doc.envelope.instance)))
+      ));
       calls.push(this.sm.getBlockedMatchUrls(uri).pipe(tap(urls => this.blockedMerges[uri] = urls)));
     });
     Observable.zip(...calls).subscribe(() => {
@@ -79,7 +87,11 @@ export class CompareComponent implements OnInit {
     return this.flatten(a);
   }
 
-  getClass(key) {
+  getClass(key, idx) {
+    if (idx > 0) {
+      return '';
+    }
+
     let match = true;
     if (this.table && this.table[this.uris[0]]) {
       let value = this.table[this.uris[0]][key];
@@ -146,5 +158,15 @@ export class CompareComponent implements OnInit {
 
   allOthers(uri) {
     return this.uris.filter(u => u !== uri);
+  }
+
+  showRaw(idx): void {
+    this.dialogService.showCustomDialog({
+      component: SmartMasteringRawViewerComponent,
+      providers: [
+        { provide: 'doc', useValue: this.rawDocs[idx] }
+      ],
+      isModal: true
+    });
   }
 }

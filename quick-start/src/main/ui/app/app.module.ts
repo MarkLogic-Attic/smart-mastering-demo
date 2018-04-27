@@ -28,7 +28,7 @@ import { FacetsModule } from './facets/facets.module';
 
 import { ROUTES } from './app.routes';
 import { AUTH_PROVIDERS } from './auth';
-import { CodemirrorComponent } from './codemirror';
+import { CodeMirrorModule } from './codemirror';
 import { FolderBrowserComponent } from './folder-browser/folder-browser.component';
 import { HeaderComponent } from './header/header.component';
 import { JobsComponent, JobOutputComponent } from './jobs';
@@ -70,7 +70,6 @@ import {JobExportDialogComponent} from "./jobs/job-export.component";
 @NgModule({
   declarations: [
     AppComponent,
-    CodemirrorComponent,
     FolderBrowserComponent,
     HeaderComponent,
     HasBugsDialogComponent,
@@ -127,6 +126,7 @@ import {JobExportDialogComponent} from "./jobs/job-export.component";
     PaginationModule,
     PipesModule,
     FacetsModule,
+    CodeMirrorModule,
     RouterModule.forRoot(ROUTES, { useHash: true }),
     DatePipeModule,
     NgDragDropModule.forRoot(),

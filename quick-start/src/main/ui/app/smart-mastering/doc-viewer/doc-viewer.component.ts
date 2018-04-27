@@ -1,9 +1,10 @@
 import { Component, ElementRef, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { tap, merge, mergeAll, zip } from 'rxjs/operators';
+import { tap, map, merge, mergeAll, zip } from 'rxjs/operators';
 import { SmartMasteringService } from '../smart-mastering.service';
 import { MdlDialogService } from '@angular-mdl/core';
+import { SmartMasteringRawViewerComponent } from '../raw-viewer/raw-viewer.component';
 
 import * as _ from 'lodash';
 
@@ -20,6 +21,7 @@ import * as d3_scale_chromatic from 'd3-scale-chromatic';
 })
 export class SmartMasteringDocViewerComponent implements OnInit {
   private sub: any;
+  rawDoc: any = null;
   doc: any = null;
   historyDocument: any = null;
   historyProperties: any = null;
@@ -44,6 +46,10 @@ export class SmartMasteringDocViewerComponent implements OnInit {
 
       this.uri = params['docUri'];
       const o1 = this.sm.getDoc(this.uri).pipe(tap(doc => {
+        this.rawDoc = doc;
+      }),
+      map(doc => this.sm.xmlToJson(doc)),
+      tap(doc => {
         this.doc = this.formatDoc(doc);
         if (doc && doc.envelope && doc.envelope.headers && doc.envelope.headers.merges && doc.envelope.headers.merges['document-uri']) {
           this.sourceUris = doc.envelope.headers.merges['document-uri'].map(item => item.toString());
@@ -321,6 +327,16 @@ export class SmartMasteringDocViewerComponent implements OnInit {
       this.sm.unmerge(this.uri).subscribe(() => this.router.navigate(['/search']));
     },
     () => {});
+  }
+
+  showRaw(): void {
+    this.dialogService.showCustomDialog({
+      component: SmartMasteringRawViewerComponent,
+      providers: [
+        { provide: 'doc', useValue: this.rawDoc }
+      ],
+      isModal: true
+    });
   }
 }
 

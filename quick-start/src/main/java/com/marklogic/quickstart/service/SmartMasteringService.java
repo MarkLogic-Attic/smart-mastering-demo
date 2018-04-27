@@ -34,7 +34,7 @@ public class SmartMasteringService {
 
     public String getDoc(String docUri) {
         GenericDocumentManager docMgr = client.newDocumentManager();
-        return docMgr.readAs(docUri, String.class);
+        return docMgr.readAs(docUri, String.class, new ServerTransform("ml:prettifyXML"));
     }
 
     public String mergeDocs(String doc1, String doc2, String options) {
