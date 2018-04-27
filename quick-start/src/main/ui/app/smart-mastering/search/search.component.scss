@@ -66,12 +66,25 @@ input[type="search"] {
 }
 
 .result {
-  padding: 20px;
+  background-color: white;
+  padding: 20px 0px;
   margin: 5px;
   border: 1px rgba(0,0,0,0.15) solid;
   width: 300px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
   position: relative;
+
+  .result-body {
+    padding: 0px 20px;
+  }
+
+  h4 {
+    font-size: 20px;
+
+    a {
+      text-decoration: none;
+    }
+  }
 
   .matches {
     margin-bottom: 70px;
@@ -86,7 +99,7 @@ input[type="search"] {
   .actions {
     justify-content: center;
     position: absolute;
-    bottom: 10px;
+    bottom: 20px;
     left: 0;
     right: 0;
     margin: auto;
@@ -102,7 +115,6 @@ input[type="search"] {
     }
 
     .fa {
-      float: right;
       font-size: 18px;
     }
   }
@@ -135,9 +147,10 @@ mdl-checkbox.compare-me {
   left: 5px;
   right: 0;
   bottom: 5px;
-  background: $bg-color;
-  border: 1px solid black;
+  background: white;
+  border: 1px solid #ccc;
   border-radius: 5px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
   color: white;
 
   .items {
@@ -149,14 +162,16 @@ mdl-checkbox.compare-me {
     div {
       padding: 20px;
       margin: 10px;
-      background: rgba(255,255,255,0.25);
-      border: 1px solid white;
+      background: rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(0, 0, 0, 0.15);
       border-radius: 5px;
+      color: $bg-color
     }
 
     .placeholder {
-      border: 1px dashed white;
-      background: rgba(255,255,255,0.05);
+      border: 1px dashed #ccc;
+      background: rgba(0, 0, 0, 0.05);
+      color: $bg-color;
     }
 
   }
@@ -170,7 +185,7 @@ mdl-checkbox.compare-me {
 
 .compare-wrapper {
   margin-top: 10px;
-  border: 2px solid rgba(0,0,0, 0.54);
+  border: 1px solid rgba(0,0,0, 0.35);
   padding: 10px;
   display: inline;
 

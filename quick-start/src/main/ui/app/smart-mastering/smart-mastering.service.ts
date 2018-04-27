@@ -6,11 +6,6 @@ import { SearchResponse } from '../search';
 import * as X2JS from 'x2js';
 let x2js;
 
-const xmlToJson = xml => {
-  x2js = x2js || new X2JS();
-  return x2js.xml2js(xml);
-};
-
 const headers = new HttpHeaders({ 'Content-Type': 'text/xml' }).set('Accept', 'text/xml');
 const xmlOptions: {
   observe: 'response';
@@ -26,18 +21,23 @@ const xmlOptions: {
 export class SmartMasteringService {
   constructor(private http: HttpClient) {}
 
+  xmlToJson(xml) {
+    x2js = x2js || new X2JS();
+    return x2js.xml2js(xml);
+  }
+
   getStats(): Observable<any> {
     return this.http.get<any>('/api/mastering/stats');
   }
 
   getDoc(docUri: string) {
     return this.http.get(`/api/mastering/doc?docUri=${docUri}`, xmlOptions)
-    .map(resp => xmlToJson(resp.body));
+    .map(resp => resp.body);
   }
 
   merge(doc1: string, doc2: string, optionsName: string) {
     const url = `/api/mastering/merge?doc1=${doc1}&doc2=${doc2}&options=${optionsName}`;
-    return this.http.post(url, null, xmlOptions).map(resp => xmlToJson(resp.body));
+    return this.http.post(url, null, xmlOptions).map(resp => this.xmlToJson(resp.body));
   }
 
   unmerge(uri: string) {

@@ -8,20 +8,25 @@ import { PaginationModule } from '../pagination/pagination.module';
 import { FacetsModule } from '../facets/facets.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { DatePipeModule } from '../date-pipe/date-pipe.module';
+import { CodeMirrorModule } from '../codemirror';
 import { SmartMasteringService } from './smart-mastering.service';
 import { CompareComponent } from './compare/compare.component';
 import { SmartMasteringSearchComponent } from './search/search.component';
 import { SmartMasteringDocViewerComponent } from './doc-viewer/doc-viewer.component';
 import { SmartMasteringInboxComponent } from './inbox/inbox.component';
+import { SmartMasteringRawViewerComponent } from './raw-viewer/raw-viewer.component';
 
 @NgModule({
   declarations: [
     CompareComponent,
     SmartMasteringSearchComponent,
     SmartMasteringDocViewerComponent,
-    SmartMasteringInboxComponent
+    SmartMasteringInboxComponent,
+    SmartMasteringRawViewerComponent
   ],
-  entryComponents: [],
+  entryComponents: [
+    SmartMasteringRawViewerComponent
+  ],
   imports: [
     BrowserModule,
     FormsModule,
@@ -31,13 +36,15 @@ import { SmartMasteringInboxComponent } from './inbox/inbox.component';
     PaginationModule,
     FacetsModule,
     PipesModule,
-    DatePipeModule
+    DatePipeModule,
+    CodeMirrorModule
   ],
   exports: [
     CompareComponent,
     SmartMasteringSearchComponent,
     SmartMasteringDocViewerComponent,
-    SmartMasteringInboxComponent
+    SmartMasteringInboxComponent,
+    SmartMasteringRawViewerComponent
   ],
   providers: [
     SmartMasteringService

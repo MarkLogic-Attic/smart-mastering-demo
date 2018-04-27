@@ -25,24 +25,26 @@
               <a [routerLink]="['/view-sm']" [queryParams]="{docUri: result.uri}">{{ result.content.Person.PersonName.PersonGivenName }} {{result.content.Person.PersonName.PersonSurName}}</a>
               <i *ngIf="isMerged(result)" class="fa fa-compress"></i>
             </h4>
-            <div class="sub-header">
-            {{ result.content.Person.Address.LocationCityName }}, {{result.content.Person.Address.LocationState}}
-            </div>
-            <div class="matches">
-              <div class="match" *ngFor="let match of result.matches">
-                <em *ngFor="let text of match['match-text']">
-                  <span ngClass="{ highlight: text.highlight !== undefined }">
-                    <span *ngIf="text.highlight !== undefined">{{getMatcherPath(match.path)}}: {{ text.highlight }}</span>
-                  </span>
-                </em>
+            <div class="result-body">
+              <div class="sub-header">
+                <i class="fa fa-map-marker"></i> {{ result.content.Person.Address.LocationCityName }}, {{result.content.Person.Address.LocationState}}
               </div>
-            </div>
-            <div class="actions" layout-align="center center" layout="row">
-              <div class="compare-wrapper"
-               (click)="toggleItemCompare(result)">
-                <mdl-checkbox
-                  class="compare-me"
-                  [ngModel]="selectedResults.indexOf(result) != -1">Compare</mdl-checkbox>
+              <div class="matches">
+                <div class="match" *ngFor="let match of result.matches">
+                  <em *ngFor="let text of match['match-text']">
+                    <span ngClass="{ highlight: text.highlight !== undefined }">
+                      <span *ngIf="text.highlight !== undefined">{{getMatcherPath(match.path)}}: {{ text.highlight }}</span>
+                    </span>
+                  </em>
+                </div>
+              </div>
+              <div class="actions" layout-align="center center" layout="row">
+                <div class="compare-wrapper"
+                 (click)="toggleItemCompare(result)">
+                  <mdl-checkbox
+                    class="compare-me"
+                    [ngModel]="selectedResults.indexOf(result) != -1">Compare</mdl-checkbox>
+                </div>
               </div>
             </div>
           </div>
@@ -69,6 +71,6 @@
   </div>
   <button (click)="compareItems()"
     [disabled]="selectedResults.length < 2"
-    type="button" mdl-colored="accent"
+    type="button" mdl-colored="primary"
     mdl-button mdl-button-type="raised">Compare</button>
 </div>

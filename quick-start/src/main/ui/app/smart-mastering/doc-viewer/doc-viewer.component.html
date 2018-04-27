@@ -17,17 +17,42 @@
           <span>SSN: </span>
           <span>{{ssn}}</span>
         </p>
+        <p *ngFor="let bd of doc.birthDates">
+          <i class="fa fa-birthday-cake"></i>
+          <span>Birthdate: </span>
+          <span>{{bd}}</span>
+        </p>
+        <p *ngFor="let csd of doc.caseStartDates">
+          <i class="fa fa-calendar"></i>
+          <span>Case Start Date: </span>
+          <span>{{csd}}</span>
+        </p>
+        <p *ngFor="let amt of doc.caseAmounts">
+          <i class="fa fa-dollar"></i>
+          <span>Case Amount: </span>
+          <span>${{amt | number}}</span>
+        </p>
+        <p *ngFor="let rev of doc.revenues">
+          <i class="fa fa-dollar"></i>
+          <span>Revenue: </span>
+          <span>${{rev | number}}</span>
+        </p>
+        <div>
+          <button type="button" (click)="showRaw()" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>View Original</button>
+        </div>
       </div>
     </div>
 
-    <div *ngIf="sourceUris && sourceUris.length > 0" class="sources" layout="column" layout-align="center start">
-      <h5>Sources</h5>
-      <div class="source-uri" *ngFor="let uri of sourceUris" mdl-shadow="2">
-        {{uri}}
-        <a [routerLink]="['/view-sm']" [queryParams]="{docUri: uri}" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>View</a>
-      </div>
-      <div *ngIf="sourceUris.length > 1">
-        <button type="button" (click)="unmerge()" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Unmerge</button>
+    <div class="right-column" layout="column" layout-align="center start">
+      <div *ngIf="sourceUris && sourceUris.length > 0" class="sources" layout="column" layout-align="center start">
+        <h5>Sources</h5>
+        <div class="source-uri" *ngFor="let uri of sourceUris" mdl-shadow="2">
+          {{uri}}
+          <a [routerLink]="['/view-sm']" [queryParams]="{docUri: uri}" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>View</a>
+        </div>
+        <div *ngIf="sourceUris.length > 1">
+          <button type="button" (click)="unmerge()" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Unmerge</button>
+        </div>
       </div>
     </div>
   </div>
