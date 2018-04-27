@@ -29,6 +29,7 @@
                 </mdl-menu>
               </th>
               <th class="read-status"></th>
+              <th class="mdl-data-table__cell--non-numeric">Names</th>
               <th class="mdl-data-table__cell--non-numeric">Type</th>
               <th class="mdl-data-table__cell--non-numeric">Matches</th>
               <th class="mdl-data-table__cell--non-numeric">Date</th>
@@ -42,6 +43,9 @@
                   ></mdl-checkbox>
               </td>
               <td class="read-status"><i *ngIf="item.meta.status === 'unread'" class="fa fa-circle"></i></td>
+              <td (click)="compareItems(item)">
+                <span class="name" *ngFor="let name of getNames(item)">{{name}}</span>
+              </td>
               <td (click)="compareItems(item)">{{item.thresholdLabel}}</td>
               <td (click)="compareItems(item)">{{item.uris.length}}</td>
               <td (click)="compareItems(item)">{{item.meta.dateTime | datePipe}}</td>

@@ -100,4 +100,8 @@ export class SmartMasteringInboxComponent implements OnInit {
       this.getItems(this.start);
     });
   }
+
+  getNames(item) {
+    return _.map(item.names, (value, key) => value.toLowerCase());
+  }
 }
