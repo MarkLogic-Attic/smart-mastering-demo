@@ -117,7 +117,7 @@ export class SmartMasteringDocViewerComponent implements OnInit {
           if (!propertyValues.hasOwnProperty(propertyValue)) {
             continue;
           }
-          links.push({
+          const link = {
             source: 0,
             target: nodeUris.length,
             value: 1,
@@ -125,7 +125,13 @@ export class SmartMasteringDocViewerComponent implements OnInit {
             sourceName: 'final',
             propertyName: propertyName,
             propertyValue: propertyValue
-          });
+          }
+
+          if (propertyName === 'PersonName') {
+            links.unshift(link);
+          } else {
+            links.push(link);
+          }
           let propertyValueDetails = propertyValues[propertyValue].details;
           propertyValueDetails = Array.isArray(propertyValueDetails) ? propertyValueDetails : [propertyValueDetails];
           propertyValueDetails.forEach(function(detail) {
@@ -136,7 +142,7 @@ export class SmartMasteringDocViewerComponent implements OnInit {
             }
             nodeUriSources[detail.sourceLocation] = detail.sourceName;
             if (indexOfDerivedFrom !== 0) {
-              links.push({
+              const link = {
                 source: indexOfDerivedFrom,
                 target: 0,
                 value: 1,
@@ -144,7 +150,13 @@ export class SmartMasteringDocViewerComponent implements OnInit {
                 sourceName: detail.sourceName,
                 propertyName: propertyName,
                 propertyValue: propertyValue
-              });
+              };
+
+              if (propertyName === 'PersonName') {
+                links.unshift(link);
+              } else {
+                links.push(link);
+              }
             }
           });
         }
@@ -183,7 +195,7 @@ export class SmartMasteringDocViewerComponent implements OnInit {
                     let propertyValueDetails = propertyValues[propertyValue].details;
                     propertyValueDetails = Array.isArray(propertyValueDetails) ? propertyValueDetails : [propertyValueDetails];
                     propertyValueDetails.forEach(function(detail) {
-                      links.push({
+                      const link = {
                         source: activityIndex,
                         target: connectionIndex,
                         value: 1,
@@ -191,7 +203,12 @@ export class SmartMasteringDocViewerComponent implements OnInit {
                         sourceName: detail.sourceName,
                         propertyName: propertyName,
                         propertyValue: propertyValue
-                      });
+                      };
+                      if (propertyName === 'PersonName') {
+                        links.unshift(link);
+                      } else {
+                        links.push(link);
+                      }
                     });
                   }
                 }
