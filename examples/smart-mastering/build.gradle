@@ -280,12 +280,14 @@ task deleteModuleCache {
 mlReloadModules.dependsOn deleteModuleCache
 
 task oracleImport(type: ImportTask) {
+  dependsOn build
   mustRunAfter importThesauri
   mustRunAfter importSchema
   configFile = "mdm-source-config/oracle-mdm-source-config.json"
 }
 
 task crmImport(type: ImportTask) {
+  dependsOn build
   mustRunAfter importThesauri
   mustRunAfter importSchema
   configFile = "mdm-source-config/crm-mdm-source-config.json"
@@ -379,8 +381,14 @@ task prepDemo {
 
 mlDeploy.mustRunAfter installDist
 mlLoadModules.mustRunAfter mlDeploy
+mlLoadModules.mustRunAfter mlClearModulesDatabase
+deployCore.mustRunAfter deleteModuleCache
 deployMatchOptions.mustRunAfter harmonize
 deployMergeOptions.mustRunAfter harmonize
+harmonize.mustRunAfter mlReloadModules
+csvImport.mustRunAfter mlReloadModules
+oracleImport.mustRunAfter mlReloadModules
+crmImport.mustRunAfter mlReloadModules
 
 task skoDemo {
   dependsOn doEverything
