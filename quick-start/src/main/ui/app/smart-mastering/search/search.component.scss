@@ -138,6 +138,7 @@ mdl-checkbox.compare-me {
 }
 
 .compare-items {
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   position: fixed;
