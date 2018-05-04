@@ -12,6 +12,7 @@
           (pageChanged)="pageChanged($event)"></app-pagination>
     <div *ngIf="!loadingTraces && (!searchResponse || searchResponse.total === 0)">No Data</div>
     <div class="mdl-grid results">
+      <!-- turn this back on after MLWorld
       <div class="mdl-cell mdl-cell--2-col">
         <app-facets
           [facets]="searchResponse.facets"
@@ -19,6 +20,8 @@
           (activeFacetsChange)="updateFacets($event)"></app-facets>
       </div>
       <div class="mdl-cell mdl-cell--10-col">
+         -->
+      <div class="mdl-cell mdl-cell--12-col"> <!-- <= turn me off after mlworld -->
         <div *ngIf="searchResponse && searchResponse.total > 0" flex layout="row" class="results-wrapper">
           <div *ngFor="let result of searchResponse.results" class="result">
             <h4 class="link">

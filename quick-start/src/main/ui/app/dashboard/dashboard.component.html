@@ -60,7 +60,8 @@
         </div>
       </div>
       <div class="info-card" mdl-shadow="2">
-        <div class="info-title"><i class="mdi mdi-database"></i> Merged Documents</div>
+        <div class="info-title">
+          <i class="mdi mdi-database"></i> Notifications</div>
         <div class="info-body" layout="column" *ngIf="!masteringStats">
           <div class="info-column" layout="column" layout-align="center center">
             <mdl-spinner single-color active></mdl-spinner>
@@ -69,7 +70,7 @@
         </div>
         <div class="info-body" layout="row" *ngIf="masteringStats">
           <div class="info-column" layout="column" layout-align="center center">
-            <div class="column-body" *ngIf="masteringStats">{{masteringStats.mergeCount}}</div>
+            <div class="column-body" *ngIf="masteringStats">{{masteringStats.notificationCount}}</div>
           </div>
         </div>
       </div>
@@ -90,7 +91,8 @@
         </div>
       </div>
       <div class="info-card" mdl-shadow="2">
-        <div class="info-title"><i class="mdi mdi-database"></i> Notifications</div>
+        <div class="info-title">
+          <i class="mdi mdi-database"></i> Merged Documents</div>
         <div class="info-body" layout="column" *ngIf="!masteringStats">
           <div class="info-column" layout="column" layout-align="center center">
             <mdl-spinner single-color active></mdl-spinner>
@@ -99,7 +101,7 @@
         </div>
         <div class="info-body" layout="row" *ngIf="masteringStats">
           <div class="info-column" layout="column" layout-align="center center">
-            <div class="column-body" *ngIf="masteringStats">{{masteringStats.notificationCount}}</div>
+            <div class="column-body" *ngIf="masteringStats">{{masteringStats.mergeCount}}</div>
           </div>
         </div>
       </div>
