@@ -40,7 +40,9 @@
       </source-weights>
     </merge>
     <merge property-name="caseStartDate" algorithm-ref="standard" max-values="1">
-
+      <source-weights>
+        <source name="CRM" weight="10"></source>
+      </source-weights>
     </merge>
     <merge property-name="incidentDate" algorithm-ref="standard" max-values="1">
       <length weight="10"/>
