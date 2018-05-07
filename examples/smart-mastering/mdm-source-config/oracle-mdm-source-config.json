@@ -14,7 +14,7 @@
 		"CITY": "$.Person.Address.LocationCityName",
 		"STATE": "$.Person.Address.LocationState",
 		"ZIPCODE": "$.Person.Address.LocationPostalCode",
-		"GENDER": "$.Person.PersonSex",
+		"Gender": "$.Person.PersonSex",
 		"DOB": "$.Person.PersonBirthDate",
 		"LANGUAGE": "$.Person.PersonPrimaryLanguage",
 		"LIVING_ARRANGEMENT": "$.Person.PersonUnionStatus",
