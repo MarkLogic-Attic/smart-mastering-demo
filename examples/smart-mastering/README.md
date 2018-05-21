@@ -2,12 +2,7 @@
 
 ## Steps to run the Smart Mastering Demo
 
-- `cd ml-data-hub-plugin`
-- `gradle build -x test`
-- `gradle publishToMavenLocal`
-- `cd ..`
-- `gradle publishToMavenLocal`
-- `cd examples/smart-mastering`
+- `cd examples/smart-mastering` this folder
 - `gradle build`
 - `gradle mlDeploy`
 - `gradle prepDemo`
