@@ -14,25 +14,22 @@ buildscript {
   dependencies {
     classpath "com.marklogic:ml-unit-test-client:0.9.1"
     classpath "com.marklogic:ml-gradle:3.6.1"
-    classpath "com.marklogic:ml-data-hub:2.0.4-sm.1"
   }
 }
 
 plugins {
     id 'net.saliman.properties' version '1.4.6'
-    id 'com.marklogic.ml-gradle' version '3.4.1'
     id 'java'
     id 'eclipse'
     id 'idea'
     id 'application'
-    // id 'com.marklogic.ml-data-hub' version '2.0.4'
+    id 'com.marklogic.ml-data-hub' version '3.0.0'
     id 'org.springframework.boot' version '1.5.9.RELEASE'
     // for making REST calls
     id "org.tenne.rest" version "0.4.2"
 }
 
 apply plugin: "java"
-apply plugin: "com.marklogic.ml-data-hub"
 
 repositories {
   mavenLocal()
@@ -78,19 +75,10 @@ dependencies {
     compile("org.thymeleaf:thymeleaf-spring4")
     compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
     compile "com.marklogic:marklogic-spring-batch-core:1.+"
-    compile (group: "com.marklogic", name: "marklogic-client-api", version:"4.0.3.1")
-    compile ('com.marklogic:marklogic-data-hub:2.0.4-sm.1') {
-      exclude group: 'com.marklogic', module: 'ml-app-deployer'
-      exclude group: 'com.marklogic', module: 'ml-javaclient-util'
-    }
+    compile ('com.marklogic:marklogic-data-hub:3.0.0')
 
-    compile 'com.marklogic:marklogic-xcc:9.0.4'
     compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
     compile group: 'org.apache.commons', name: 'commons-text', version: '1.1'
-
-    // Needed for loading modules into MarkLogic
-    compile "com.marklogic:ml-gradle:3.6.1"
-    compile "com.marklogic:ml-app-deployer:3.6.1"
 
     smartMasteringCore "com.marklogic.community:smart-mastering-core:0.0.14"
 
@@ -339,7 +327,7 @@ task master(type: com.marklogic.gradle.task.RunFlowTask) {
     mustRunAfter harmonize
 
     entityName = "MDM"
-    flowName = "MDMMaster"
+    flowName = "SmartMaster"
     batchSize = 1
     threadCount = 4
 }
