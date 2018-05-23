@@ -23,3 +23,5 @@ You might have to click on the '..' to go up first.
 <img src=".images/choose-local.png" width="400px"></img>
 - Login with your ML Admin credentials  
 <img src=".images/login.png" width="400px"></img>
+
+__** When running the harmonize Flows, make sure to set batch size to 1. This is a temporary limitation.__
