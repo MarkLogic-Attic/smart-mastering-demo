@@ -25,3 +25,22 @@ You might have to click on the '..' to go up first.
 <img src=".images/login.png" width="400px"></img>
 
 __** When running the harmonize Flows, make sure to set batch size to 1. This is a temporary limitation.__
+
+## Something is Wrong!
+
+If you run into issues during the `gradle prepDemo` phase you may need to clean up some things.
+
+- `gradle clean`
+- Delete the gradle cache  
+  **mac/\*nix:**  
+    `rm -rf ~/.gradle/cache`  
+  **windows:**  
+    delete the folder `C:\Users\[Your_Username]\.gradle`  
+- Delete the maven cache  
+  **mac/\*nix:**  
+    `rm -rf ~/.m2/repositories/com/marklogic`  
+  **windows:**  
+    delete the folder `C:\Documents and Settings\[Your_Username]\.m2\com\marklogic`
+- Now repeat the instructions from above
+
+
