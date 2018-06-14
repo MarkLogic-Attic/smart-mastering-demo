@@ -1,5 +1,7 @@
 # Smart Mastering Demo
 
+This demo was created to showcase some of the features of Smart Mastering at MarkLogic World 2018. It was for demo purposes only. If want to use Smart Mastering in your project you should go to the [main page for Smart Mastering](http://marklogic-community.github.io/smart-mastering-core)
+
 ## Steps to run the Smart Mastering Demo
 
 - open a new terminal window in the project root
