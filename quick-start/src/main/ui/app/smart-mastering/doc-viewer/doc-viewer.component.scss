@@ -1,0 +1,77 @@
+@import '../../../styles/variables';
+
+$bg-color: unquote("rgb(#{$palette-datahub-100})");
+$border-color: unquote("rgb(#{$palette-datahub-50})");
+$dark-color: unquote("rgb(#{$palette-datahub-500})");
+
+.title {
+  padding: 10px;
+  background-color: $bg-color;
+}
+
+h4 {
+  margin: 0px;
+}
+
+.card-row {
+  margin: auto;
+}
+
+.person-card {
+  padding: 15px;
+}
+
+.container {
+  padding: 15px;
+}
+
+h5 {
+  margin-top: 11px;
+}
+
+.person-icon i {
+  font-size: 72px;
+  color: $dark-color;
+}
+.data {
+  padding-left: 15px;
+
+  p {
+    span:first-of-type {
+      font-weight: bold;
+    }
+  }
+}
+
+.sources {
+  padding: 15px;
+  margin-left: 50px;
+
+  .source-uri {
+    padding: 10px 20px;
+    background-color: white;
+    margin-bottom: 5px;
+
+    a {
+      margin-left: 25px;
+    }
+  }
+}
+
+svg .link {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .2;
+}
+
+table {
+  margin: auto;
+}
+
+.sankey {
+  margin: 30px 0px;
+}
+
+.right-column {
+  min-width: 400px;
+}

@@ -3,33 +3,52 @@
 $primary: unquote("rgb(#{$color-primary})");
 $light: unquote("rgb(#{$palette-datahub-A100})");
 
-.section-header {
+.delete-all-row {
   width: 100%;
-  flex: none;
+  margin-top: -20px;
 }
 
-.section-title {
-  padding: 10px;
-  font-size: 24px;
-  color: $primary;
-  width: 100%;
-  text-align: left;
-}
-
-.databases {
+.databases, .smart-mastering {
+  border: 1px solid $light;
+  border-radius: 5px;
+  margin: auto;
+  margin-top: 40px;
   background-color: $light;
   flex: none;
+
+  .section-header {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 24px;
+    background-color: $primary;
+    color: white;
+    text-align: left;
+    margin-top: -25px;
+    margin-bottom: 10px;
+
+    i {
+      font-size: 14px;
+    }
+
+    img {
+      width: 24px;
+    }
+  }
 }
 
 .info-card {
-  margin: 20px;
-  padding: 10px;
-  background-color: rgba(255,255,255,0.5);
+  margin: 5px;
+  padding: 5px 5px 0px 5px;
+  background-color: #F4F6F9;
   min-width: 250px;
 
   .info-title {
     color: $primary;
-    font-size: 18px;
+    font-size: 16px;
+
+    .mdi {
+      font-size: 16px;
+    }
   }
 
   .info-body {

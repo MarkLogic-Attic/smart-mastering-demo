@@ -1,17 +1,18 @@
 /*
- * Copyright 2012-2016 MarkLogic Corporation
+ * Copyright 2012-2018 MarkLogic Corporation
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
  */
 package com.marklogic.quickstart.web;
 
@@ -71,6 +72,7 @@ class EntitiesController extends EnvironmentAware {
         for (EntityModel entity : entities) {
             entityManagerService.saveEntity(entity);
         }
+        entityManagerService.savePii(envConfig());
         entityManagerService.deploySearchOptions(envConfig());
         entityManagerService.saveAllUiData(entities);
         entityManagerService.saveDbIndexes(envConfig());
@@ -90,6 +92,7 @@ class EntitiesController extends EnvironmentAware {
     public EntityModel saveEntity(@RequestBody EntityModel entity) throws ClassNotFoundException, IOException {
         entityManagerService.saveEntityUiData(entity);
         EntityModel m = entityManagerService.saveEntity(entity);
+        entityManagerService.savePii(envConfig());
         entityManagerService.deploySearchOptions(envConfig());
         entityManagerService.saveDbIndexes(envConfig());
         return m;
@@ -232,7 +235,7 @@ class EntitiesController extends EnvironmentAware {
             @PathVariable String entityName,
             @PathVariable String flowName,
             @PathVariable String jobId) throws IOException {
-        JobService jm = new JobService(envConfig().getJobClient());
+        JobService jm = new JobService(envConfig().getJobClient(), envConfig().getTraceClient());
         jm.cancelJob(Long.parseLong(jobId));
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

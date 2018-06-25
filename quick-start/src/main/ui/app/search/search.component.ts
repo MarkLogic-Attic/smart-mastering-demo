@@ -23,7 +23,7 @@ export class SearchComponent implements OnDestroy, OnInit {
   loadingTraces: boolean = false;
   searchResponse: SearchResponse;
   runningFlows: Map<number, string> = new Map<number, string>();
-
+  selectedResults: string[] = [];
   constructor(
     private searchService: SearchService,
     private route: ActivatedRoute,
@@ -121,5 +121,23 @@ export class SearchComponent implements OnDestroy, OnInit {
 
   setDatabase(database) {
     this.currentDatabase = database;
+  }
+
+  toggleItemCompare(uri) {
+    let index = this.selectedResults.indexOf(uri);
+    if (index > -1) {
+      this.selectedResults.splice(index, 1);
+    } else if (this.selectedResults.length < 2) {
+      this.selectedResults.push(uri);
+    }
+  }
+
+  compareItems() {
+    this.router.navigate(['/compare'], {
+      queryParams: {
+        uri1: this.selectedResults[0],
+        uri2: this.selectedResults[1]
+      }
+    });
   }
 }

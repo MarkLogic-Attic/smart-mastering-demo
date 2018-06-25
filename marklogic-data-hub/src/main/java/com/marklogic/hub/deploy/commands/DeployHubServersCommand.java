@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 MarkLogic Corporation
+ * Copyright 2012-2018 MarkLogic Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ public class DeployHubServersCommand extends AbstractResourceCommand {
     protected String getPayload(File f, CommandContext context) {
         JsonNode node = mergeServerFiles(f);
         if (node == null) {
-            logger.info("No server files found, so not processing");
+            logger.debug("No server files found, so not processing");
             return null;
         }
         String str = node.toString();
@@ -96,7 +96,7 @@ public class DeployHubServersCommand extends AbstractResourceCommand {
             files.add(otherServerFile);
         }
         if (logger.isInfoEnabled()) {
-            logger.info("Merging JSON files at locations: " + files);
+            logger.debug("Merging JSON files at locations: " + files);
         }
         return JsonNodeUtil.mergeJsonFiles(files);
     }

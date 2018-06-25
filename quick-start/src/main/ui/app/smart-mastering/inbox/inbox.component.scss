@@ -1,0 +1,53 @@
+@import '../../../styles/variables';
+
+$bg-color: unquote("rgb(#{$palette-datahub-500})");
+$link-color: unquote("rgb(#{$palette-datahub-900})");
+$line-color: unquote("rgb(#{$palette-datahub-100})");
+
+.top-area {
+  width: 100%;
+  background-color: $line-color;
+
+  h1 {
+    text-align: center;
+    color: $bg-color;
+  }
+
+  .mdi {
+    font-size: 30pt;
+  }
+}
+
+.mdl-checkbox {
+  width: auto;
+}
+
+.mark-read {
+  cursor: pointer;
+}
+
+.actions {
+  min-width: inherit;
+  padding: 0px;
+}
+
+.unread {
+  font-weight: bold;
+}
+
+.read {
+  background-color: #fafafa;
+}
+
+::ng-deep .mdl-menu__container.is-visible {
+  border: 1px solid #ddd;
+}
+
+.read-status {
+  padding: 0px;
+}
+
+span.name {
+  display: block;
+  text-transform: capitalize;
+}

@@ -1,0 +1,76 @@
+<div class="container" layout="row" layout-align="center center">
+  <div layout="row" layout-align="center start" class="card-row">
+    <div class="person-card" mdl-shadow="2" layout="row" layout-align="center start">
+      <div class="person-icon">
+        <i class="fa fa-user"></i>
+      </div>
+      <div class="data" layout="column" layout-align="center start" *ngIf="doc">
+        <h5 *ngFor="let name of doc.names">
+        {{name.PersonGivenName}} {{name.PersonSurName}}
+        </h5>
+        <p *ngFor="let loc of doc.addresses">
+          <i class="fa fa-map-marker"></i>
+          <span>{{loc.LocationCityName}}, {{loc.LocationState}} {{loc.LocationPostalCode}}</span>
+        </p>
+        <p *ngFor="let ssn of doc.ssns">
+          <i class="fa fa-key"></i>
+          <span>SSN: </span>
+          <span>{{ssn}}</span>
+        </p>
+        <p *ngFor="let bd of doc.birthDates">
+          <i class="fa fa-birthday-cake"></i>
+          <span>Birthdate: </span>
+          <span>{{bd}}</span>
+        </p>
+        <p *ngFor="let csd of doc.caseStartDates">
+          <i class="fa fa-calendar"></i>
+          <span>Case Start Date: </span>
+          <span>{{csd}}</span>
+        </p>
+        <p *ngFor="let amt of doc.caseAmounts">
+          <i class="fa fa-dollar"></i>
+          <span>Case Amount: </span>
+          <span>${{amt | number}}</span>
+        </p>
+        <p *ngFor="let rev of doc.revenues">
+          <i class="fa fa-dollar"></i>
+          <span>Revenue: </span>
+          <span>${{rev | number}}</span>
+        </p>
+        <div>
+          <button type="button" (click)="showRaw()" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>View Original</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-column" layout="column" layout-align="center start">
+      <div *ngIf="sourceUris && sourceUris.length > 0" class="sources" layout="column" layout-align="center start">
+        <h5>Sources</h5>
+        <div class="source-uri" *ngFor="let uri of sourceUris" mdl-shadow="2">
+          {{uri}}
+          <a [routerLink]="['/view-sm']" [queryParams]="{docUri: uri}" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>View</a>
+        </div>
+        <div *ngIf="sourceUris.length > 1">
+          <button type="button" (click)="unmerge()" mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Unmerge</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div #provSankey *ngIf="sourceUris && sourceUris.length > 1" class="sankey"></div>
+
+<table left-align *ngIf="historyDocument" class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+  <thead>
+    <th class="mdl-data-table__cell--non-numeric">activity</th>
+    <th class="mdl-data-table__cell--non-numeric">Resulting Doc</th>
+    <th class="mdl-data-table__cell--non-numeric">Time</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let activity of historyDocument.activities">
+      <td>{{activity.type}}</td>
+      <td>{{activity.resultUri}}</td>
+      <td>{{activity.time}}</td>
+    </tr>
+  </tbody>
+</table>

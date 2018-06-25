@@ -1,6 +1,2 @@
 config
-build.gradle
-gradle.properties
 gradle-local.properties
-hub-internal-config/
-user-config/
