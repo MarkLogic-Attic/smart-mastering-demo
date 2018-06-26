@@ -3,7 +3,7 @@ xquery version "1.0-ml";
 module namespace plugin = "http://marklogic.com/data-hub/plugins";
 
 import module namespace process = "http://marklogic.com/smart-mastering/process-records"
-  at "/ext/com.marklogic.smart-mastering/process-records.xqy";
+  at "/com.marklogic.smart-mastering/process-records.xqy";
 
 declare option xdmp:mapping "false";
 

@@ -6,7 +6,7 @@ import module namespace flow = "http://marklogic.com/data-hub/flow-lib"
   at "/MarkLogic/data-hub-framework/impl/flow-lib.xqy";
 
 import module namespace const = "http://marklogic.com/smart-mastering/constants"
-  at "/ext/com.marklogic.smart-mastering/constants.xqy";
+  at "/com.marklogic.smart-mastering/constants.xqy";
 
 declare namespace es = "http://marklogic.com/entity-services";
 declare namespace sm = "http://marklogic.com/smart-mastering";

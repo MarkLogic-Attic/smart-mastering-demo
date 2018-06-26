@@ -2,7 +2,7 @@ xquery version "1.0-ml";
 
 module namespace plugin = "http://marklogic.com/data-hub/plugins";
 import module namespace auditing = "http://marklogic.com/smart-mastering/auditing"
-  at "/ext/com.marklogic.smart-mastering/auditing/base.xqy";
+  at "/com.marklogic.smart-mastering/auditing/base.xqy";
 
 declare namespace smart-mastering = "http://marklogic.com/smart-mastering";
 declare namespace es = "http://marklogic.com/entity-services";
@@ -39,7 +39,7 @@ declare function plugin:write(
                   )
     let $instance := $raw-doc/(es:envelope|object-node("envelope"))/(es:instance|object-node("instance"))/*
     let $properties := if (fn:count($instance) > 1) then $instance else $instance/*
-    let $generated-entity-id := $auditing:am-prefix||$id
+    let $generated-entity-id := $auditing:sm-prefix||$id
     let $property-related-prov :=
         for $prop in $properties
         let $value := fn:string($prop)
@@ -47,7 +47,7 @@ declare function plugin:write(
         return
         let $type := fn:string(fn:node-name($prop))
         let $hash := xdmp:sha512($value)
-        let $used-entity-id := $auditing:am-prefix || $id || $type || $hash
+        let $used-entity-id := $auditing:sm-prefix || $id || $type || $hash
         return (
           element prov:entity {
             attribute prov:id {$used-entity-id},

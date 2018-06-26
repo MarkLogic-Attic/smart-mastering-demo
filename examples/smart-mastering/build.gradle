@@ -13,7 +13,7 @@ buildscript {
   }
   dependencies {
     classpath "com.marklogic:ml-unit-test-client:0.9.1"
-    classpath "com.marklogic:ml-gradle:3.6.1"
+    classpath "com.marklogic:ml-gradle:3.6.3"
   }
 }
 
@@ -80,7 +80,9 @@ dependencies {
     compile group: 'org.reflections', name: 'reflections', version: '0.9.10'
     compile group: 'org.apache.commons', name: 'commons-text', version: '1.1'
 
-    smartMasteringCore "com.marklogic.community:smart-mastering-core:0.0.14"
+    // this magical line will include the Smart Mastering
+    // libraries and deploy them alongside your code
+    mlRestApi "com.marklogic.community:smart-mastering-core:${smartMasteringVersion}"
 
     // MLCP dependencies
     mlcp "com.marklogic:mlcp:9.0.4"
@@ -140,22 +142,6 @@ ext {
         modulePaths = ["plugins", "build/ml-modules"]
     }
 }
-
-task unzip(type: Copy) {
-    def zipPath = project.configurations.smartMasteringCore.files.toArray()[0]
-    println zipPath
-    def zipFile = file(zipPath)
-    def outputDir = file("${buildDir}")
-
-    from zipTree(zipFile)
-    into outputDir
-}
-
-task deployCore(type: com.marklogic.gradle.task.client.LoadModulesTask) {}
-tasks.deployCore.dependsOn unzip
-tasks.mlLoadModules.dependsOn deployCore
-// This dependsOn ensures that mlDeploy includes the deployCore step and runs it at the right time
-tasks.mlPostDeploy.dependsOn deployCore
 
 task deployMatchOptions(type: org._10ne.gradle.rest.RestTask) {
     httpMethod = 'post'
@@ -370,7 +356,6 @@ task prepDemo {
 mlDeploy.mustRunAfter installDist
 mlLoadModules.mustRunAfter mlDeploy
 mlLoadModules.mustRunAfter mlClearModulesDatabase
-deployCore.mustRunAfter deleteModuleCache
 deployMatchOptions.mustRunAfter harmonize
 deployMergeOptions.mustRunAfter harmonize
 harmonize.mustRunAfter mlReloadModules
@@ -395,3 +380,21 @@ distributions {
 
 // add the mainClassName to specify the Main class name
 mainClassName = "com.marklogic.spring.batch.core.launch.support.CommandLineJobRunner"
+
+//////////////////////////////////////////////////////////////
+// bug workaround!
+// Use this until bug 910 gets fixed
+// https://github.com/marklogic/marklogic-data-hub/issues/910
+task mlGradleLoadModules(type: com.marklogic.gradle.task.client.LoadModulesTask) {
+  dependsOn mlPrepareRestApiDependencies
+  mustRunAfter mlClearModulesDatabase
+}
+
+task mlGradleWatch(type: com.marklogic.gradle.task.client.WatchTask)
+task mlGradleDeleteModuleTimestampsFile(type: com.marklogic.gradle.task.DeleteModuleTimestampsFileTask)
+
+mlLoadModules.dependsOn mlGradleLoadModules
+mlWatch.dependsOn mlGradleWatch
+mlDeleteModuleTimestampsFile.dependsOn mlGradleDeleteModuleTimestampsFile
+// end bug workaround
+//////////////////////////////////////////////////////////////
