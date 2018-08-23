@@ -104,6 +104,11 @@ export class SmartMasteringInboxComponent implements OnInit {
   }
 
   getNames(item) {
-    return _.map(item.names, (value: any, key) => value.toLowerCase());
+    let names = [];
+    for (let key in item.extractions) {
+      const ext = item.extractions[key];
+      names.push(`${ext.firstName} ${ext.lastName}`);
+    }
+    return names;
   }
 }
