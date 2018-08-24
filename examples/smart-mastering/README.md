@@ -26,7 +26,12 @@ You might have to click on the '..' to go up first.
 - Login with your ML Admin credentials  
 <img src=".images/login.png" width="400px"></img>
 
-__** When running the harmonize Flows, make sure to set batch size to 1. This is a temporary limitation.__
+## Resetting the Demo
+
+Run this....  
+`gradle mlUndeploy -Pconfirm=true`
+
+Then start over.
 
 ## Something is Wrong!
 

@@ -131,7 +131,7 @@ export class SmartMasteringDocViewerComponent implements OnInit {
             sourceName: 'final',
             propertyName: propertyName,
             propertyValue: propertyValue
-          }
+          };
 
           if (propertyName === 'PersonName') {
             links.unshift(link);

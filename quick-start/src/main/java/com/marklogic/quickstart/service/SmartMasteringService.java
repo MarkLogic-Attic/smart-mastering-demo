@@ -39,8 +39,8 @@ public class SmartMasteringService {
 
     public String mergeDocs(String doc1, String doc2, String options) {
         RequestParameters params = new RequestParameters();
-        params.add("primary-uri", doc1);
-        params.add("secondary-uri", doc2);
+        params.add("uri", doc1);
+        params.add("uri", doc2);
         params.add("options", options);
         return new GenericResourceManager(MASTERING_MERGE, client).post(params, new StringHandle("").withFormat(Format.JSON));
     }
@@ -87,7 +87,8 @@ public class SmartMasteringService {
         RequestParameters params = new RequestParameters();
         params.add("start", start.toString());
         params.add("page-size", pageSize.toString());
-        return new GenericResourceManager(SM_NOTIFICATIONS, client).get(params);
+        String extractions = "{ \"firstName\": \"PersonGivenName\", \"lastName\": \"PersonSurName\" }";
+        return new GenericResourceManager(SM_NOTIFICATIONS, client).post(params, new StringHandle(extractions).withFormat(Format.JSON));
     }
 
     public String updateNotifications(String body) {
