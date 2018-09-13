@@ -1,6 +1,10 @@
 # Smart Mastering Demo
 
-This demo was created to showcase some of the features of Smart Mastering at MarkLogic World 2018. It was for demo purposes only. If want to use Smart Mastering in your project you should go to the [main page for Smart Mastering](http://marklogic-community.github.io/smart-mastering-core)
+_Note: this demo was a point-in-time demostration of Smart Mastering for MarkLogic World 2018. We have now retired this 
+demo and moved it to MarkLogic-Attic. For examples of how to use Smart Mastering, please see the examples directory in
+the [Smart Mastering Core project][smc]._
+
+This demo was created to showcase some of the features of Smart Mastering at MarkLogic World 2018. It was for demo purposes only. If want to use Smart Mastering in your project you should go to the [main page for Smart Mastering][smc].
 
 ## Steps to run the Smart Mastering Demo
 
@@ -51,3 +55,4 @@ If you run into issues during the `gradle prepDemo` phase you may need to clean 
 - Now repeat the instructions from above
 
 
+[smc]: http://marklogic-community.github.io/smart-mastering-core
